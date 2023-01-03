@@ -1,24 +1,24 @@
 import Head from 'next/head';
-import Image from 'next/image';
 import { Inter } from '@next/font/google';
-import styles from '../styles/Home.module.css';
 
 import MyLogo from '/public/favicon.svg';
+import Img from '/public/static/001.jpg';
+import { SlideImage, Main } from '../styles';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
       <Head>
         <title>MEDA.photo</title>
-        <meta name="description" content="Welcome to MEDA.world" />
+        <meta name="description" content="MEDA.photo Gallery" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href={MyLogo.src} />
       </Head>
-      <main className={styles.main}>
-        <h1>Hello World</h1>
-      </main>
+      <Main>
+        <SlideImage img={Img.src}></SlideImage>
+      </Main>
     </>
   );
 }

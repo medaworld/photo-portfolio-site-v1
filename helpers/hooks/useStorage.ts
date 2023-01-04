@@ -1,26 +1,48 @@
 import {
+  deleteObject,
   getDownloadURL,
-  listAll,
   ref,
   uploadBytes,
   uploadBytesResumable,
 } from 'firebase/storage';
 import { useEffect, useState } from 'react';
-import { projectStorage } from '../../firebase/config';
+import { projectFirestore, projectStorage } from '../../firebase/config';
 import { v4 } from 'uuid';
 
 import { Error } from '../../helpers/organizers/types';
+import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 
 const useStorage = () => {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<Error>(null);
-  const [urls, setUrls] = useState<string[]>();
 
-  const uploadFile = (file: any) => {
-    const storageRef = ref(projectStorage, `images/${v4() + file.name}`);
+  const uploadFile = (file: any, category?: string) => {
+    const id = v4();
+    const fileName = id + file.name;
+    const storageRef = ref(projectStorage, `images/${fileName}`);
+
     uploadBytes(storageRef, file)
-      .then(() => {
-        console.log('Uploaded');
+      .then(async (snapshot) => {
+        const url = await getDownloadURL(storageRef);
+        try {
+          // if (category) {
+          //   addDoc(collection(projectFirestore, `category/${category}`), {
+          //     fileName: fileName,
+          //     url: url,
+          //     photoTaken: ,
+          //     category: ,
+          //     addedToDatabase: snapshot.metadata.timeCreated,
+          //   });
+          // }
+          setDoc(doc(projectFirestore, 'images', id), {
+            fileName: fileName,
+            url: url,
+            timeCreated: snapshot.metadata.timeCreated,
+            id: id,
+          });
+        } catch (err) {
+          setError('Error adding document');
+        }
       })
       .catch((err) => {
         setError(err.message);
@@ -34,22 +56,27 @@ const useStorage = () => {
     });
   };
 
-  useEffect(() => {
-    const imageListRef = ref(projectStorage, 'images/');
-    listAll(imageListRef).then((response) => {
-      response.items.forEach((item) => {
-        getDownloadURL(item)
-          .then((url) => {
-            setUrls((prev) => (prev ? [...prev, url] : [url]));
-          })
-          .catch((err) => {
-            setError(err.message);
-          });
+  const deleteFile = async (url: string, id: string) => {
+    const fileRef = ref(projectStorage, url);
+    deleteObject(fileRef)
+      .then(() => {
+        console.log('Deleted');
+      })
+      .catch((err) => {
+        setError(err.message);
       });
-    });
-  }, []);
 
-  return { progress, urls, error, setError, uploadFile };
+    const docRef = doc(projectFirestore, 'images', id);
+
+    deleteDoc(docRef)
+      .then(() => {
+        console.log(id);
+        console.log('Doc deleted');
+      })
+      .catch((err) => console.log(err));
+  };
+
+  return { progress, error, setError, uploadFile, deleteFile };
 };
 
 export default useStorage;

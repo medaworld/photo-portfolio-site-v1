@@ -1,18 +1,40 @@
+import React from 'react';
+import { useState } from 'react';
+import useFirestore from '../../helpers/hooks/useFirestore';
+import useStorage from '../../helpers/hooks/useStorage';
 import { GalleryItem, Gallery } from '../../styles/components/admin/ImageGrid';
+import LoadingSpinner from '../ui/LoadingSpinner';
 
-class imageRow {}
+function ImageGrid() {
+  const { deleteFile } = useStorage();
+  const { docs } = useFirestore('images');
 
-function ImageGrid(props: { urls: string[] | undefined }) {
-  const { urls } = props;
   let images;
-  if (urls) {
-    for (let i = 0; i < urls.length; i += 3) {}
-    images = urls.map((url) => {
-      return <GalleryItem img={url}></GalleryItem>;
+  if (docs) {
+    images = docs.map((doc) => {
+      const clickHandler = () => {
+        deleteFile(doc.url, doc.id);
+      };
+      return (
+        <GalleryItem
+          key={doc.fileName}
+          img={doc.url}
+          onClick={clickHandler}
+        ></GalleryItem>
+      );
     });
   }
 
-  return <Gallery>{images}</Gallery>;
+  if (docs && docs.length < 1) {
+    images = <p>No Images</p>;
+  }
+
+  return (
+    <Gallery>
+      {!docs && <LoadingSpinner />}
+      {images}
+    </Gallery>
+  );
 }
 
 export default ImageGrid;

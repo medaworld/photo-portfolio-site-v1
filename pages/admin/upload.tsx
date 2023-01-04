@@ -9,13 +9,10 @@ import { Error } from '../../helpers/organizers/types';
 import { UploadPage } from '../../styles/components/admin/Upload';
 
 export default function AdminUploadPage() {
-  const { urls } = useStorage();
-
   return (
     <UploadPage>
       <UploadForm />
-      {!urls && <LoadingSpinner />}
-      <ImageGrid urls={urls} />
+      <ImageGrid />
     </UploadPage>
   );
 }

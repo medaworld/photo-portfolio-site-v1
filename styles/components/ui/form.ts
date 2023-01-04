@@ -7,6 +7,7 @@ export const FormWrapper = styled.div`
   flex-direction: column;
   align-self: center;
   width: 700px;
+  margin: 15px;
 
   input {
     margin: 15px 0;

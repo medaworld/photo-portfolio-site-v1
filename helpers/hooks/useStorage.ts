@@ -9,12 +9,14 @@ import { useEffect, useState } from 'react';
 import { projectStorage } from '../../firebase/config';
 import { v4 } from 'uuid';
 
-const useStorage = (file: any) => {
-  const [progress, setProgress] = useState(0);
-  const [error, setError] = useState(null);
-  const [urls, setUrls] = useState<any[]>();
+import { Error } from '../../helpers/organizers/types';
 
-  useEffect(() => {
+const useStorage = () => {
+  const [progress, setProgress] = useState(0);
+  const [error, setError] = useState<Error>(null);
+  const [urls, setUrls] = useState<string[]>();
+
+  const uploadFile = (file: any) => {
     const storageRef = ref(projectStorage, `images/${v4() + file.name}`);
     uploadBytes(storageRef, file)
       .then(() => {
@@ -30,7 +32,9 @@ const useStorage = (file: any) => {
         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       setProgress(progressPercentage);
     });
+  };
 
+  useEffect(() => {
     const imageListRef = ref(projectStorage, 'images/');
     listAll(imageListRef).then((response) => {
       response.items.forEach((item) => {
@@ -45,7 +49,7 @@ const useStorage = (file: any) => {
     });
   }, []);
 
-  return { progress, urls, error };
+  return { progress, urls, error, setError, uploadFile };
 };
 
 export default useStorage;

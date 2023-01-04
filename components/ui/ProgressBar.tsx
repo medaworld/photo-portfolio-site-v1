@@ -1,7 +1,14 @@
-import { Progress } from '../../styles/components/ui/ProgressBar';
+import {
+  Progress,
+  ProgressContainer,
+} from '../../styles/components/ui/ProgressBar';
 
 function ProgressBar(props: { progress: number }) {
-  return <Progress fill={props.progress + '%'}></Progress>;
+  return (
+    <ProgressContainer>
+      <Progress fill={props.progress + '%'}></Progress>
+    </ProgressContainer>
+  );
 }
 
 export default ProgressBar;

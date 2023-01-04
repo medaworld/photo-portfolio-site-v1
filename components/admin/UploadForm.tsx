@@ -1,24 +1,12 @@
-import {
-  getDownloadURL,
-  listAll,
-  ref,
-  uploadBytes,
-  uploadBytesResumable,
-} from 'firebase/storage';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ChangeEvent, useState } from 'react';
-import { projectStorage } from '../../firebase/config';
 import useStorage from '../../helpers/hooks/useStorage';
-import { Error, File } from '../../helpers/organizers/types';
-import { FormWrapper } from '../../styles/components/ui/form';
-import { v4 } from 'uuid';
+import { FormWrapper } from '../../styles/components/ui/Form';
 import ProgressBar from '../ui/ProgressBar';
 
 function UploadForm() {
+  const { uploadFile, setError, error, progress } = useStorage();
   const [file, setFile] = useState<any>(null);
-  const [error, setError] = useState<Error>(null);
-  const [imageList, setImageList] = useState<any[]>();
-  const [progress, setProgress] = useState(0);
 
   const types = ['image/png', 'image/jpeg', 'image/jpg'];
 
@@ -37,48 +25,17 @@ function UploadForm() {
   };
 
   const submitHandler = () => {
-    const storageRef = ref(projectStorage, `images/${v4() + file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-    uploadBytes(storageRef, file)
-      .then(() => {
-        console.log('Uploaded');
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-    uploadTask.on('state_changed', (snapshot) => {
-      const progressPercentage =
-        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      setProgress(progressPercentage);
-    });
+    uploadFile(file);
   };
 
-  useEffect(() => {
-    const imageListRef = ref(projectStorage, 'images/');
-    listAll(imageListRef).then((response) => {
-      response.items.forEach((item) => {
-        getDownloadURL(item).then((url) => {
-          setImageList((prev) => (prev ? [...prev, url] : [url]));
-        });
-      });
-    });
-  }, []);
-  console.log(imageList);
-
   return (
-    <>
-      <FormWrapper>
-        <input type="file" onChange={changeHandler} />
-        <button onClick={submitHandler}>Upload Image</button>
-        <ProgressBar progress={progress} />
-        {progress}
-        {error && <div>{error}</div>}
-        {file && <div>{file.name}</div>}
-        {imageList?.map((url) => {
-          return <img key={Math.random()} src={url} />;
-        })}
-      </FormWrapper>
-    </>
+    <FormWrapper>
+      <input type="file" onChange={changeHandler} />
+      <button onClick={submitHandler}>Upload Image</button>
+      {error && <div>{error}</div>}
+      {file && <div>{file.name}</div>}
+      {progress < 100 && <ProgressBar progress={progress} />}
+    </FormWrapper>
   );
 }
 

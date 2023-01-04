@@ -5,19 +5,17 @@ export const FormWrapper = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
+  align-self: center;
+  width: 700px;
 
   input {
-    margin-bottom: 15px;
+    margin: 15px 0;
   }
 
   button {
     width: 200px;
     height: 25px;
     margin-top: 15px;
-  }
-
-  img {
-    width: 50%;
   }
 `;
 

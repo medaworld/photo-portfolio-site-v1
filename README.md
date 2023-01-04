@@ -1,4 +1,4 @@
-# Personal Website
+# Photo Website
 
 This is a repo for my photo portfolio website.
 

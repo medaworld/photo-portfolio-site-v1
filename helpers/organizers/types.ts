@@ -1,10 +1,25 @@
+declare module 'styled-components' {
+  export interface DefaultTheme {
+    colors: {
+      id: string;
+      background: string;
+      primary: string;
+      hover: string;
+      color: string;
+      accent: string;
+      success: string;
+      error: string;
+    };
+  }
+}
+
 export type File = null | {
-  lastModified: number;
-  lastModifiedDate: Date;
-  name: string;
-  size: number;
-  type: string;
-  webkitRelativePath: string;
+  lastModified: number | null;
+  lastModifiedDate: Date | null;
+  name: string | null;
+  size: number | null;
+  type: string | null;
+  webkitRelativePath: string | null;
 };
 
 export type Error = null | string;

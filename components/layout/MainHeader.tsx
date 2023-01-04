@@ -4,7 +4,7 @@ import {
   HeaderFill,
   Nav,
 } from '../../styles/components/layout/main-header';
-import Logo from './logo';
+import Logo from './Logo';
 
 function MainHeader() {
   return (

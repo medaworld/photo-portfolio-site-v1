@@ -1,5 +1,5 @@
 import { Fragment, ReactNode } from 'react';
-import MainHeader from './main-header';
+import MainHeader from './MainHeader';
 
 type Props = {
   children: ReactNode;

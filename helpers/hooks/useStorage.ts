@@ -16,7 +16,12 @@ const useStorage = () => {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<Error>(null);
 
-  const uploadFile = (file: any, category?: string) => {
+  const uploadFile = (
+    file: any,
+    collection?: { title: string; subcollection: string; order: number },
+    dateTaken?: Date,
+    description?: string
+  ) => {
     const id = v4();
     const fileName = id + file.name;
     const storageRef = ref(projectStorage, `images/${fileName}`);
@@ -25,20 +30,14 @@ const useStorage = () => {
       .then(async (snapshot) => {
         const url = await getDownloadURL(storageRef);
         try {
-          // if (category) {
-          //   addDoc(collection(projectFirestore, `category/${category}`), {
-          //     fileName: fileName,
-          //     url: url,
-          //     photoTaken: ,
-          //     category: ,
-          //     addedToDatabase: snapshot.metadata.timeCreated,
-          //   });
-          // }
           setDoc(doc(projectFirestore, 'images', id), {
+            id: id,
             fileName: fileName,
             url: url,
-            timeCreated: snapshot.metadata.timeCreated,
-            id: id,
+            timeAdded: snapshot.metadata.timeCreated,
+            dateTaken: dateTaken,
+            description: description,
+            collection: collection,
           });
         } catch (err) {
           setError('Error adding document');

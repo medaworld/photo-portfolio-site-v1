@@ -9,7 +9,7 @@ import { GlobalStyle } from '../styles/GlobalStyles';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <Layout>
+    <>
       <Head>
         <title>MEDA.photo</title>
         <meta name="description" content="MEDA.photo Gallery" />
@@ -18,8 +18,10 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <ThemeProvider theme={LightTheme}>
         <GlobalStyle />
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </ThemeProvider>
-    </Layout>
+    </>
   );
 }

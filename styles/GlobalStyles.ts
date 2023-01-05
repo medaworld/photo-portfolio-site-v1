@@ -5,7 +5,7 @@ export const GlobalStyle = createGlobalStyle`
   body{
     background-color: ${(p) => p.theme.colors.background};
     color: ${(p) => p.theme.colors.primary};
-    font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    font-family: Nunito, Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     padding: 0;
     margin: 0;

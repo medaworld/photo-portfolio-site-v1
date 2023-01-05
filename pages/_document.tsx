@@ -20,11 +20,12 @@ class MyDocument extends Document {
         styles: (
           <Html>
             <link
-              href="https://fonts.googleapis.com/css2?family=Inter&family=Raleway:wght@900&display=swap"
+              href="https://fonts.googleapis.com/css2?family=Inter&family=Nunito&family=Raleway:wght@900&display=swap"
               rel="stylesheet"
             />
             <body>
               <Main />
+              <div id="overlays" />
               <NextScript />
               {initialProps.styles}
               {sheet.getStyleElement()}

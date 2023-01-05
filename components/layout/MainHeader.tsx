@@ -4,7 +4,10 @@ import {
   HeaderFill,
   Nav,
 } from '../../styles/components/layout/main-header';
+import Icon from '../ui/Icon';
 import Logo from './Logo';
+
+import IGIcon from '/public/icons/instagram.png';
 
 function MainHeader() {
   return (
@@ -16,16 +19,18 @@ function MainHeader() {
         <Nav>
           <ul>
             <li>
-              <Link href="/concert">Concert</Link>
+              <Link href="/work">WORK</Link>
             </li>
             <li>
-              <Link href="/travel">Travel</Link>
+              <Link href="/journal">JOURNAL</Link>
             </li>
             <li>
-              <Link href="/film">Film</Link>
+              <Link href="/contact">CONTACT</Link>
             </li>
             <li>
-              <Link href="/contact">Contact</Link>
+              <a href={'https://www.instagram.com'} target="_blank">
+                <Icon img={IGIcon.src} size={20} />
+              </a>
             </li>
           </ul>
         </Nav>

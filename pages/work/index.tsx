@@ -1,75 +1,49 @@
-import fs from 'fs';
-import Image from 'next/image';
-import probe from 'probe-image-size';
-import path from 'path';
-import AutoImage from '../../components/Desktop/UI/AutoImage';
 import { Container, Gallery } from '../../styles/components/Desktop/Work/Work';
-import { useEffect, useState } from 'react';
-import { ProbedImages } from '../../helpers/organizers/types';
+import Img1 from '/public/images/001.jpg';
+import Food from '/public/images/002.jpg';
+import Concert from '/public/images/003.jpg';
+import Img4 from '/public/images/004.jpg';
+import Travel from '/public/images/TravelCover.jpg';
+import People from '/public/images/PeopleCover.jpg';
+import Urban from '/public/images/UrbanCover.jpg';
+import Landscape from '/public/images/LandscapeCover.jpg';
+import Film from '/public/images/FilmCover.jpg';
+import Album from '/public/images/AlbumCover.jpg';
+import Architecture from '/public/images/ArchitectureCover.jpg';
+import { Image } from '../../styles/components/Desktop/UI';
+import CategoryCover from '../../components/Desktop/Work/CategoryCover';
 
-export default function WorkPage({ probedImgs }: { probedImgs: ProbedImages }) {
-  const [columnnWidth, setColumnWidth] = useState<number>(0);
-
-  useEffect(() => {
-    function handleResize() {
-      const { innerWidth } = window;
-      setColumnWidth(innerWidth / 2.01);
-    }
-    window.addEventListener('load', handleResize);
-    window.addEventListener('resize', handleResize);
-  }, []);
-
-  const images = probedImgs.map((img) => {
-    return (
-      <Image
-        src={img.path}
-        alt={''}
-        width={columnnWidth}
-        height={(columnnWidth! / img.width) * img.height}
-      ></Image>
-    );
-  });
+export default function WorkPage() {
+  const categories = [
+    { name: 'Concert', coverImg: '', url: '', imgSrc: Concert.src },
+    { name: 'Travel', coverImg: '', url: '', imgSrc: Travel.src },
+    { name: 'Landscapes', coverImg: '', url: '', imgSrc: Img4.src },
+    { name: 'Film', coverImg: '', url: '', imgSrc: Film.src },
+    { name: 'Landscapes', coverImg: '', url: '', imgSrc: Landscape.src },
+    { name: 'Travel', coverImg: '', url: '', imgSrc: Album.src },
+    { name: 'People', coverImg: '', url: '', imgSrc: People.src },
+    { name: 'Food', coverImg: '', url: '', imgSrc: Food.src },
+    { name: 'Landscapes', coverImg: '', url: '', imgSrc: Img1.src },
+    { name: 'Urban', coverImg: '', url: '', imgSrc: Urban.src },
+    { name: 'Urban', coverImg: '', url: '', imgSrc: Architecture.src },
+  ];
 
   return (
     <Container>
-      <Gallery>{images}</Gallery>
+      <Gallery>
+        {categories.map((category) => {
+          return (
+            <CategoryCover
+              src={category.imgSrc}
+              alt={category.name}
+              category={category.name}
+              url={''}
+            />
+          );
+        })}
+      </Gallery>
     </Container>
   );
-}
-
-export async function getStaticProps() {
-  const imgPaths = [
-    '/public/images/004.jpg',
-    '/public/images/001.jpg',
-    '/public/images/002.jpg',
-    '/public/images/003.jpg',
-  ];
-
-  let data: any = [];
-  const imgs = imgPaths.map((imgPath) => {
-    return {
-      img: fs.createReadStream(path.join(process.cwd(), imgPath)),
-      imgPath,
-    };
-  });
-
-  let promises = imgs.map((img) =>
-    probe(img.img).then((results) => {
-      return {
-        width: results.width,
-        height: results.height,
-        path: img.imgPath.replace('/public', ''),
-      };
-    })
-  );
-
-  const probedImgs = await Promise.all(promises).then((results) => {
-    return results;
-  });
-
-  return {
-    props: { probedImgs },
-  };
 }
 
 //Categories: concert, travel, film, people, food, landscapes, urban

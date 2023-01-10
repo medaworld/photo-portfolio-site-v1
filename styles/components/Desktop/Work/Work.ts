@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import device from '../../../../helpers/organizers/breakpoints';
 
 export const Container = styled.div``;
 
@@ -11,12 +12,33 @@ export const Gallery = styled.div`
   column-width: 50%;
 `;
 
-export const GalleryItem = styled.div<{ img: string }>`
-  width: 100%;
-  height: 0;
-  padding-top: 66.64%;
-  margin-bottom: 2px;
+export const CoverContainer = styled.div`
+  position: relative;
+  transition: all 0.3s ease;
+`;
 
-  background-image: url(${(p: any) => p.img});
-  background-size: cover;
+export const CoverTitle = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  font-size: 40px;
+  font-family: Poppins;
+  background-color: black;
+  color: ${(p) => p.theme.colors.background};
+  opacity: 0%;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s ease;
+
+  &:hover {
+    opacity: 50%;
+  }
+
+  @media ${device.mobileS} {
+    font-size: 20px;
+  }
+  @media ${device.laptop} {
+    font-size: 40px;
+  }
 `;

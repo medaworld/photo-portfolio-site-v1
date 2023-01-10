@@ -63,23 +63,7 @@ export const ProgressContainer = styled.div`
   margin: 15px 0;
 `;
 
-export const ImageContainer = styled.div`
+export const Image = styled.img`
   width: 100%;
-  /* position: relative;
-  padding-bottom: 100%;
-  overflow: hidden; */
-  border: 1px solid red;
-  position: relative;
-  height: fit-content;
-
-  .image {
-    position: relative;
-    object-fit: contain;
-    width: 100%;
-    height: fit-content;
-  }
-`;
-
-export const ImageWrapper = styled.div`
-  /* position: relative; */
+  height: 100%;
 `;

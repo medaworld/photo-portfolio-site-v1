@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { hexToRGBA } from '../../../../helpers/functions/colors';
+import device from '../../../../helpers/organizers/breakpoints';
 
 export const Header = styled.header`
   width: 100%;
@@ -17,6 +18,13 @@ export const Header = styled.header`
     background-color: ${(p) => hexToRGBA(p.theme.colors.background, 0.7)};
     -webkit-backdrop-filter: blur(15px);
     backdrop-filter: blur(8px);
+  }
+
+  @media ${device.mobileS} {
+    padding: 0 3%;
+  }
+  @media ${device.laptop} {
+    padding: 0 1%;
   }
 `;
 

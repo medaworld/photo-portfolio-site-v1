@@ -33,30 +33,19 @@ export const GalleryItem = styled.div<{ img: string }>`
   }
 `;
 
-export const FormWrapper = styled.div`
-  justify-content: center;
-  align-items: center;
+export const Container = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 15px;
-  flex-wrap: wrap;
-
-  input {
-    margin: 15px 0;
-  }
-
-  button {
-    width: 200px;
-    height: 25px;
-    margin-top: 15px;
-  }
+  height: 100%;
 `;
 
-export const ImageUpload = styled.div`
+export const FormUploadContainer = styled.div`
+  position: relative;
   display: flex;
-  align-items: center;
   flex-direction: column;
-  margin: 15px;
+  height: 50vw;
+  width: 50vw;
+  contain: size;
 
   label {
     display: flex;
@@ -64,9 +53,9 @@ export const ImageUpload = styled.div`
     align-items: center;
     cursor: pointer;
     background-color: ${(p) => hexToRGBA(p.theme.colors.primary, 0.2)};
-    border-radius: 10px;
-    width: 350px;
-    height: 350px;
+    /* border-radius: 10px; */
+    width: 100%;
+    height: 100%;
 
     &:hover {
       opacity: 90%;
@@ -80,22 +69,104 @@ export const ImageUpload = styled.div`
 `;
 
 export const UploadArea = styled.label`
-  display: flex;
+  object-fit: cover;
+  overflow: hidden;
 
   img {
-    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: cover;
-    overflow: hidden;
   }
 `;
 
-export const ImageDetail = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+export const PreviewImage = styled.div<{ img: string | undefined }>`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1em 0 0 1em;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url(${(p) => p.img});
 `;
 
-export const Input = styled.input``;
+export const ImageDetail = styled.div`
+  position: relative;
+  width: 25vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+`;
+
+export const FormDescription = styled.textarea`
+  height: 30%;
+  user-select: text;
+  resize: none;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: none;
+  font-family: Inter;
+  font-size: 16px;
+  padding: 15px;
+  border-top-right-radius: 1em;
+  border-bottom: 1px solid ${(p) => p.theme.colors.hover};
+
+  :focus {
+    outline: none;
+  }
+`;
+
+export const FormDate = styled.input`
+  outline: none;
+  border: none;
+  padding: 10px 15px;
+  font-family: Inter;
+  font-size: 16px;
+  border-bottom: 1px solid ${(p) => p.theme.colors.hover};
+  ::-webkit-inner-spin-button,
+  ::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+  }
+`;
+
+export const FormCategory = styled.select`
+  padding: 10px 15px;
+  border: none;
+  font-family: Inter;
+  font-size: 16px;
+  border-top-right-radius: 1em;
+  border-bottom: 1px solid ${(p) => p.theme.colors.hover};
+
+  option {
+    position: absolute;
+    background-color: DodgerBlue;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+  }
+  :focus {
+    outline: none;
+  }
+`;
+
+export const FormButton = styled.button`
+  border: none;
+  font-family: Inter;
+  font-size: 16px;
+  color: ${(p) => p.theme.colors.color};
+  height: 40px;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  width: 100%;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  border-bottom-right-radius: 1em;
+
+  &:hover {
+    opacity: 80%;
+    cursor: pointer;
+  }
+`;

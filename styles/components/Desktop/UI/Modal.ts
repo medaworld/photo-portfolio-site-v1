@@ -20,13 +20,10 @@ export const CloseIcon = styled.div`
 
 export const ModalOverlay = styled.div`
   position: fixed;
-  display: flex;
-  justify-content: center;
-  top: 15vh;
-  left: 10%;
-  width: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: white;
-  padding: 1rem;
   border-radius: 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   z-index: 11;

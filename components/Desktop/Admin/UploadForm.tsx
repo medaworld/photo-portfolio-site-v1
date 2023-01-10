@@ -1,15 +1,11 @@
 import React from 'react';
 import { ChangeEvent, useState } from 'react';
 import useStorage from '../../../helpers/hooks/useStorage';
-import {
-  FormWrapper,
-  ImageDetail,
-  ImageUpload,
-  UploadArea,
-} from '../../../styles/components/Desktop/Admin/Upload';
+import { Container } from '../../../styles/components/Desktop/Admin/Upload';
 
 import Modal from '../UI/Modal';
-import ProgressBar from '../UI/ProgressBar';
+import FormDetails from './FormDetails';
+import FormUpload from './FormUpload';
 
 function UploadForm(props: { onClose: () => void }) {
   const { uploadFile, setError, error, progress } = useStorage();
@@ -23,7 +19,6 @@ function UploadForm(props: { onClose: () => void }) {
       selected = e.target.files[0];
     }
     if (selected && types.includes(selected.type)) {
-      console.log(e);
       setFile(selected!);
       setError('');
     } else {
@@ -42,31 +37,19 @@ function UploadForm(props: { onClose: () => void }) {
 
   return (
     <Modal onClose={props.onClose}>
-      <FormWrapper>
-        <ImageUpload>
-          <UploadArea htmlFor="upload-photo">
-            {!file && <p>Upload Photo(s)</p>}
-            {file && <img id="prev" src={selectedUrl} alt="prevImage" />}
-          </UploadArea>
-          <input type="file" id="upload-photo" onChange={changeHandler} />
-          {file && <div>{file.name}</div>}
-        </ImageUpload>
-        <ImageDetail>
-          <label>Date Taken</label>
-          <input type="date"></input>
-          <label>Description</label>
-          <textarea />
-          <label>Collection</label>
-          <select />
-          <input type="text"></input>
-          <button onClick={submitHandler}>Upload Image</button>
-        </ImageDetail>
-        {error && <div>{error}</div>}
-        {progress < 100 && <ProgressBar progress={progress} />}
-        {progress == 100 && <p>Done</p>}
-      </FormWrapper>
+      <Container>
+        <FormUpload
+          changeHandler={changeHandler}
+          file={file}
+          selectedUrl={selectedUrl}
+          progress={progress}
+        />
+        <FormDetails submitHandler={submitHandler} error={error} />
+      </Container>
     </Modal>
   );
 }
 
 export default React.memo(UploadForm);
+
+//          {file && <div>{file.name}</div>}

@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Progress,
   ProgressContainer,
@@ -11,4 +12,4 @@ function ProgressBar(props: { progress: number }) {
   );
 }
 
-export default ProgressBar;
+export default React.memo(ProgressBar);

@@ -37,7 +37,7 @@ const useStorage = () => {
             timeAdded: snapshot.metadata.timeCreated,
             dateTaken: dateTaken,
             description: description,
-            collection: collection,
+            category: collection,
           });
         } catch (err) {
           setError('Error adding document');

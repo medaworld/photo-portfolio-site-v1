@@ -6,9 +6,9 @@ export const LightTheme: DefaultTheme = {
     background: '#f5f5f5',
     primary: '#212121',
     hover: '#616161',
-    color: '#7eaeda',
+    color: '#2f95f5',
     accent: '#c9def2',
-    success: '#96d796',
+    success: '#5cbb5c',
     error: '#e39d9d',
   },
 };

@@ -1,13 +1,11 @@
 import { useState } from 'react';
-import ImageGrid from '../../components/admin/ImageGrid';
-import UploadButton from '../../components/admin/UploadButton';
-import UploadForm from '../../components/admin/UploadForm';
-import LoadingSpinner from '../../components/ui/LoadingSpinner';
-import ProgressBar from '../../components/ui/ProgressBar';
+import ImageGrid from '../../components/Desktop/Admin/ImageGrid';
+import UploadButton from '../../components/Desktop/Admin/UploadButton';
+import UploadForm from '../../components/Desktop/Admin/UploadForm';
 import useStorage from '../../helpers/hooks/useStorage';
 
 import { Error } from '../../helpers/organizers/types';
-import { UploadPage } from '../../styles/components/admin/Upload';
+import { UploadPage } from '../../styles/components/Desktop/Admin/Upload';
 
 export default function AdminUploadPage() {
   const [uploadFormShown, setUploadFormShown] = useState(false);

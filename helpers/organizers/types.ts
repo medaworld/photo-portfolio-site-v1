@@ -22,4 +22,10 @@ export type File = null | {
   webkitRelativePath: string | null;
 };
 
+export type ProbedImages = {
+  width: number;
+  height: number;
+  path: string;
+}[];
+
 export type Error = null | string;

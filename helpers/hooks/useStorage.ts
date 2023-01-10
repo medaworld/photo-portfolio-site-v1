@@ -6,7 +6,7 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage';
 import { useEffect, useState } from 'react';
-import { projectFirestore, projectStorage } from '../../firebase/config';
+import { projectFirestore, projectStorage } from '../firebase/config';
 import { v4 } from 'uuid';
 
 import { Error } from '../../helpers/organizers/types';

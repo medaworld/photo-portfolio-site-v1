@@ -1,11 +1,12 @@
 import type { AppProps } from 'next/app';
-import Layout from '../components/layout/Layout';
+
 import Head from 'next/head';
 
 import MyLogo from '/public/favicon.svg';
 import { ThemeProvider } from 'styled-components';
 import { LightTheme } from '../styles/themes/LightTheme';
 import { GlobalStyle } from '../styles/GlobalStyles';
+import Layout from '../components/Desktop/Layout/Layout';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

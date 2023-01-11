@@ -33,7 +33,7 @@ export const GalleryItem = styled.div<{ img: string }>`
   }
 `;
 
-export const Container = styled.div`
+export const UploadOverlayContainer = styled.div`
   display: flex;
   flex-direction: row;
   height: 100%;
@@ -53,13 +53,8 @@ export const FormUploadContainer = styled.div`
     align-items: center;
     cursor: pointer;
     background-color: ${(p) => hexToRGBA(p.theme.colors.primary, 0.2)};
-    /* border-radius: 10px; */
     width: 100%;
     height: 100%;
-
-    &:hover {
-      opacity: 90%;
-    }
   }
 
   #upload-photo {
@@ -82,12 +77,74 @@ export const UploadArea = styled.label`
 export const PreviewImage = styled.div<{ img: string | undefined }>`
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  border-radius: 1em 0 0 1em;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
   background-image: url(${(p) => p.img});
+`;
+
+export const ImageSlideshowContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: ${(p) => hexToRGBA(p.theme.colors.primary, 0.2)};
+`;
+
+export const SlideshowMain = styled.div<{ img: string | undefined }>`
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url(${(p) => p.img});
+`;
+
+export const SlideshowScroll = styled.div`
+  height: 20%;
+  width: 100%;
+  padding: 1% 0;
+  grid-template-columns: 100px;
+  display: grid;
+  grid-auto-flow: column;
+  overflow-x: scroll;
+  grid-column-gap: 5px;
+`;
+
+export const SlideshowThumbnailContainer = styled.div`
+  height: 100%;
+  width: 100px;
+`;
+
+export const SlideshowThumbnailFill = styled.div<{ img: string | undefined }>`
+  height: 100%;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url(${(p) => p.img});
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+export const Remove = styled.div`
+  position: relative;
+
+  img {
+    position: absolute;
+    width: 20px;
+    opacity: 70%;
+    transition: transform 0.3s ease-out;
+
+    &:hover {
+      transform: scale(1.1);
+      cursor: pointer;
+      opacity: 100%;
+      width: 22px;
+    }
+  }
 `;
 
 export const ImageDetail = styled.div`
@@ -96,56 +153,21 @@ export const ImageDetail = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
+  /* overflow-y: scroll; */
 `;
 
 export const FormDescription = styled.textarea`
   height: 30%;
   user-select: text;
   resize: none;
-  white-space: pre-wrap;
-  word-break: break-word;
   border: none;
   font-family: Inter;
+  color: ${(p) => p.theme.colors.hover};
   font-size: 16px;
   padding: 15px;
-  border-top-right-radius: 1em;
-  border-bottom: 1px solid ${(p) => p.theme.colors.hover};
+  padding-top: 30px;
+  overflow-y: hidden;
 
-  :focus {
-    outline: none;
-  }
-`;
-
-export const FormDate = styled.input`
-  outline: none;
-  border: none;
-  padding: 10px 15px;
-  font-family: Inter;
-  font-size: 16px;
-  border-bottom: 1px solid ${(p) => p.theme.colors.hover};
-  ::-webkit-inner-spin-button,
-  ::-webkit-calendar-picker-indicator {
-    display: none;
-    -webkit-appearance: none;
-  }
-`;
-
-export const FormCategory = styled.select`
-  padding: 10px 15px;
-  border: none;
-  font-family: Inter;
-  font-size: 16px;
-  border-top-right-radius: 1em;
-  border-bottom: 1px solid ${(p) => p.theme.colors.hover};
-
-  option {
-    position: absolute;
-    background-color: DodgerBlue;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 99;
-  }
   :focus {
     outline: none;
   }
@@ -169,4 +191,116 @@ export const FormButton = styled.button`
     opacity: 80%;
     cursor: pointer;
   }
+`;
+
+export const FormSelectWrapper = styled.div`
+  font-family: Inter;
+  font-size: 16px;
+  width: 100%;
+  color: ${(p) => p.theme.colors.hover};
+`;
+
+export const FormSelectTrigger = styled.div`
+  padding: 5px 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  transition: opacity 0.2s ease;
+  position: relative;
+  overflow-x: hidden;
+
+  &:hover {
+    cursor: pointer;
+  }
+  p {
+    white-space: nowrap;
+    line-height: 0;
+  }
+`;
+
+export const Arrow = styled.div`
+  position: absolute;
+  right: 0;
+  padding: 0 10px;
+  height: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  background-color: white;
+`;
+
+export const FormOptions = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 100%;
+  height: 30%;
+  background-color: white;
+  overflow-y: scroll;
+  z-index: 1;
+  border-bottom: 1px solid ${(p) => p.theme.colors.formBorder};
+`;
+
+export const FormOption = styled.span`
+  padding: 2px 15px;
+  &:hover {
+    background-color: ${(p) => p.theme.colors.accent};
+    cursor: pointer;
+  }
+`;
+
+export const FormInput = styled.input`
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  color: ${(p) => p.theme.colors.hover};
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+export const FormDateContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  color: ${(p) => p.theme.colors.hover};
+
+  label {
+    padding: 5px 15px;
+  }
+`;
+
+export const FormDateInput = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+  input {
+    color: ${(p) => p.theme.colors.hover};
+    border: none;
+    width: 33%;
+    font-size: 16px;
+    &:focus {
+      outline: none;
+    }
+  }
+`;
+
+export const Divider = styled.div`
+  width: 100%;
+  border-bottom: 1px solid ${(p) => p.theme.colors.formBorder};
+`;
+
+export const FormError = styled.div`
+  display: flex;
+  height: 50px;
+  margin: 5%;
+  color: #bb2d2d;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  /* text-align: center; */
 `;

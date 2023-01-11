@@ -5,6 +5,7 @@ declare module 'styled-components' {
       background: string;
       primary: string;
       hover: string;
+      formBorder: string;
       color: string;
       accent: string;
       success: string;

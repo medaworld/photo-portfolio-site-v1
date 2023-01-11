@@ -18,18 +18,20 @@ const useStorage = () => {
 
   const uploadFile = (
     file: any,
-    collection?: { title: string; subcollection: string; order: number },
+    category?: { title: string; subCategory: string; order: number },
     dateTaken?: Date,
     description?: string
   ) => {
     const id = v4();
     const fileName = id + file.name;
-    const storageRef = ref(projectStorage, `images/${fileName}`);
+    const storageRef = ref(projectStorage, `images/${id}`);
 
+    // Upload File
     uploadBytes(storageRef, file)
       .then(async (snapshot) => {
         const url = await getDownloadURL(storageRef);
         try {
+          // Store in database
           setDoc(doc(projectFirestore, 'images', id), {
             id: id,
             fileName: fileName,
@@ -37,7 +39,7 @@ const useStorage = () => {
             timeAdded: snapshot.metadata.timeCreated,
             dateTaken: dateTaken,
             description: description,
-            category: collection,
+            category: category,
           });
         } catch (err) {
           setError('Error adding document');

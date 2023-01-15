@@ -1,4 +1,4 @@
-import React, { Key } from 'react';
+import React, { Key, useEffect } from 'react';
 import { ChangeEvent, useState } from 'react';
 import useStorage from '../../../helpers/hooks/useStorage';
 import { UploadOverlayContainer } from '../../../styles/components/Desktop/Admin/Upload';
@@ -10,8 +10,10 @@ import FormFileInput from './FormFileInput';
 function UploadOverlay(props: { onClose: () => void }) {
   const { uploadFile, setError, error, progress } = useStorage();
   const [file, setFile] = useState<File | null>(null);
-  const [files, setFiles] = useState<File[] | []>([]);
+  const [files, setFiles] = useState<any[] | []>([]);
   const [slideshowImages, setSlideShowImages] = useState<string[]>();
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
   let selectedFiles: any[] = [];
 
   const types = ['image/png', 'image/jpeg', 'image/jpg'];
@@ -42,7 +44,6 @@ function UploadOverlay(props: { onClose: () => void }) {
       setError('Please select an image file (png, jpeg, or jpg)');
     }
   };
-  console.log(files);
 
   function uploadImageAsPromise(imageFile: File) {}
 
@@ -51,8 +52,15 @@ function UploadOverlay(props: { onClose: () => void }) {
     selectedUrl = URL.createObjectURL(file);
   }
   const submitHandler = () => {
-    if (file) {
-      uploadFile(file, category, dateTaken, description);
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        uploadFile(
+          files[i].file
+          // files[i].category,
+          // files[i].dateTaken,
+          // files[i].description
+        );
+      }
     } else {
       setError('No file selected');
     }
@@ -62,18 +70,30 @@ function UploadOverlay(props: { onClose: () => void }) {
     files.splice(index, 1);
     slideshowImages?.splice(index, 1);
   }
-  console.log(slideshowImages);
+  useEffect(() => {
+    if (selectedIndex) {
+      const selected = files[selectedIndex];
+      setSelectedImage(selected);
+    }
+  }, []);
+
+  console.log(selectedImage);
   return (
     <Modal onClose={props.onClose}>
       <UploadOverlayContainer>
-        <FormFileInput
+        {/* <FormFileInput
           changeHandler={changeHandler}
           fileRemoveHandler={fileRemoveHandler}
           files={files}
           progress={progress}
           slideshowImages={slideshowImages}
+          setSelectedImage={setSelectedIndex}
+        /> */}
+        <FormDetailInput
+          submitHandler={submitHandler}
+          error={error}
+          selectedImage={selectedImage}
         />
-        <FormDetailInput submitHandler={submitHandler} error={error} />
       </UploadOverlayContainer>
     </Modal>
   );

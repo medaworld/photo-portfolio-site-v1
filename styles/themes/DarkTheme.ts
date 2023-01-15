@@ -10,5 +10,6 @@ export const DarkTheme: DefaultTheme = {
     accent: '#273644',
     success: '#3f713f',
     error: '#ad5656',
+    formBorder: '#232323ff',
   },
 };

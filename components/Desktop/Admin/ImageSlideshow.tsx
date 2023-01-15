@@ -9,9 +9,11 @@ import SlideshowThumbnail from './SlideshowThumbnail';
 function ImageSlideshow({
   fileRemoveHandler,
   slideshowImages,
+  setSelectedImage,
 }: {
   fileRemoveHandler: (index: number) => void;
   slideshowImages: string[];
+  setSelectedImage: any;
 }) {
   const [mainImage, setMainImage] = useState(slideshowImages[0]);
   const [selectedKey, setSelectedKey] = useState(null);
@@ -27,6 +29,7 @@ function ImageSlideshow({
             function selectHandler() {
               if (image) {
                 setMainImage(image);
+                setSelectedImage(key);
               }
             }
             function deleteHandler() {

@@ -14,12 +14,14 @@ function FormFileInput({
   files,
   progress,
   slideshowImages,
+  setSelectedImage,
 }: {
   changeHandler: (e: ChangeEvent<HTMLInputElement>) => void;
   fileRemoveHandler: (index: number) => void;
   files: any[];
   progress: number;
   slideshowImages: string[];
+  setSelectedImage: any;
 }) {
   return (
     <FormUploadContainer>
@@ -38,6 +40,7 @@ function FormFileInput({
         <ImageSlideshow
           slideshowImages={slideshowImages}
           fileRemoveHandler={fileRemoveHandler}
+          setSelectedImage={setSelectedImage}
         />
       )}
       <ProgressBar progress={progress} />

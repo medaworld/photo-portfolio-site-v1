@@ -33,13 +33,13 @@ const useStorage = () => {
         try {
           // Store in database
           setDoc(doc(projectFirestore, 'images', id), {
-            id: id,
             fileName: fileName,
+            id: id,
+            timeCreated: snapshot.metadata.timeCreated,
             url: url,
-            timeAdded: snapshot.metadata.timeCreated,
-            dateTaken: dateTaken,
-            description: description,
-            category: category,
+            // dateTaken: dateTaken,
+            // description: description,
+            // category: category,
           });
         } catch (err) {
           setError('Error adding document');

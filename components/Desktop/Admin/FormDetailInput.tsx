@@ -15,9 +15,11 @@ import FormSelect from './FormSelect';
 function FormDetailInput({
   submitHandler,
   error,
+  selectedImage,
 }: {
   submitHandler: () => void;
   error: Error;
+  selectedImage: any;
 }) {
   const dateRef = useRef<HTMLInputElement>(null);
   function focusHandler(e: any) {
@@ -28,14 +30,24 @@ function FormDetailInput({
   const options = categories.map((category) => {
     return category.name;
   });
+  let description;
+  let date;
+  let category;
+  let subcategory;
+  if (selectedImage) {
+    date = selectedImage.dateTaken;
+    description = selectedImage.description;
+    subcategory = selectedImage.category;
+    subcategory = selectedImage.subcategory;
+  }
 
   return (
     <ImageDetail>
-      <FormDescription placeholder="Write a description" />
+      <FormDescription placeholder="Write a description" value={description} />
       <Divider />
       <FormSelect options={options} placeholder={'Select a category'} />
       <Divider />
-      <FormInput placeholder="Subcategory (optional)" />
+      <FormInput placeholder="Subcategory (optional)" value={subcategory} />
       <Divider />
       <FormDate />
       <Divider />

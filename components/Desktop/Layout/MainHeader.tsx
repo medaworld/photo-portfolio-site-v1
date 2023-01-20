@@ -19,7 +19,7 @@ function MainHeader() {
         </Link>
         <Nav>
           <ul>
-            {/* <li>
+            <li>
               <Link href="/work">WORK</Link>
             </li>
             <li>
@@ -32,7 +32,7 @@ function MainHeader() {
               <a href={'https://www.instagram.com'} target="_blank">
                 <Icon img={IGIcon.src} size={23} />
               </a>
-            </li> */}
+            </li>
           </ul>
         </Nav>
       </Header>

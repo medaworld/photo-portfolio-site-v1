@@ -102,11 +102,10 @@ export const SlideshowMain = styled.div<{ img: string | undefined }>`
 
 export const SlideshowScroll = styled.div`
   height: 20%;
-  width: 100%;
   padding: 1% 0;
-  grid-template-columns: 100px;
   display: grid;
   grid-auto-flow: column;
+  justify-content: flex-start;
   overflow-x: scroll;
   grid-column-gap: 5px;
 `;

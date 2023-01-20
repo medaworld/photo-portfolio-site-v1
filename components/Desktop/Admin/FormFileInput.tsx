@@ -2,7 +2,6 @@ import React from 'react';
 import { ChangeEvent } from 'react';
 import {
   FormUploadContainer,
-  PreviewImage,
   UploadArea,
 } from '../../../styles/components/Desktop/Admin/Upload';
 import ProgressBar from '../UI/ProgressBar';
@@ -36,7 +35,7 @@ function FormFileInput({
           <p>Upload Photo(s)</p>
         </UploadArea>
       )}
-      {files.length && (
+      {files.length > 0 && (
         <ImageSlideshow
           slideshowImages={slideshowImages}
           fileRemoveHandler={fileRemoveHandler}

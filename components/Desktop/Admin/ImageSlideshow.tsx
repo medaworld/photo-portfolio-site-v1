@@ -16,9 +16,13 @@ function ImageSlideshow({
   setSelectedImage: any;
 }) {
   const [mainImage, setMainImage] = useState(slideshowImages[0]);
-  const [selectedKey, setSelectedKey] = useState(null);
+  const [selectedKey, setSelectedKey] = useState(0);
 
-  useEffect(() => {}, [slideshowImages]);
+  useEffect(() => {
+    if (!slideshowImages.includes(mainImage)) {
+      setMainImage(slideshowImages[selectedKey]);
+    }
+  }, [slideshowImages]);
 
   return (
     <ImageSlideshowContainer>
@@ -30,6 +34,7 @@ function ImageSlideshow({
               if (image) {
                 setMainImage(image);
                 setSelectedImage(key);
+                setSelectedKey(key);
               }
             }
             function deleteHandler() {

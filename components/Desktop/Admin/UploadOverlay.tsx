@@ -45,8 +45,6 @@ function UploadOverlay(props: { onClose: () => void }) {
     }
   };
 
-  function uploadImageAsPromise(imageFile: File) {}
-
   let selectedUrl;
   if (file) {
     selectedUrl = URL.createObjectURL(file);
@@ -66,29 +64,35 @@ function UploadOverlay(props: { onClose: () => void }) {
     }
   };
 
+  //!!
   function fileRemoveHandler(index: number) {
-    files.splice(index, 1);
-    slideshowImages?.splice(index, 1);
+    setSlideShowImages(() => {
+      return slideshowImages?.filter((img) => img !== slideshowImages[index]);
+    });
+    setFiles(() => {
+      return files.filter((file) => file != files[index]);
+    });
   }
-  useEffect(() => {
-    if (selectedIndex) {
-      const selected = files[selectedIndex];
-      setSelectedImage(selected);
-    }
-  }, []);
+  console.log(selectedIndex);
 
-  console.log(selectedImage);
+  // useEffect(() => {
+  //   if (selectedIndex) {
+  //     const selected = files[selectedIndex];
+  //     setSelectedImage(selected);
+  //   }
+  // }, []);
+
   return (
     <Modal onClose={props.onClose}>
       <UploadOverlayContainer>
-        {/* <FormFileInput
+        <FormFileInput
           changeHandler={changeHandler}
           fileRemoveHandler={fileRemoveHandler}
           files={files}
           progress={progress}
           slideshowImages={slideshowImages}
           setSelectedImage={setSelectedIndex}
-        /> */}
+        />
         <FormDetailInput
           submitHandler={submitHandler}
           error={error}

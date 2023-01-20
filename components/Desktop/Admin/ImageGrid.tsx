@@ -11,7 +11,6 @@ import LoadingSpinner from '../UI/LoadingSpinner';
 function ImageGrid() {
   const { deleteFile } = useStorage();
   const { docs } = useFirestore('images');
-  console.log(docs);
 
   let images;
   if (docs) {

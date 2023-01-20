@@ -1,5 +1,6 @@
 import React, { Key, useEffect } from 'react';
 import { ChangeEvent, useState } from 'react';
+import { v4 } from 'uuid';
 import useStorage from '../../../helpers/hooks/useStorage';
 import { UploadOverlayContainer } from '../../../styles/components/Desktop/Admin/Upload';
 
@@ -9,62 +10,38 @@ import FormFileInput from './FormFileInput';
 
 function UploadOverlay(props: { onClose: () => void }) {
   const { uploadFile, setError, error, progress } = useStorage();
-  const [file, setFile] = useState<File | null>(null);
   const [files, setFiles] = useState<any[] | []>([]);
   const [slideshowImages, setSlideShowImages] = useState<string[]>();
-  const [selectedIndex, setSelectedIndex] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedFocus, setSelectedFocus] = useState<any>();
+
   let selectedFiles: any[] = [];
 
   const types = ['image/png', 'image/jpeg', 'image/jpg'];
-  let images: string[] = [];
-  const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    let selected;
+  let previewImages: string[] = [];
+
+  const fileUploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       for (let i = 0; i < e.target.files.length; i++) {
-        selectedFiles.push({
-          file: e.target.files[i],
-          description: '',
-          category: { title: '', order: null },
-          subcategory: { title: '', order: null },
-          dateTaken: new Date(),
-        });
-        images.push(URL.createObjectURL(e.target.files[i]));
+        if (types.includes(e.target.files[i].type)) {
+          selectedFiles.push({
+            file: e.target.files[i],
+            id: v4(),
+            description: '',
+            category: { title: '', order: null },
+            subcategory: { title: '', order: null },
+            dateTaken: undefined,
+          });
+          previewImages.push(URL.createObjectURL(e.target.files[i]));
+        } else {
+          setError('Images must be png, jpeg, or jpg');
+        }
       }
       setFiles(selectedFiles);
-      setSlideShowImages(images);
-      selected = e.target.files[0];
-    }
-
-    if (selected && types.includes(selected.type)) {
-      setFile(selected!);
-      setError('');
-    } else {
-      setFile(null);
-      setError('Please select an image file (png, jpeg, or jpg)');
+      setSlideShowImages(previewImages);
+      setSelectedFocus({ data: selectedFiles[0], image: previewImages[0] });
     }
   };
 
-  let selectedUrl;
-  if (file) {
-    selectedUrl = URL.createObjectURL(file);
-  }
-  const submitHandler = () => {
-    if (files) {
-      for (let i = 0; i < files.length; i++) {
-        uploadFile(
-          files[i].file
-          // files[i].category,
-          // files[i].dateTaken,
-          // files[i].description
-        );
-      }
-    } else {
-      setError('No file selected');
-    }
-  };
-
-  //!!
   function fileRemoveHandler(index: number) {
     setSlideShowImages(() => {
       return slideshowImages?.filter((img) => img !== slideshowImages[index]);
@@ -72,31 +49,63 @@ function UploadOverlay(props: { onClose: () => void }) {
     setFiles(() => {
       return files.filter((file) => file != files[index]);
     });
+    setSelectedFocus(() => {
+      if (index !== 0) {
+        return {
+          data: files[index - 1],
+          image: slideshowImages![index - 1],
+        };
+      } else {
+        return {
+          data: files[index + 1],
+          image: slideshowImages![index + 1],
+        };
+      }
+    });
   }
-  console.log(selectedIndex);
 
-  // useEffect(() => {
-  //   if (selectedIndex) {
-  //     const selected = files[selectedIndex];
-  //     setSelectedImage(selected);
-  //   }
-  // }, []);
+  const setFocusHandler = (index: number) => {
+    setSelectedFocus({ data: files[index], image: slideshowImages![index] });
+  };
+
+  const submitHandler = () => {
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        uploadFile(files[i].file);
+      }
+    } else {
+      setError('No file selected');
+    }
+  };
+
+  const detailChangeHandler = (newData: any) => {
+    setSelectedFocus(() => {
+      return { ...selectedFocus, data: newData };
+    });
+    setFiles(() => {
+      return files.map((file) => {
+        return file.id === newData.id ? newData : file;
+      });
+    });
+  };
 
   return (
     <Modal onClose={props.onClose}>
       <UploadOverlayContainer>
         <FormFileInput
-          changeHandler={changeHandler}
+          fileUploadHandler={fileUploadHandler}
           fileRemoveHandler={fileRemoveHandler}
           files={files}
           progress={progress}
-          slideshowImages={slideshowImages}
-          setSelectedImage={setSelectedIndex}
+          slideshowImages={slideshowImages!}
+          selectedImage={selectedFocus?.image}
+          setFocusHandler={setFocusHandler}
         />
         <FormDetailInput
           submitHandler={submitHandler}
           error={error}
-          selectedImage={selectedImage}
+          selectedDetail={selectedFocus?.data}
+          detailChangeHandler={detailChangeHandler}
         />
       </UploadOverlayContainer>
     </Modal>
@@ -104,5 +113,3 @@ function UploadOverlay(props: { onClose: () => void }) {
 }
 
 export default React.memo(UploadOverlay);
-
-//          {file && <div>{file.name}</div>}

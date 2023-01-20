@@ -135,13 +135,12 @@ export const Remove = styled.div`
     position: absolute;
     width: 20px;
     opacity: 70%;
-    transition: transform 0.3s ease-out;
+    transition: all 0.3s ease-out;
 
     &:hover {
       transform: scale(1.1);
       cursor: pointer;
       opacity: 100%;
-      width: 22px;
     }
   }
 `;
@@ -280,7 +279,7 @@ export const FormDateInput = styled.div`
   input {
     color: ${(p) => p.theme.colors.hover};
     border: none;
-    width: 33%;
+    width: 50%;
     font-size: 16px;
     &:focus {
       outline: none;

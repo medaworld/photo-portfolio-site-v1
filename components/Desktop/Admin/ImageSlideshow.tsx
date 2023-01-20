@@ -1,4 +1,3 @@
-import { Key, useEffect, useState } from 'react';
 import {
   ImageSlideshowContainer,
   SlideshowMain,
@@ -9,40 +8,31 @@ import SlideshowThumbnail from './SlideshowThumbnail';
 function ImageSlideshow({
   fileRemoveHandler,
   slideshowImages,
-  setSelectedImage,
+  selectedImage,
+  setFocusHandler,
 }: {
   fileRemoveHandler: (index: number) => void;
   slideshowImages: string[];
-  setSelectedImage: any;
+  selectedImage: string;
+  setFocusHandler: (index: number) => void;
 }) {
-  const [mainImage, setMainImage] = useState(slideshowImages[0]);
-  const [selectedKey, setSelectedKey] = useState(0);
-
-  useEffect(() => {
-    if (!slideshowImages.includes(mainImage)) {
-      setMainImage(slideshowImages[selectedKey]);
-    }
-  }, [slideshowImages]);
-
   return (
     <ImageSlideshowContainer>
-      <SlideshowMain img={mainImage} />
+      <SlideshowMain img={selectedImage} />
       {slideshowImages.length > 1 && (
         <SlideshowScroll>
-          {slideshowImages.map((image: string | undefined, key: number) => {
-            function selectHandler() {
+          {slideshowImages.map((image: string | undefined, index: number) => {
+            const selectHandler = () => {
               if (image) {
-                setMainImage(image);
-                setSelectedImage(key);
-                setSelectedKey(key);
+                setFocusHandler(index);
               }
-            }
-            function deleteHandler() {
-              fileRemoveHandler(key);
-            }
+            };
+            const deleteHandler = () => {
+              fileRemoveHandler(index);
+            };
             return (
               <SlideshowThumbnail
-                key={key}
+                key={index}
                 img={image}
                 selectHandler={selectHandler}
                 deleteHandler={deleteHandler}

@@ -8,19 +8,21 @@ import ProgressBar from '../UI/ProgressBar';
 import ImageSlideshow from './ImageSlideshow';
 
 function FormFileInput({
-  changeHandler,
+  fileUploadHandler,
   fileRemoveHandler,
   files,
   progress,
   slideshowImages,
-  setSelectedImage,
+  selectedImage,
+  setFocusHandler,
 }: {
-  changeHandler: (e: ChangeEvent<HTMLInputElement>) => void;
+  fileUploadHandler: (e: ChangeEvent<HTMLInputElement>) => void;
   fileRemoveHandler: (index: number) => void;
   files: any[];
   progress: number;
   slideshowImages: string[];
-  setSelectedImage: any;
+  selectedImage: string;
+  setFocusHandler: (index: number) => void;
 }) {
   return (
     <FormUploadContainer>
@@ -29,7 +31,7 @@ function FormFileInput({
           <input
             type="file"
             id="upload-photo"
-            onChange={changeHandler}
+            onChange={fileUploadHandler}
             multiple
           />
           <p>Upload Photo(s)</p>
@@ -39,7 +41,8 @@ function FormFileInput({
         <ImageSlideshow
           slideshowImages={slideshowImages}
           fileRemoveHandler={fileRemoveHandler}
-          setSelectedImage={setSelectedImage}
+          selectedImage={selectedImage}
+          setFocusHandler={setFocusHandler}
         />
       )}
       <ProgressBar progress={progress} />

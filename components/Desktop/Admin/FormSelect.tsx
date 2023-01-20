@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Arrow,
   FormOption,
@@ -14,9 +14,13 @@ import arrow from '/public/icons/downArrow.png';
 function FormSelect({
   options,
   placeholder,
+  onChange,
+  selected,
 }: {
   options: string[];
   placeholder: string;
+  onChange: (option: any) => void;
+  selected?: string;
 }) {
   const [showOptions, setShowOptions] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -24,6 +28,14 @@ function FormSelect({
   function showOptionsHandler() {
     setShowOptions((prev) => !prev);
   }
+
+  useEffect(() => {
+    if (selected) {
+      setSelectedOption(selected);
+    } else {
+      setSelectedOption(null);
+    }
+  }, [selected]);
 
   return (
     <FormSelectWrapper>
@@ -38,13 +50,16 @@ function FormSelect({
       </FormSelectTrigger>
       {showOptions && (
         <FormOptions>
-          {options.map((option) => {
+          {options.map((option, key) => {
             function selectOptionHandler() {
               setSelectedOption(option);
+              onChange(option);
               setShowOptions(false);
             }
             return (
-              <FormOption onClick={selectOptionHandler}>{option}</FormOption>
+              <FormOption onClick={selectOptionHandler} key={key}>
+                {option}
+              </FormOption>
             );
           })}
         </FormOptions>

@@ -1,11 +1,13 @@
 import React from 'react';
 import { ChangeEvent } from 'react';
 import {
+  CompleteMessage,
   FormUploadContainer,
   UploadArea,
 } from '../../../styles/components/Desktop/Admin/Upload';
 import ProgressBar from '../UI/ProgressBar';
 import ImageSlideshow from './ImageSlideshow';
+import { Error } from '../../../helpers/organizers/types';
 
 function FormFileInput({
   fileUploadHandler,
@@ -15,6 +17,7 @@ function FormFileInput({
   slideshowImages,
   selectedImage,
   setFocusHandler,
+  error,
 }: {
   fileUploadHandler: (e: ChangeEvent<HTMLInputElement>) => void;
   fileRemoveHandler: (index: number) => void;
@@ -23,9 +26,13 @@ function FormFileInput({
   slideshowImages: string[];
   selectedImage: string;
   setFocusHandler: (index: number) => void;
+  error: Error;
 }) {
   return (
     <FormUploadContainer>
+      {progress == 100 && !error && (
+        <CompleteMessage>Upload Successful</CompleteMessage>
+      )}
       {!files.length && (
         <UploadArea htmlFor="upload-photo">
           <input

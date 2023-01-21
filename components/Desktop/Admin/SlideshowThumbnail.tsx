@@ -1,10 +1,8 @@
-import { createTextChangeRange } from 'typescript';
 import {
   Remove,
   SlideshowThumbnailContainer,
   SlideshowThumbnailFill,
 } from '../../../styles/components/Desktop/Admin/Upload';
-import Icon from '../UI/Icon';
 import RemoveIcon from '/public/icons/remove.png';
 
 function SlideshowThumbnail({

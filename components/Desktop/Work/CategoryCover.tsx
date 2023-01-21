@@ -18,10 +18,10 @@ function CategoryCover({
 }) {
   return (
     <CoverContainer>
-      {/* <Link href={url}> */}
-      <CoverTitle>{category}</CoverTitle>
-      <Image src={src} alt={alt} />
-      {/* </Link> */}
+      <Link href={url}>
+        <CoverTitle>{category}</CoverTitle>
+        <Image src={src} alt={alt} />
+      </Link>
     </CoverContainer>
   );
 }

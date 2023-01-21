@@ -8,13 +8,6 @@ export const UploadPage = styled.div`
   justify-content: center;
 `;
 
-export const GridLayout = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  max-width: 100%;
-`;
-
 export const Gallery = styled.div`
   display: grid;
   grid-template-columns: repeat(3, minmax(100px, 293px));
@@ -31,6 +24,15 @@ export const GalleryItem = styled.div<{ img: string }>`
   &:hover {
     opacity: 80%;
   }
+`;
+
+export const GalleryMessage = styled.div`
+  position: absolute;
+  left: 0;
+  width: 100%;
+  margin-top: 80px;
+  font-size: 25px;
+  text-align: center;
 `;
 
 export const UploadOverlayContainer = styled.div`
@@ -72,15 +74,6 @@ export const UploadArea = styled.label`
     max-height: 100%;
     object-fit: cover;
   }
-`;
-
-export const PreviewImage = styled.div<{ img: string | undefined }>`
-  width: 100%;
-  height: 100%;
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-image: url(${(p) => p.img});
 `;
 
 export const ImageSlideshowContainer = styled.div`
@@ -151,7 +144,6 @@ export const ImageDetail = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
-  /* overflow-y: scroll; */
 `;
 
 export const FormDescription = styled.textarea`
@@ -300,5 +292,15 @@ export const FormError = styled.div`
   border-radius: 10px;
   align-items: center;
   justify-content: center;
-  /* text-align: center; */
+`;
+
+export const CompleteMessage = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding-top: 40%;
+  font-size: 24px;
+  text-align: center;
+  color: ${(p) => p.theme.colors.background};
+  background-color: ${(p) => hexToRGBA(p.theme.colors.primary, 0.8)};
 `;

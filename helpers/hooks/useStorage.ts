@@ -5,9 +5,8 @@ import {
   uploadBytes,
   uploadBytesResumable,
 } from 'firebase/storage';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { projectFirestore, projectStorage } from '../firebase/config';
-import { v4 } from 'uuid';
 
 import { Error } from '../../helpers/organizers/types';
 import { deleteDoc, doc, setDoc } from 'firebase/firestore';
@@ -16,30 +15,30 @@ const useStorage = () => {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<Error>(null);
 
-  const uploadFile = (
-    file: any,
-    category?: { title: string; subCategory: string; order: number },
-    dateTaken?: Date,
-    description?: string
-  ) => {
-    const id = v4();
-    const fileName = id + file.name;
-    const storageRef = ref(projectStorage, `images/${id}`);
+  const uploadFile = (file: {
+    file: File;
+    id: string;
+    description: string;
+    category: string | null;
+    subcategory: string | null;
+    dateTaken: Date;
+  }) => {
+    const storageRef = ref(projectStorage, `images/${file.id}`);
 
     // Upload File
-    uploadBytes(storageRef, file)
+    uploadBytes(storageRef, file.file)
       .then(async (snapshot) => {
         const url = await getDownloadURL(storageRef);
         try {
           // Store in database
-          setDoc(doc(projectFirestore, 'images', id), {
-            fileName: fileName,
-            id: id,
-            timeCreated: snapshot.metadata.timeCreated,
+          setDoc(doc(projectFirestore, 'images', file.id), {
+            id: file.id,
             url: url,
-            // dateTaken: dateTaken,
-            // description: description,
-            // category: category,
+            dateTaken: file.dateTaken,
+            description: file.description,
+            category: file.category,
+            subcategory: file.subcategory,
+            timeCreated: snapshot.metadata.timeCreated,
           });
         } catch (err) {
           setError('Error adding document');
@@ -49,7 +48,7 @@ const useStorage = () => {
         setError(err.message);
       });
 
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    const uploadTask = uploadBytesResumable(storageRef, file.file);
     uploadTask.on('state_changed', (snapshot) => {
       const progressPercentage =
         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;

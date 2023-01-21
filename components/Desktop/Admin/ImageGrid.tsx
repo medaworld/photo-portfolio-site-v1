@@ -4,6 +4,7 @@ import useStorage from '../../../helpers/hooks/useStorage';
 import {
   Gallery,
   GalleryItem,
+  GalleryMessage,
 } from '../../../styles/components/Desktop/Admin/Upload';
 
 import LoadingSpinner from '../UI/LoadingSpinner';
@@ -29,7 +30,7 @@ function ImageGrid() {
   }
 
   if (docs && docs.length < 1) {
-    images = <p>No Images</p>;
+    images = <GalleryMessage>No Images</GalleryMessage>;
   }
 
   return (

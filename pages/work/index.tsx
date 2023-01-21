@@ -7,13 +7,14 @@ export default function WorkPage() {
   return (
     <Container>
       <Gallery>
-        {categories.map((category) => {
+        {categories.map((category, key) => {
           return (
             <CategoryCover
+              key={key}
               src={category.imgSrc}
               alt={category.name}
               category={category.name}
-              url={''}
+              url={`/work/${category.name.toLowerCase()}`}
             />
           );
         })}
@@ -21,5 +22,3 @@ export default function WorkPage() {
     </Container>
   );
 }
-
-//Categories: concert, travel, film, people, food, landscapes, urban

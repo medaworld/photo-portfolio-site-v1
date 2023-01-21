@@ -55,8 +55,8 @@ function FormDetailInput({
   useEffect(() => {
     if (selectedDetail) {
       setEnteredDesc(selectedDetail.description);
-      setEnteredCategory(selectedDetail.category.title);
-      setEnteredSubCat(selectedDetail.subcategory.title);
+      setEnteredCategory(selectedDetail.category);
+      setEnteredSubCat(selectedDetail.subcategory);
       setEnteredDate(selectedDetail.dateTaken);
     }
   }, [selectedDetail]);
@@ -67,8 +67,8 @@ function FormDetailInput({
         const newData = {
           ...selectedDetail,
           description: enteredDesc,
-          category: { title: enteredCategory, order: 0 },
-          subcategory: { title: enteredSubCat, order: 0 },
+          category: enteredCategory.toLowerCase(),
+          subcategory: enteredSubCat,
           dateTaken: enteredDate,
         };
 

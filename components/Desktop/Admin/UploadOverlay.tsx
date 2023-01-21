@@ -1,4 +1,4 @@
-import React, { Key, useEffect } from 'react';
+import React from 'react';
 import { ChangeEvent, useState } from 'react';
 import { v4 } from 'uuid';
 import useStorage from '../../../helpers/hooks/useStorage';
@@ -14,9 +14,8 @@ function UploadOverlay(props: { onClose: () => void }) {
   const [slideshowImages, setSlideShowImages] = useState<string[]>();
   const [selectedFocus, setSelectedFocus] = useState<any>();
 
-  let selectedFiles: any[] = [];
-
   const types = ['image/png', 'image/jpeg', 'image/jpg'];
+  let selectedFiles: any[] = [];
   let previewImages: string[] = [];
 
   const fileUploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -27,8 +26,8 @@ function UploadOverlay(props: { onClose: () => void }) {
             file: e.target.files[i],
             id: v4(),
             description: '',
-            category: { title: '', order: null },
-            subcategory: { title: '', order: null },
+            category: null,
+            subcategory: null,
             dateTaken: undefined,
           });
           previewImages.push(URL.createObjectURL(e.target.files[i]));
@@ -42,7 +41,7 @@ function UploadOverlay(props: { onClose: () => void }) {
     }
   };
 
-  function fileRemoveHandler(index: number) {
+  const fileRemoveHandler = (index: number) => {
     setSlideShowImages(() => {
       return slideshowImages?.filter((img) => img !== slideshowImages[index]);
     });
@@ -62,7 +61,7 @@ function UploadOverlay(props: { onClose: () => void }) {
         };
       }
     });
-  }
+  };
 
   const setFocusHandler = (index: number) => {
     setSelectedFocus({ data: files[index], image: slideshowImages![index] });
@@ -70,8 +69,12 @@ function UploadOverlay(props: { onClose: () => void }) {
 
   const submitHandler = () => {
     if (files) {
-      for (let i = 0; i < files.length; i++) {
-        uploadFile(files[i].file);
+      try {
+        for (let i = 0; i < files.length; i++) {
+          uploadFile(files[i]);
+        }
+      } catch {
+        setError('Error uploading');
       }
     } else {
       setError('No file selected');
@@ -100,6 +103,7 @@ function UploadOverlay(props: { onClose: () => void }) {
           slideshowImages={slideshowImages!}
           selectedImage={selectedFocus?.image}
           setFocusHandler={setFocusHandler}
+          error={error}
         />
         <FormDetailInput
           submitHandler={submitHandler}

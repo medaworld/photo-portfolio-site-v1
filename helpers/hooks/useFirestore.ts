@@ -1,12 +1,24 @@
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { projectFirestore } from '../firebase/config';
 
-const useFirestore = (coll: string) => {
+const useFirestore = (coll: string, category?: string) => {
   const [docs, setDocs] = useState<any[]>();
   useEffect(() => {
     const colRef = collection(projectFirestore, coll);
-    const descRef = query(colRef, orderBy('timeCreated', 'desc'));
+    let descRef;
+    console.log(category);
+    if (category) {
+      descRef = query(colRef, where('category', '==', category));
+    } else {
+      descRef = query(colRef, orderBy('timeCreated', 'desc'));
+    }
     onSnapshot(descRef, (snapshot) => {
       let documents: any[] = [];
       snapshot.docs.forEach((doc) => {
@@ -14,7 +26,7 @@ const useFirestore = (coll: string) => {
       });
       setDocs(documents);
     });
-  }, [coll]);
+  }, [coll, category]);
 
   return { docs };
 };

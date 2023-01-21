@@ -13,7 +13,6 @@ const useFirestore = (coll: string, category?: string) => {
   useEffect(() => {
     const colRef = collection(projectFirestore, coll);
     let descRef;
-    console.log(category);
     if (category) {
       descRef = query(colRef, where('category', '==', category));
     } else {

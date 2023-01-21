@@ -15,13 +15,13 @@ function ImageGrid() {
 
   let images;
   if (docs) {
-    images = docs.map((doc) => {
+    images = docs.map((doc, key) => {
       const clickHandler = () => {
         deleteFile(doc.url, doc.id);
       };
       return (
         <GalleryItem
-          key={doc.fileName}
+          key={key}
           img={doc.url}
           onClick={clickHandler}
         ></GalleryItem>

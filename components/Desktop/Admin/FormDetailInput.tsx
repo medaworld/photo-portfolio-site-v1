@@ -67,7 +67,7 @@ function FormDetailInput({
         const newData = {
           ...selectedDetail,
           description: enteredDesc,
-          category: enteredCategory.toLowerCase(),
+          category: enteredCategory,
           subcategory: enteredSubCat,
           dateTaken: enteredDate,
         };

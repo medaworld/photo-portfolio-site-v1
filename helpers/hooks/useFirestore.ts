@@ -1,8 +1,11 @@
 import {
   collection,
+  deleteDoc,
+  doc,
   onSnapshot,
   orderBy,
   query,
+  setDoc,
   where,
 } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
@@ -30,7 +33,49 @@ const useFirestore = (
     });
   }, [coll, category]);
 
-  return { docs };
+  const addCategory = (category: string, img?: string | null) => {
+    try {
+      setDoc(doc(projectFirestore, 'categories', category), {
+        category: category,
+        coverImg: img ? img : null,
+        timeCreated: new Date(),
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const deleteCategory = (category: string) => {
+    const docRef = doc(projectFirestore, 'categories', category);
+    deleteDoc(docRef)
+      .then(() => {
+        console.log('Category deleted');
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const addSubCategory = (subcategory: string, img?: string) => {
+    try {
+      setDoc(doc(projectFirestore, 'subcategories', subcategory), {
+        categoryOf: category,
+        title: subcategory,
+        coverImg: img,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const deleteSubCategory = (subcategory: string, img: string) => {
+    const docRef = doc(projectFirestore, 'subcategories', subcategory);
+    deleteDoc(docRef)
+      .then(() => {
+        console.log('Category deleted');
+      })
+      .catch((err) => console.log(err));
+  };
+
+  return { docs, addCategory, addSubCategory };
 };
 
 export default useFirestore;

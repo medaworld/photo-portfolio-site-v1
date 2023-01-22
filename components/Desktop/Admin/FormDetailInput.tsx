@@ -96,7 +96,7 @@ function FormDetailInput({
       />
       <Divider />
       <FormInput
-        placeholder="Subcategory (optional)"
+        placeholder="Subcategory"
         value={enteredSubCat}
         onChange={subCatChangeHandler}
       />

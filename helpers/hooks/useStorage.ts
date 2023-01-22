@@ -24,8 +24,6 @@ const useStorage = () => {
     dateTaken: Date;
   }) => {
     const storageRef = ref(projectStorage, `images/${file.id}`);
-
-    // Upload File
     uploadBytes(storageRef, file.file)
       .then(async (snapshot) => {
         const url = await getDownloadURL(storageRef);
@@ -48,7 +46,6 @@ const useStorage = () => {
       .catch((err) => {
         setError(err.message);
       });
-
     const uploadTask = uploadBytesResumable(storageRef, file.file);
     uploadTask.on('state_changed', (snapshot) => {
       const progressPercentage =
@@ -68,7 +65,6 @@ const useStorage = () => {
       });
 
     const docRef = doc(projectFirestore, 'images', id);
-
     deleteDoc(docRef)
       .then(() => {
         console.log(id);

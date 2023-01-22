@@ -7,7 +7,6 @@ export const Footer = styled.footer`
   justify-content: space-around;
   align-items: center;
   width: 100%;
-
   padding: 15px;
 `;
 

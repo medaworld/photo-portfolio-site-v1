@@ -11,6 +11,7 @@ function ConcertPage() {
   const category = router.query.category;
 
   const { docs } = useFirestore('images', category);
+  console.log(docs);
 
   return (
     <Container>
@@ -21,7 +22,7 @@ function ConcertPage() {
               key={key}
               src={doc.url}
               alt={doc.description}
-              category={doc.category}
+              category={doc.subcategory}
               url={''}
             />
           );

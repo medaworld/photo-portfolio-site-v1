@@ -8,7 +8,10 @@ import {
 import { useEffect, useState } from 'react';
 import { projectFirestore } from '../firebase/config';
 
-const useFirestore = (coll: string, category?: string) => {
+const useFirestore = (
+  coll: string,
+  category?: string | string[] | undefined
+) => {
   const [docs, setDocs] = useState<any[]>();
   useEffect(() => {
     const colRef = collection(projectFirestore, coll);

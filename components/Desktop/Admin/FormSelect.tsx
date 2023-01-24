@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Arrow,
   FormOption,
@@ -6,7 +6,6 @@ import {
   FormSelectTrigger,
   FormSelectWrapper,
 } from '../../../styles/components/Desktop/Admin/Upload';
-import { LightTheme } from '../../../styles/themes/LightTheme';
 import Icon from '../UI/Icon';
 
 import arrow from '/public/icons/downArrow.png';
@@ -16,14 +15,27 @@ function FormSelect({
   placeholder,
   onChange,
   selected,
+  disabled,
 }: {
   options: string[];
   placeholder: string;
   onChange: (option: any) => void;
   selected?: string;
+  disabled?: boolean;
 }) {
   const [showOptions, setShowOptions] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const selectRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside, true);
+  }, []);
+
+  const handleClickOutside = (event: { target: Node } | any) => {
+    if (!selectRef.current?.contains(event.target)) {
+      setShowOptions(false);
+    }
+  };
 
   function showOptionsHandler() {
     setShowOptions((prev) => !prev);
@@ -38,7 +50,7 @@ function FormSelect({
   }, [selected]);
 
   return (
-    <FormSelectWrapper>
+    <FormSelectWrapper ref={selectRef} disabled={disabled}>
       <FormSelectTrigger onClick={showOptionsHandler}>
         <span>
           {!selectedOption && <p>{placeholder}</p>}

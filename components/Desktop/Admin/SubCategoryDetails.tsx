@@ -55,7 +55,6 @@ function SubCategoryDetails({
       enteredImg
     );
   }
-  console.log(selectedSubCategory);
 
   function deleteHandler() {
     deleteSubCategory(selectedSubCategory.id);

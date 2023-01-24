@@ -1,16 +1,16 @@
 import { SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
-import { categories } from '../../../helpers/organizers/categories';
+import useFirestore from '../../../helpers/hooks/useFirestore';
 import { Error } from '../../../helpers/organizers/types';
 import {
   Divider,
   FormButton,
   FormDescription,
   FormError,
-  FormInput,
   ImageDetail,
 } from '../../../styles/components/Desktop/Admin/Upload';
 import FormDate from './FormDate';
 import FormSelect from './FormSelect';
+import FormSubcategory from './FormSubcategory';
 
 function FormDetailInput({
   submitHandler,
@@ -28,8 +28,10 @@ function FormDetailInput({
   const [enteredSubCat, setEnteredSubCat] = useState('');
   const [enteredDate, setEnteredDate] = useState<Date | undefined>(undefined);
 
-  const options = categories.map((category) => {
-    return category.name;
+  const { docs } = useFirestore('categories');
+
+  const options = docs?.map((doc) => {
+    return doc.category;
   });
 
   const descChangeHandler = (event: {
@@ -40,12 +42,11 @@ function FormDetailInput({
 
   const catChangeHandler = (category: string) => {
     setEnteredCategory(category);
+    setEnteredSubCat('');
   };
 
-  const subCatChangeHandler = (event: {
-    target: { value: SetStateAction<string> };
-  }) => {
-    setEnteredSubCat(event.target.value);
+  const subCatChangeHandler = (subcategory: string) => {
+    setEnteredSubCat(subcategory);
   };
 
   const dateChangeHandler = (date: Date) => {
@@ -54,18 +55,8 @@ function FormDetailInput({
 
   useEffect(() => {
     if (selectedDetail) {
-      setEnteredDesc(selectedDetail.description);
-      setEnteredCategory(selectedDetail.category);
-      setEnteredSubCat(selectedDetail.subcategory);
-      setEnteredDate(selectedDetail.dateTaken);
-    }
-  }, [selectedDetail]);
-
-  useEffect(() => {
-    if (selectedDetail) {
       const timer = setTimeout(() => {
         const newData = {
-          ...selectedDetail,
           description: enteredDesc,
           category: enteredCategory,
           subcategory: enteredSubCat,
@@ -80,6 +71,35 @@ function FormDetailInput({
     }
   }, [enteredDesc, enteredCategory, enteredSubCat, enteredDate]);
 
+  // inidividual change
+  // useEffect(() => {
+  //   if (selectedDetail) {
+  //     setEnteredDesc(selectedDetail.description);
+  //     setEnteredCategory(selectedDetail.category);
+  //     setEnteredSubCat(selectedDetail.subcategory);
+  //     setEnteredDate(selectedDetail.dateTaken);
+  //   }
+  // }, [selectedDetail]);
+
+  // useEffect(() => {
+  //   if (selectedDetail) {
+  //     const timer = setTimeout(() => {
+  //       const newData = {
+  //         ...selectedDetail,
+  //         description: enteredDesc,
+  //         category: enteredCategory,
+  //         subcategory: enteredSubCat,
+  //         dateTaken: enteredDate,
+  //       };
+
+  //       detailChangeHandler(newData);
+  //     }, 500);
+  //     return () => {
+  //       clearTimeout(timer);
+  //     };
+  //   }
+  // }, [enteredDesc, enteredCategory, enteredSubCat, enteredDate]);
+
   return (
     <ImageDetail>
       <FormDescription
@@ -89,15 +109,15 @@ function FormDetailInput({
       />
       <Divider />
       <FormSelect
-        options={options}
+        options={options!}
         placeholder={'Select a category'}
         onChange={catChangeHandler}
         selected={enteredCategory}
       />
       <Divider />
-      <FormInput
-        placeholder="Subcategory"
-        value={enteredSubCat}
+      <FormSubcategory
+        selectedCategory={enteredCategory}
+        selectedSubcategory={enteredSubCat}
         onChange={subCatChangeHandler}
       />
       <Divider />

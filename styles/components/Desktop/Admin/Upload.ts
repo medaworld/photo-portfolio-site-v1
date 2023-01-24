@@ -183,11 +183,13 @@ export const FormButton = styled.button`
   }
 `;
 
-export const FormSelectWrapper = styled.div`
+export const FormSelectWrapper = styled.div<{ disabled?: boolean }>`
   font-family: Inter;
   font-size: 16px;
   width: 100%;
   color: ${(p) => p.theme.colors.hover};
+  background-color: ${(p) =>
+    p.disabled === true ? p.theme.colors.formBorder : ''};
 `;
 
 export const FormSelectTrigger = styled.div`
@@ -227,7 +229,7 @@ export const FormOptions = styled.div`
   flex-direction: column;
   position: absolute;
   width: 100%;
-  height: 30%;
+  max-height: 30%;
   background-color: white;
   overflow-y: scroll;
   z-index: 1;

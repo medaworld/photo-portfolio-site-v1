@@ -82,15 +82,29 @@ function UploadOverlay(props: { onClose: () => void }) {
   };
 
   const detailChangeHandler = (newData: any) => {
-    setSelectedFocus(() => {
-      return { ...selectedFocus, data: newData };
-    });
     setFiles(() => {
       return files.map((file) => {
-        return file.id === newData.id ? newData : file;
+        return {
+          ...file,
+          description: newData.description,
+          category: newData.category,
+          subcategory: newData.subcategory,
+          dateTaken: newData.dateTaken,
+        };
       });
     });
   };
+
+  // const individualChangeHandler = (newData: any) => {
+  //   setSelectedFocus(() => {
+  //     return { ...selectedFocus, data: newData };
+  //   });
+  //   setFiles(() => {
+  //     return files.map((file) => {
+  //       return file.id === newData.id ? newData : file;
+  //     });
+  //   });
+  // };
 
   return (
     <Modal onClose={props.onClose}>

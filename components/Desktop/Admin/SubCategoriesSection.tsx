@@ -1,24 +1,46 @@
 import useFirestore from '../../../helpers/hooks/useFirestore';
+import { Category, Subcategory } from '../../../helpers/organizers/types';
 import {
   CategorySection,
-  CategorySelection,
+  Selection,
+  Title,
 } from '../../../styles/components/Desktop/Admin/Categories';
 import AddNewInput from './AddNewInput';
 
-function SubCategoriesSection() {
-  const { docs, addSubCategory } = useFirestore('categories');
-  console.log(docs);
+function SubCategoriesSection({
+  selectedCategory,
+  handler,
+}: {
+  selectedCategory: Category;
+  handler: (selected: Subcategory) => void;
+}) {
+  const { docs, addSubCategory } = useFirestore(
+    'subcategories',
+    selectedCategory.category,
+    'category'
+  );
 
   const submitHandler = (input: string) => {
-    addSubCategory(input);
+    addSubCategory(selectedCategory.category, input);
   };
+
+  const changeHandler = (event: { target: { value: string } }) => {
+    const selectedSubcategory = docs?.filter((doc) => {
+      return event.target.value == doc.subcategory;
+    });
+    if (selectedSubcategory) {
+      handler(selectedSubcategory[0]);
+    }
+  };
+
   return (
     <CategorySection>
-      <CategorySelection size={20}>
-        <option>Concert</option>
-        <option>Portrait</option>
-        <option>People</option>
-      </CategorySelection>
+      <Title>Subcategories</Title>
+      <Selection size={10} onChange={changeHandler}>
+        {docs?.map((doc, key) => {
+          return <option key={key}>{doc.subcategory}</option>;
+        })}
+      </Selection>
       <AddNewInput type={'Subcategory'} handler={submitHandler} />
     </CategorySection>
   );

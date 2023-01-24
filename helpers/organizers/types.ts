@@ -29,4 +29,19 @@ export type ProbedImages = {
   path: string;
 }[];
 
+export type Category = {
+  id: string;
+  category: string;
+  timeCreated: Date;
+  coverImg: string | null;
+};
+
+export type Subcategory = {
+  id: string;
+  category: string;
+  subcategory: string;
+  timeCreated: Date;
+  coverImg: string | null;
+};
+
 export type Error = null | string;

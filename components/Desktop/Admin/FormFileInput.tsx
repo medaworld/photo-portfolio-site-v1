@@ -41,7 +41,7 @@ function FormFileInput({
             onChange={fileUploadHandler}
             multiple
           />
-          <p>Upload Photo(s)</p>
+          <p>Upload Image(s)</p>
         </UploadArea>
       )}
       {files.length > 0 && (

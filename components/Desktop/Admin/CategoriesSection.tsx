@@ -1,8 +1,8 @@
-import { SetStateAction } from 'react';
 import useFirestore from '../../../helpers/hooks/useFirestore';
+import { Category } from '../../../helpers/organizers/types';
 import {
   CategorySection,
-  CategorySelection,
+  Selection,
   Title,
 } from '../../../styles/components/Desktop/Admin/Categories';
 import AddNewInput from './AddNewInput';
@@ -10,7 +10,7 @@ import AddNewInput from './AddNewInput';
 function CategoriesSection({
   handler,
 }: {
-  handler: (selected: string) => void;
+  handler: (selected: Category) => void;
 }) {
   const { docs, addCategory } = useFirestore('categories');
 
@@ -19,17 +19,22 @@ function CategoriesSection({
   };
 
   const changeHandler = (event: { target: { value: string } }) => {
-    handler(event.target.value);
+    const selectedCategory = docs?.filter((doc) => {
+      return event.target.value == doc.category;
+    });
+    if (selectedCategory) {
+      handler(selectedCategory[0]);
+    }
   };
 
   return (
     <CategorySection>
       <Title>Categories</Title>
-      <CategorySelection size={20} onChange={changeHandler}>
+      <Selection size={20} onChange={changeHandler}>
         {docs?.map((doc, key) => {
           return <option key={key}>{doc.category}</option>;
         })}
-      </CategorySelection>
+      </Selection>
       <AddNewInput type={'Category'} handler={submitHandler} />
     </CategorySection>
   );

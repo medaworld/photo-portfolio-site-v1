@@ -107,7 +107,7 @@ function FormDetailInput({
       />
       <Divider />
       {error && <FormError>{error}</FormError>}
-      <FormButton onClick={submitHandler}>Upload Image</FormButton>
+      <FormButton onClick={submitHandler}>Upload Image(s)</FormButton>
     </ImageDetail>
   );
 }

@@ -1,7 +1,7 @@
 import { SetStateAction, useState } from 'react';
 import {
+  AddButton,
   AddCategoryContainer,
-  CategoryAddButton,
   CategoryInput,
 } from '../../../styles/components/Desktop/Admin/Categories';
 
@@ -23,12 +23,17 @@ function AddNewInput({
 
   const clickHandler = () => {
     handler(input);
+    setInput('');
   };
 
   return (
     <AddCategoryContainer>
-      <CategoryInput placeholder={placeholder} onChange={changeHandler} />
-      <CategoryAddButton onClick={clickHandler}>Add {type}</CategoryAddButton>
+      <CategoryInput
+        placeholder={placeholder}
+        onChange={changeHandler}
+        value={input}
+      />
+      <AddButton onClick={clickHandler}>Add {type}</AddButton>
     </AddCategoryContainer>
   );
 }

@@ -1,26 +1,51 @@
-import { SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import CategoriesSection from '../../components/Desktop/Admin/CategoriesSection';
 import CategoryDetails from '../../components/Desktop/Admin/CategoryDetails';
 import SubCategoriesSection from '../../components/Desktop/Admin/SubCategoriesSection';
-import useFirestore from '../../helpers/hooks/useFirestore';
-import { CategoriesPage } from '../../styles/components/Desktop/Admin/Categories';
+import SubCategoryDetails from '../../components/Desktop/Admin/SubCategoryDetails';
+import { Category, Subcategory } from '../../helpers/organizers/types';
+import {
+  Categories,
+  CategoriesPage,
+  Subcategories,
+} from '../../styles/components/Desktop/Admin/Categories';
 
 export default function AdminCategories() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
-  const [showUploadOverlay, setShowUploadOverlay] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
 
-  const categorySelectHandler = (selected: string) => {
+  const [selectedSubCategory, setSelectedSubCategory] =
+    useState<Subcategory | null>(null);
+
+  const categorySelectHandler = (selected: Category | null) => {
     setSelectedCategory(selected);
+    setSelectedSubCategory(null);
+  };
+
+  const subcategorySelectHandler = (selected: Subcategory | null) => {
+    setSelectedSubCategory(selected);
   };
 
   return (
     <CategoriesPage>
-      <CategoriesSection handler={categorySelectHandler} />
+      <Categories>
+        <CategoriesSection handler={categorySelectHandler} />
+        {selectedCategory && (
+          <CategoryDetails selectedCategory={selectedCategory} />
+        )}
+      </Categories>
       {selectedCategory && (
-        <CategoryDetails selectedCategory={selectedCategory} />
+        <Subcategories>
+          <SubCategoriesSection
+            selectedCategory={selectedCategory}
+            handler={subcategorySelectHandler}
+          />
+          {selectedSubCategory && (
+            <SubCategoryDetails selectedSubCategory={selectedSubCategory} />
+          )}
+        </Subcategories>
       )}
-      {/* <SubCategoriesSection /> */}
     </CategoriesPage>
   );
 }

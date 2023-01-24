@@ -1,6 +1,6 @@
 import { SetStateAction, useEffect, useState } from 'react';
 import useFirestore from '../../../helpers/hooks/useFirestore';
-import { Category } from '../../../helpers/organizers/types';
+import { Subcategory } from '../../../helpers/organizers/types';
 import {
   AddButton,
   CategoryDetailSection,
@@ -11,10 +11,17 @@ import {
 import DeleteOverlay from '../UI/DeleteOverlay';
 import SelectCover from './SelectCover';
 
-function CategoryDetails({ selectedCategory }: { selectedCategory: Category }) {
-  const { updateCategory, deleteCategory } = useFirestore('categories');
-  const [enteredTitle, setEnteredTitle] = useState(selectedCategory.category);
-  const [enteredImg, setEnteredImg] = useState(selectedCategory.coverImg);
+function SubCategoryDetails({
+  selectedSubCategory,
+}: {
+  selectedSubCategory: Subcategory;
+}) {
+  const { updateSubCategory, deleteSubCategory } =
+    useFirestore('subcategories');
+  const [enteredTitle, setEnteredTitle] = useState(
+    selectedSubCategory.subcategory
+  );
+  const [enteredImg, setEnteredImg] = useState(selectedSubCategory.coverImg);
   const [showUploadOverlay, setShowUploadOverlay] = useState(false);
 
   const showFormHandler = () => {
@@ -26,9 +33,9 @@ function CategoryDetails({ selectedCategory }: { selectedCategory: Category }) {
   };
 
   useEffect(() => {
-    setEnteredTitle(selectedCategory.category);
-    setEnteredImg(selectedCategory.coverImg);
-  }, [selectedCategory]);
+    setEnteredTitle(selectedSubCategory.subcategory);
+    setEnteredImg(selectedSubCategory.coverImg);
+  }, [selectedSubCategory]);
 
   const titleInputChangeHandler = (event: {
     target: { value: SetStateAction<string> };
@@ -41,11 +48,17 @@ function CategoryDetails({ selectedCategory }: { selectedCategory: Category }) {
   };
 
   function updateHandler() {
-    updateCategory(selectedCategory.id, enteredTitle, enteredImg);
+    updateSubCategory(
+      selectedSubCategory.id,
+      selectedSubCategory.category,
+      enteredTitle,
+      enteredImg
+    );
   }
+  console.log(selectedSubCategory);
 
   function deleteHandler() {
-    deleteCategory(selectedCategory.id);
+    deleteSubCategory(selectedSubCategory.id);
     setShowUploadOverlay(false);
     setEnteredTitle('');
   }
@@ -56,23 +69,23 @@ function CategoryDetails({ selectedCategory }: { selectedCategory: Category }) {
         <DeleteOverlay
           onClose={hideFormHandler}
           onDelete={deleteHandler}
-          name={selectedCategory.category}
+          name={selectedSubCategory.subcategory}
         />
       )}
-      <Title>Category Detail</Title>
+      <Title>Subcategory Detail</Title>
       <CategoryInput
-        placeholder="Enter category name"
+        placeholder="Enter subcategory name"
         value={enteredTitle}
         onChange={titleInputChangeHandler}
       />
       <SelectCover
-        selectedCategory={selectedCategory}
+        selectedSubCategory={selectedSubCategory}
         onImgChange={imgChangeHandler}
         enteredImg={enteredImg}
       />
-      <DeleteButton onClick={showFormHandler}>Delete Category</DeleteButton>
-      <AddButton onClick={updateHandler}>Update Category</AddButton>
+      <DeleteButton onClick={showFormHandler}>Delete Subcategory</DeleteButton>
+      <AddButton onClick={updateHandler}>Update Subcategory</AddButton>
     </CategoryDetailSection>
   );
 }
-export default CategoryDetails;
+export default SubCategoryDetails;

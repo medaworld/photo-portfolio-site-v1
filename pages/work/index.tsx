@@ -1,20 +1,22 @@
 import { Container, Gallery } from '../../styles/components/Desktop/Work/Work';
 
 import CategoryCover from '../../components/Desktop/Work/CategoryCover';
-import { categories } from '../../helpers/organizers/categories';
+import useFirestore from '../../helpers/hooks/useFirestore';
 
 export default function WorkPage() {
+  const { docs } = useFirestore('categories');
+  console.log(docs);
   return (
     <Container>
       <Gallery>
-        {categories.map((category, key) => {
+        {docs?.map((doc, key) => {
           return (
             <CategoryCover
               key={key}
-              src={category.imgSrc}
-              alt={category.name}
-              category={category.name}
-              url={`/work/${category.name.toLowerCase()}`}
+              src={doc.coverImg}
+              alt={doc.category}
+              category={doc.category}
+              url={`/work/${doc.category.toLowerCase()}`}
             />
           );
         })}

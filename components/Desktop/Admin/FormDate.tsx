@@ -62,7 +62,7 @@ function FormDate({
     if (selectedDay && selectedMonth && selectedYear) {
       const timer = setTimeout(() => {
         onChange(new Date(selectedMonth + selectedDay + ',' + selectedYear));
-      }, 500);
+      }, 100);
       return () => {
         clearTimeout(timer);
       };

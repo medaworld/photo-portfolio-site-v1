@@ -105,6 +105,7 @@ function UploadOverlay(props: { onClose: () => void }) {
   //     });
   //   });
   // };
+  console.log(files);
 
   return (
     <Modal onClose={props.onClose}>

@@ -55,19 +55,14 @@ function FormDetailInput({
 
   useEffect(() => {
     if (selectedDetail) {
-      const timer = setTimeout(() => {
-        const newData = {
-          description: enteredDesc,
-          category: enteredCategory,
-          subcategory: enteredSubCat,
-          dateTaken: enteredDate,
-        };
-
-        detailChangeHandler(newData);
-      }, 500);
-      return () => {
-        clearTimeout(timer);
+      const newData = {
+        description: enteredDesc,
+        category: enteredCategory,
+        subcategory: enteredSubCat,
+        dateTaken: enteredDate,
       };
+
+      detailChangeHandler(newData);
     }
   }, [enteredDesc, enteredCategory, enteredSubCat, enteredDate]);
 

@@ -1,5 +1,6 @@
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { useRouter } from 'next/router';
+import Loader from '../../../../components/Desktop/UI/Loader';
 import CategoryCover from '../../../../components/Desktop/Work/CategoryCover';
 import { projectFirestore } from '../../../../helpers/firebase/config';
 import { capitalizeFirstLetter } from '../../../../helpers/functions/strings';
@@ -21,15 +22,9 @@ export default function SubCategoryPage({
     description: string;
   }[];
 }) {
-  //   const router = useRouter();
-  //   const category = router.query.category;
-  console.log(images);
-
-  //   const { docs } = useFirestore('subcategories', category, 'category');
-  //   console.log(docs);
-
   return (
     <Container>
+      {!images && <Loader />}
       <Gallery>
         {images?.map((image, key) => {
           return (

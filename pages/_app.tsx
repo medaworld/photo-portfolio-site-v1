@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import Head from 'next/head';
 
@@ -7,8 +8,10 @@ import { ThemeProvider } from 'styled-components';
 import { LightTheme } from '../styles/themes/LightTheme';
 import { GlobalStyle } from '../styles/GlobalStyles';
 import Layout from '../components/Desktop/Layout/Layout';
+import { useRouter } from 'next/router';
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -20,7 +23,22 @@ export default function App({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={LightTheme}>
         <GlobalStyle />
         <Layout>
-          <Component {...pageProps} />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={router.route}
+              initial="initialState"
+              animate="animateState"
+              exit="exitState"
+              transition={{ duration: 0.75 }}
+              variants={{
+                initialState: { opacity: 0 },
+                animateState: { opacity: 1 },
+                exitState: { opacity: 0 },
+              }}
+            >
+              <Component {...pageProps} />
+            </motion.div>
+          </AnimatePresence>
         </Layout>
       </ThemeProvider>
     </>

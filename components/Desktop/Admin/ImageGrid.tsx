@@ -8,8 +8,6 @@ import {
 } from '../../../styles/components/Desktop/Admin/Upload';
 import Loader from '../UI/Loader';
 
-import LoadingSpinner from '../UI/LoadingSpinner';
-
 function ImageGrid() {
   const { deleteFile } = useStorage();
   const { docs } = useFirestore('images');

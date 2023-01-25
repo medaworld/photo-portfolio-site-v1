@@ -18,7 +18,7 @@ function CategoryCover({
 }) {
   return (
     <CoverContainer>
-      <Link href={url}>
+      <Link href={url} scroll={false}>
         <CoverTitle>{category}</CoverTitle>
         <Image src={src} alt={alt} />
       </Link>

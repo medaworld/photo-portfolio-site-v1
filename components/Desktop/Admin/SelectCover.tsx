@@ -22,11 +22,11 @@ function SelectCover({
   let category;
   let callType;
   if (selectedCategory) {
-    category = selectedCategory.category.toLowerCase();
+    category = selectedCategory.category;
     callType = 'category';
   }
   if (selectedSubCategory) {
-    category = selectedSubCategory.subcategory.toLowerCase();
+    category = selectedSubCategory.subcategory;
     callType = 'subcategory';
   }
 

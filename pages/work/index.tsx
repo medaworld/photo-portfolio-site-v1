@@ -2,14 +2,18 @@ import { Container, Gallery } from '../../styles/components/Desktop/Work/Work';
 
 import CategoryCover from '../../components/Desktop/Work/CategoryCover';
 import useFirestore from '../../helpers/hooks/useFirestore';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { projectFirestore } from '../../helpers/firebase/config';
 
-export default function WorkPage() {
-  const { docs } = useFirestore('categories');
-  console.log(docs);
+export default function WorkPage({
+  categories,
+}: {
+  categories: { category: string; id: string; coverImg: string }[];
+}) {
   return (
     <Container>
       <Gallery>
-        {docs?.map((doc, key) => {
+        {categories?.map((doc, key) => {
           return (
             <CategoryCover
               key={key}
@@ -23,4 +27,32 @@ export default function WorkPage() {
       </Gallery>
     </Container>
   );
+}
+
+export async function getStaticProps() {
+  let categories: any = [];
+
+  try {
+    const q = query(
+      collection(projectFirestore, 'categories'),
+      orderBy('category', 'asc')
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      categories.push({
+        category: data.category,
+        id: data.id,
+        coverImg: data.coverImg,
+      });
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
+  return {
+    props: {
+      categories,
+    },
+  };
 }

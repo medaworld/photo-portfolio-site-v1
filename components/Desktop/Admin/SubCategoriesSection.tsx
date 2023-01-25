@@ -19,6 +19,7 @@ function SubCategoriesSection({
     selectedCategory.category,
     'category'
   );
+  console.log(selectedCategory);
 
   const submitHandler = (input: string) => {
     addSubCategory(selectedCategory.category, input);

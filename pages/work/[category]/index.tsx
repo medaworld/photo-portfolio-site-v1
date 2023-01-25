@@ -1,35 +1,104 @@
-import { useRouter } from 'next/router';
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { Key } from 'react';
 import CategoryCover from '../../../components/Desktop/Work/CategoryCover';
-import useFirestore from '../../../helpers/hooks/useFirestore';
+import { projectFirestore } from '../../../helpers/firebase/config';
+import { capitalizeFirstLetter } from '../../../helpers/functions/strings';
 import {
   Container,
   Gallery,
 } from '../../../styles/components/Desktop/Work/Work';
 
-function ConcertPage() {
-  const router = useRouter();
-  const category = router.query.category;
-
-  const { docs } = useFirestore('images', category);
-  console.log(docs);
-
+export default function CategoryPage({
+  subcategories,
+}: {
+  subcategories: {
+    category: string;
+    coverImg: string;
+    id: string;
+    subcategory: string;
+  }[];
+}) {
   return (
     <Container>
       <Gallery>
-        {docs?.map((doc, key) => {
-          return (
-            <CategoryCover
-              key={key}
-              src={doc.url}
-              alt={doc.description}
-              category={doc.subcategory}
-              url={''}
-            />
-          );
-        })}
+        {subcategories.map(
+          (
+            subcategory: {
+              category: string;
+              coverImg: string;
+              subcategory: string;
+            },
+            key: Key | null | undefined
+          ) => {
+            return (
+              <CategoryCover
+                key={key}
+                src={subcategory.coverImg}
+                alt={subcategory.subcategory}
+                category={subcategory.subcategory}
+                url={`/work/${subcategory.category.toLowerCase()}/${subcategory.subcategory.toLowerCase()}`}
+              />
+            );
+          }
+        )}
       </Gallery>
     </Container>
   );
 }
 
-export default ConcertPage;
+export async function getStaticPaths() {
+  let paths: any = [];
+
+  try {
+    const q = query(
+      collection(projectFirestore, 'categories'),
+      orderBy('category', 'asc')
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const category = data.category.toString();
+      paths.push({
+        params: { category: category.toLowerCase() },
+      });
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
+  return {
+    paths: paths,
+    fallback: false,
+  };
+}
+
+export async function getStaticProps(context: { params: any }) {
+  const { params } = context;
+  const category = capitalizeFirstLetter(params.category);
+  let subcategories: any = [];
+
+  try {
+    const q = query(
+      collection(projectFirestore, 'subcategories'),
+      where('category', '==', category)
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      subcategories.push({
+        category: data.category,
+        subcategory: data.subcategory,
+        id: data.id,
+        coverImg: data.coverImg,
+      });
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
+  return {
+    props: {
+      subcategories,
+    },
+  };
+}

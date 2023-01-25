@@ -60,12 +60,7 @@ function FormDate({
 
   useEffect(() => {
     if (selectedDay && selectedMonth && selectedYear) {
-      const timer = setTimeout(() => {
-        onChange(new Date(selectedMonth + selectedDay + ',' + selectedYear));
-      }, 100);
-      return () => {
-        clearTimeout(timer);
-      };
+      onChange(new Date(selectedMonth + selectedDay + ',' + selectedYear));
     }
   }, [selectedDay, selectedMonth, selectedYear]);
 

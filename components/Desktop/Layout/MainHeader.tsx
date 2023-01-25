@@ -22,9 +22,9 @@ function MainHeader() {
             <li>
               <Link href="/work">WORK</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/journal">JOURNAL</Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/contact">CONTACT</Link>
             </li>

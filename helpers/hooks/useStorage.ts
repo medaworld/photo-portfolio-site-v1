@@ -27,8 +27,6 @@ const useStorage = () => {
     uploadBytes(storageRef, file.file)
       .then(async (snapshot) => {
         const url = await getDownloadURL(storageRef);
-        const category = file.category?.toLowerCase();
-        const subcategory = file.subcategory?.toLowerCase();
         try {
           // Store in database
           setDoc(doc(projectFirestore, 'images', file.id), {
@@ -36,8 +34,8 @@ const useStorage = () => {
             url: url,
             dateTaken: file.dateTaken,
             description: file.description,
-            category: category,
-            subcategory: subcategory,
+            category: file.category,
+            subcategory: file.subcategory,
             timeCreated: snapshot.metadata.timeCreated,
           });
         } catch (err) {

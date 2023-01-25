@@ -10,9 +10,14 @@ export const Footer = styled.footer`
   padding: 15px;
 `;
 
-export const ToTop = styled.a`
+export const ToTop = styled.div`
   color: ${(p) => p.theme.colors.hover};
-  font-size: 20px;
+  font-size: 14px;
+
+  &:hover {
+    opacity: 80%;
+    cursor: pointer;
+  }
 `;
 
 export const Nav = styled.nav`

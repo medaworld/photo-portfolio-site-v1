@@ -21,7 +21,7 @@ const LogoImg = styled.div<{ img: string }>`
 function Logo() {
   return (
     <div style={{ width: 50, height: 50 }}>
-      <LogoImg img={MyLogo.src} />
+      <LogoImg img={MyLogo.src} style={{ maskImage: `url(${MyLogo.src})` }} />
     </div>
   );
 }

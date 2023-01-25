@@ -1,5 +1,6 @@
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { Key } from 'react';
+import Loader from '../../../components/Desktop/UI/Loader';
 import CategoryCover from '../../../components/Desktop/Work/CategoryCover';
 import { projectFirestore } from '../../../helpers/firebase/config';
 import { capitalizeFirstLetter } from '../../../helpers/functions/strings';
@@ -20,6 +21,7 @@ export default function CategoryPage({
 }) {
   return (
     <Container>
+      {!subcategories && <Loader />}
       <Gallery>
         {subcategories.map(
           (

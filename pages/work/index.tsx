@@ -4,6 +4,7 @@ import CategoryCover from '../../components/Desktop/Work/CategoryCover';
 import useFirestore from '../../helpers/hooks/useFirestore';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { projectFirestore } from '../../helpers/firebase/config';
+import Loader from '../../components/Desktop/UI/Loader';
 
 export default function WorkPage({
   categories,
@@ -12,6 +13,7 @@ export default function WorkPage({
 }) {
   return (
     <Container>
+      {!categories && <Loader />}
       <Gallery>
         {categories?.map((doc, key) => {
           return (

@@ -6,6 +6,7 @@ import {
   GalleryItem,
   GalleryMessage,
 } from '../../../styles/components/Desktop/Admin/Upload';
+import Loader from '../UI/Loader';
 
 import LoadingSpinner from '../UI/LoadingSpinner';
 
@@ -34,10 +35,10 @@ function ImageGrid() {
   }
 
   return (
-    <Gallery>
-      {!docs && <LoadingSpinner />}
-      {images}
-    </Gallery>
+    <>
+      {!docs && <Loader />}
+      <Gallery>{images}</Gallery>
+    </>
   );
 }
 

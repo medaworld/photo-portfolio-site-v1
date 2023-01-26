@@ -6,7 +6,7 @@ import {
   GalleryItem,
   Subtitle,
 } from '../../../styles/components/Desktop/Admin/Categories';
-import LoadingSpinner from '../UI/LoadingSpinner';
+import Loader from '../UI/Loader';
 
 function SelectCover({
   selectedCategory,
@@ -53,7 +53,7 @@ function SelectCover({
     <CoverSelectContainer>
       <Subtitle>Select a Cover</Subtitle>
       <Gallery>
-        {!docs && <LoadingSpinner />}
+        {!docs && <Loader />}
         {images}
       </Gallery>
     </CoverSelectContainer>

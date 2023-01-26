@@ -11,22 +11,22 @@ export default function WorkPage({
 }: {
   categories: { category: string; id: string; coverImg: string }[];
 }) {
+  const categoryImages = categories?.map((doc, key) => {
+    return (
+      <CategoryCover
+        key={key}
+        src={doc.coverImg}
+        alt={doc.category}
+        category={doc.category}
+        url={`/work/${doc.category.toLowerCase()}`}
+      />
+    );
+  });
+
   return (
     <Container>
-      {!categories && <Loader />}
-      <Gallery>
-        {categories?.map((doc, key) => {
-          return (
-            <CategoryCover
-              key={key}
-              src={doc.coverImg}
-              alt={doc.category}
-              category={doc.category}
-              url={`/work/${doc.category.toLowerCase()}`}
-            />
-          );
-        })}
-      </Gallery>
+      {!categoryImages && <Loader />}
+      <Gallery>{categoryImages}</Gallery>
     </Container>
   );
 }

@@ -8,8 +8,8 @@ import {
   FormError,
   ImageDetail,
 } from '../../../styles/components/Desktop/Admin/Upload';
-import FormDate from './FormDate';
-import FormSelect from './FormSelect';
+import FormDate from '../UI/FormDate';
+import FormSelect from '../UI/FormSelect';
 import FormSubcategory from './FormSubcategory';
 
 function FormDetailInput({

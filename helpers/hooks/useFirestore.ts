@@ -2,8 +2,10 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDocs,
   onSnapshot,
   orderBy,
+  OrderByDirection,
   query,
   setDoc,
   where,
@@ -13,27 +15,67 @@ import { v4 } from 'uuid';
 import { projectFirestore } from '../firebase/config';
 
 const useFirestore = (
-  coll: string,
+  coll?: string,
   category?: string | string[] | undefined,
   callType?: string
 ) => {
   const [docs, setDocs] = useState<any[]>();
-  useEffect(() => {
-    const colRef = collection(projectFirestore, coll);
-    let descRef;
-    if (category && callType) {
-      descRef = query(colRef, where(callType, '==', category));
-    } else {
-      descRef = query(colRef, orderBy('category', 'asc'));
-    }
-    onSnapshot(descRef, (snapshot) => {
-      let documents: any[] = [];
-      snapshot.docs.forEach((doc) => {
-        documents.push({ ...doc.data() });
+  // useEffect(() => {
+  //   const colRef = collection(projectFirestore, coll);
+  //   let descRef;
+  //   if (category && callType) {
+  //     descRef = query(colRef, where(callType, '==', category));
+  //   } else {
+  //     descRef = query(colRef, orderBy('category', 'asc'));
+  //   }
+  //   onSnapshot(descRef, (snapshot) => {
+  //     let documents: any[] = [];
+  //     snapshot.docs.forEach((doc) => {
+  //       documents.push({ ...doc.data() });
+  //     });
+  //     setDocs(documents);
+  //   });
+  // }, [coll, category]);
+
+  const fetchFirestore = async (
+    coll: string,
+    filtField?: string | null,
+    filtFieldValue?: string | null,
+    orderField?: string,
+    orderDir?: OrderByDirection | undefined
+  ) => {
+    let docs: any[] = [];
+    try {
+      let q;
+      if (filtField && filtFieldValue && orderField && orderDir) {
+        q = query(
+          collection(projectFirestore, coll),
+          where(filtField, '==', filtFieldValue),
+          orderBy(orderField, orderDir)
+        );
+      } else if (orderField && orderDir) {
+        q = query(
+          collection(projectFirestore, coll),
+          orderBy(orderField, orderDir)
+        );
+      } else if (filtField && filtFieldValue) {
+        q = query(
+          collection(projectFirestore, coll),
+          where(filtField, '==', filtFieldValue)
+        );
+      } else {
+        q = query(collection(projectFirestore, coll));
+      }
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        docs.push(data);
       });
-      setDocs(documents);
-    });
-  }, [coll, category]);
+    } catch (err) {
+      console.log(err);
+    }
+    return docs;
+  };
 
   const addCategory = (category: string, img?: string | null) => {
     const id = v4();
@@ -123,6 +165,7 @@ const useFirestore = (
 
   return {
     docs,
+    fetchFirestore,
     addCategory,
     updateCategory,
     deleteCategory,

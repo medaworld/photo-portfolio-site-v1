@@ -6,7 +6,7 @@ import {
   FormSelectTrigger,
   FormSelectWrapper,
 } from '../../../styles/components/Desktop/Admin/Upload';
-import Icon from '../UI/Icon';
+import Icon from './Icon';
 
 import arrow from '/public/icons/downArrow.png';
 

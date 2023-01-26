@@ -8,6 +8,7 @@ declare module 'styled-components' {
       formBorder: string;
       color: string;
       accent: string;
+      selected: string;
       success: string;
       error: string;
     };

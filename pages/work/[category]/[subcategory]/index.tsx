@@ -22,22 +22,21 @@ export default function SubCategoryPage({
     description: string;
   }[];
 }) {
+  const imagesDisplay = images?.map((image, key) => {
+    return (
+      <CategoryCover
+        key={key}
+        src={image.url}
+        alt={image.description}
+        category={image.category}
+        url={''}
+      />
+    );
+  });
   return (
     <Container>
-      {!images && <Loader />}
-      <Gallery>
-        {images?.map((image, key) => {
-          return (
-            <CategoryCover
-              key={key}
-              src={image.url}
-              alt={image.description}
-              category={image.category}
-              url={''}
-            />
-          );
-        })}
-      </Gallery>
+      {!imagesDisplay && <Loader />}
+      <Gallery>{imagesDisplay}</Gallery>
     </Container>
   );
 }

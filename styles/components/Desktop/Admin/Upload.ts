@@ -187,7 +187,7 @@ export const FormSelectWrapper = styled.div<{ disabled?: boolean }>`
   font-family: Inter;
   font-size: 16px;
   width: 100%;
-  color: ${(p) => p.theme.colors.hover};
+  color: ${(p) => p.theme.colors.primary};
   background-color: ${(p) =>
     p.disabled === true ? p.theme.colors.formBorder : ''};
 `;
@@ -239,7 +239,7 @@ export const FormOptions = styled.div`
 export const FormOption = styled.span`
   padding: 2px 15px;
   &:hover {
-    background-color: ${(p) => p.theme.colors.accent};
+    background-color: ${(p) => p.theme.colors.selected};
     cursor: pointer;
   }
 `;

@@ -20,13 +20,17 @@ function MainHeader() {
         <Nav>
           <ul>
             <li>
-              <Link href="/work">WORK</Link>
+              <Link href="/work" scroll={false}>
+                WORK
+              </Link>
             </li>
             {/* <li>
               <Link href="/journal">JOURNAL</Link>
             </li> */}
             <li>
-              <Link href="/contact">CONTACT</Link>
+              <Link href="/contact" scroll={false}>
+                CONTACT
+              </Link>
             </li>
             <li>
               <a href={'https://www.instagram.com'} target="_blank">

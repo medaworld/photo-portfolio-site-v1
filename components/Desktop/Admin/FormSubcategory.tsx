@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import useFirestore from '../../../helpers/hooks/useFirestore';
-import FormSelect from './FormSelect';
+import FormSelect from '../UI/FormSelect';
 
 function FormSubcategory({
   selectedCategory,

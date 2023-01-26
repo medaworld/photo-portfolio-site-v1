@@ -19,31 +19,31 @@ export default function CategoryPage({
     subcategory: string;
   }[];
 }) {
+  const subcategoriesImages = subcategories.map(
+    (
+      subcategory: {
+        category: string;
+        coverImg: string;
+        subcategory: string;
+      },
+      key: Key | null | undefined
+    ) => {
+      return (
+        <CategoryCover
+          key={key}
+          src={subcategory.coverImg}
+          alt={subcategory.subcategory}
+          category={subcategory.subcategory}
+          url={`/work/${subcategory.category.toLowerCase()}/${subcategory.subcategory.toLowerCase()}`}
+        />
+      );
+    }
+  );
+
   return (
     <Container>
-      {!subcategories && <Loader />}
-      <Gallery>
-        {subcategories.map(
-          (
-            subcategory: {
-              category: string;
-              coverImg: string;
-              subcategory: string;
-            },
-            key: Key | null | undefined
-          ) => {
-            return (
-              <CategoryCover
-                key={key}
-                src={subcategory.coverImg}
-                alt={subcategory.subcategory}
-                category={subcategory.subcategory}
-                url={`/work/${subcategory.category.toLowerCase()}/${subcategory.subcategory.toLowerCase()}`}
-              />
-            );
-          }
-        )}
-      </Gallery>
+      {!subcategoriesImages && <Loader />}
+      <Gallery>{subcategoriesImages}</Gallery>
     </Container>
   );
 }

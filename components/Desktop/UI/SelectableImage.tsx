@@ -27,7 +27,7 @@ export default function SelectableImage({
         <img id="preview" src={CheckIcon.src} alt="" />
       </Check>
       {text && <CoverTitle>{text}</CoverTitle>}
-      <SectionImage src={url} />
+      {url && <SectionImage src={url} />}
     </ImageWrapper>
   );
 }

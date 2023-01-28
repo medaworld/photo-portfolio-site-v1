@@ -1,14 +1,14 @@
 import { SetStateAction, useEffect, useState } from 'react';
-import useFirestore from '../../../helpers/hooks/useFirestore';
-import { Category } from '../../../helpers/organizers/types';
+import useFirestore from '../../../../helpers/hooks/useFirestore';
+import { Category } from '../../../../helpers/organizers/types';
 import {
   AddButton,
   CategoryDetailSection,
   CategoryInput,
   DeleteButton,
   Title,
-} from '../../../styles/components/Desktop/Admin/Categories';
-import DeleteOverlay from '../UI/DeleteOverlay';
+} from '../../../../styles/components/Desktop/Admin/Categories';
+import DeleteOverlay from '../../UI/DeleteOverlay';
 import SelectCover from './SelectCover';
 
 function CategoryDetails({ selectedCategory }: { selectedCategory: Category }) {

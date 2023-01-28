@@ -8,41 +8,49 @@ import { AdminMainPage } from '../../styles/components/Desktop/Admin/AdminMain';
 
 export default function AdminSubcategoriesPage() {
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState<any>(null);
   const [showDetailSidebar, setShowDetailSidebar] = useState(false);
   const [fetchedDocs, setFetchedDocs] = useState<any[]>();
   const { fetchFirestore } = useFirestore();
-  useEffect(() => {
-    fetchFirestore('subcategories', null, null, 'category', 'asc').then(
-      (docs) => setFetchedDocs(docs)
-    );
-  }, []);
 
-  const detailSidebarClose = () => {
-    setShowDetailSidebar(false);
-    setSelectedCategory(null);
-  };
-
+  // Fetch subcategories
   useEffect(() => {
-    if (selectedCategory) {
+    fetchFirestore(
+      'subcategories',
+      'category',
+      selectedCategory?.category
+    ).then((docs) => setFetchedDocs(docs));
+  }, [selectedCategory]);
+
+  // Display details
+  useEffect(() => {
+    if (selectedSubcategory) {
       setShowDetailSidebar(true);
     } else {
       setShowDetailSidebar(false);
     }
-  }, [selectedCategory]);
+  }, [selectedSubcategory]);
+
+  function detailSidebarClose() {
+    setShowDetailSidebar(false);
+    setSelectedSubcategory(null);
+  }
 
   return (
     <AdminMainPage>
       <AdminSideBar />
       <ListView
         docs={fetchedDocs}
-        type={'category'}
-        listSelection={selectedCategory}
-        setListSelection={setSelectedCategory}
+        type="subcategory"
+        categorySelection={selectedCategory}
+        setCategorySelection={setSelectedCategory}
+        listSelection={selectedSubcategory}
+        setListSelection={setSelectedSubcategory}
       />
       {showDetailSidebar && (
         <CategoryDetailSidebar
-          type={'category'}
-          selectedCategory={selectedCategory}
+          type="subcategory"
+          selectedCategory={selectedSubcategory}
           detailSidebarClose={detailSidebarClose}
         />
       )}

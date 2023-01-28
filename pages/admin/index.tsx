@@ -1,23 +1,22 @@
 import { useEffect, useState } from 'react';
-import AdminGallery from '../../components/Desktop/Admin/AdminGallery';
+import GalleryView from '../../components/Desktop/Admin/GalleryView';
 import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
-import DetailSideBar from '../../components/Desktop/Admin/DetailSideBar';
+import PhotosDetailSideBar from '../../components/Desktop/Admin/PhotosDetailSideBar';
 import useFirestore from '../../helpers/hooks/useFirestore';
 import { AdminMainPage } from '../../styles/components/Desktop/Admin/AdminMain';
 
 export default function AdminPage() {
-  const [selectedSidebarItem, setSelectedSidebarItem] = useState('');
   const [fetchedDocs, setFetchedDocs] = useState<any[]>();
   const [selectedItems, setSelectedItems] = useState<any[]>([]);
   const [showDetailSidebar, setShowDetailSidebar] = useState(false);
   const { fetchFirestore } = useFirestore();
 
   useEffect(() => {
-    fetchFirestore(selectedSidebarItem, null, null, 'category', 'asc').then(
-      (docs) => setFetchedDocs(docs)
+    fetchFirestore('images', null, null, 'category', 'asc').then((docs) =>
+      setFetchedDocs(docs)
     );
     setSelectedItems([]);
-  }, [selectedSidebarItem]);
+  }, []);
 
   useEffect(() => {
     if (selectedItems.length > 0) {
@@ -28,24 +27,14 @@ export default function AdminPage() {
   }, [selectedItems]);
 
   const itemSelectHandler = (doc: any) => {
-    if (selectedSidebarItem == 'images') {
-      if (selectedItems.includes(doc)) {
-        setSelectedItems(() => {
-          return selectedItems.filter((item) => item !== doc);
-        });
-      } else {
-        setSelectedItems(() => {
-          return [...selectedItems, doc];
-        });
-      }
+    if (selectedItems.includes(doc)) {
+      setSelectedItems(() => {
+        return selectedItems.filter((item) => item !== doc);
+      });
     } else {
-      if (selectedItems.includes(doc)) {
-        setSelectedItems([]);
-      } else {
-        setSelectedItems(() => {
-          return [doc];
-        });
-      }
+      setSelectedItems(() => {
+        return [...selectedItems, doc];
+      });
     }
   };
 
@@ -54,24 +43,16 @@ export default function AdminPage() {
     setSelectedItems([]);
   };
 
-  const detailChangeHandler = () => {};
-
-  console.log(selectedItems);
-
   return (
     <AdminMainPage>
-      <AdminSideBar
-        selectedSidebarItem={selectedSidebarItem}
-        setSelectedSidebarItem={setSelectedSidebarItem}
-      />
-      <AdminGallery
+      <AdminSideBar />
+      <GalleryView
         fetchedDocs={fetchedDocs}
         selectedItems={selectedItems}
-        selectedSidebarItem={selectedSidebarItem}
         onItemSelect={itemSelectHandler}
       />
       {showDetailSidebar && (
-        <DetailSideBar
+        <PhotosDetailSideBar
           detailSidebarClose={detailSidebarClose}
           selectedItems={selectedItems}
         />

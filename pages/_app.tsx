@@ -24,7 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={LightTheme}>
         <GlobalStyle />
         <Layout>
-          <AnimatePresence mode="wait">
+          {/* <AnimatePresence mode="wait">
             <motion.div
               key={router.route}
               initial="initialState"
@@ -36,10 +36,10 @@ export default function App({ Component, pageProps }: AppProps) {
                 animateState: { opacity: 1 },
                 exitState: { opacity: 0 },
               }}
-            >
-              <Component {...pageProps} />
-            </motion.div>
-          </AnimatePresence>
+            > */}
+          <Component {...pageProps} />
+          {/* </motion.div>
+          </AnimatePresence> */}
         </Layout>
       </ThemeProvider>
     </>

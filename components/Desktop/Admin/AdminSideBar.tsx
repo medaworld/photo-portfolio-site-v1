@@ -1,40 +1,39 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import {
   SideBar,
   SidebarItem,
 } from '../../../styles/components/Desktop/Admin/AdminMain';
+import Icon from '../UI/Icon';
 
-export default function AdminSideBar({
-  selectedSidebarItem,
-  setSelectedSidebarItem,
-}: {
-  selectedSidebarItem: string;
-  setSelectedSidebarItem: Dispatch<SetStateAction<string>>;
-}) {
-  const clickHandler = (selected: string) => {
-    setSelectedSidebarItem(selected);
-  };
+import AddIcon from '/public/icons/add.png';
+
+export default function AdminSideBar({}: {}) {
+  const router = useRouter();
 
   return (
     <SideBar>
       <ul>
-        <SidebarItem
-          onClick={() => clickHandler('images')}
-          selected={selectedSidebarItem == 'images'}
-        >
-          Photos
-        </SidebarItem>
-        <SidebarItem
-          onClick={() => clickHandler('categories')}
-          selected={selectedSidebarItem == 'categories'}
-        >
-          Categories
-        </SidebarItem>
-        <SidebarItem
-          onClick={() => clickHandler('subcategories')}
-          selected={selectedSidebarItem == 'subcategories'}
-        >
-          Subcategories
+        <Link href={'/admin'}>
+          <SidebarItem selected={router.pathname === '/admin'}>
+            Photos
+          </SidebarItem>
+        </Link>
+        <Link href={'/admin/categories'}>
+          <SidebarItem selected={router.pathname === '/admin/categories'}>
+            Categories
+          </SidebarItem>
+        </Link>
+        <Link href={'/admin/subcategories'}>
+          <SidebarItem selected={router.pathname === '/admin/subcategories'}>
+            Subcategories
+          </SidebarItem>
+        </Link>
+      </ul>
+      <ul>
+        <SidebarItem onClick={() => {}} selected={false}>
+          <Icon img={AddIcon.src} size={25} />
+          <p>Upload</p>
         </SidebarItem>
       </ul>
     </SideBar>

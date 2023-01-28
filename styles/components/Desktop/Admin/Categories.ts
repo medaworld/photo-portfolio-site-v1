@@ -7,6 +7,7 @@ export const CategoriesPage = styled.div`
 export const Title = styled.div`
   font-size: 20px;
   height: 25px;
+  text-align: center;
 `;
 
 export const Categories = styled.div`
@@ -54,7 +55,7 @@ export const CategoryInput = styled.input`
   padding: 10px 15px;
   font-size: 16px;
   height: 40px;
-  color: ${(p) => p.theme.colors.hover};
+  color: ${(p) => p.theme.colors.primary};
 
   &:focus {
     outline: none;
@@ -106,7 +107,8 @@ export const Subtitle = styled.div`
 export const Gallery = styled.div`
   display: grid;
   position: relative;
-  grid-template-columns: repeat(3, minmax(50px, 293px));
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0px, 200px));
   justify-content: center;
   grid-gap: 15px;
   height: 328px;
@@ -125,4 +127,16 @@ export const GalleryItem = styled.div<{ img: string; selected?: boolean }>`
   &:hover {
     opacity: 90%;
   }
+`;
+
+export const ImgContainer = styled.div`
+  padding: 10px;
+  align-items: center;
+  transition: all 0.3s ease;
+`;
+
+export const PrevImg = styled.img`
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
 `;

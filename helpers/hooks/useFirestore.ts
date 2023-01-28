@@ -14,28 +14,30 @@ import { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 import { projectFirestore } from '../firebase/config';
 
-const useFirestore = (
-  coll?: string,
-  category?: string | string[] | undefined,
-  callType?: string
-) => {
-  const [docs, setDocs] = useState<any[]>();
-  // useEffect(() => {
-  //   const colRef = collection(projectFirestore, coll);
-  //   let descRef;
-  //   if (category && callType) {
-  //     descRef = query(colRef, where(callType, '==', category));
-  //   } else {
-  //     descRef = query(colRef, orderBy('category', 'asc'));
-  //   }
-  //   onSnapshot(descRef, (snapshot) => {
-  //     let documents: any[] = [];
-  //     snapshot.docs.forEach((doc) => {
-  //       documents.push({ ...doc.data() });
-  //     });
-  //     setDocs(documents);
-  //   });
-  // }, [coll, category]);
+const useFirestore = () => {
+  const quickFetch = (
+    coll: string,
+    category?: string | string[] | undefined,
+    callType?: string
+  ) => {
+    const [docs, setDocs] = useState<any[]>();
+    useEffect(() => {
+      const colRef = collection(projectFirestore, coll);
+      let descRef;
+      if (category && callType) {
+        descRef = query(colRef, where(callType, '==', category));
+      } else {
+        descRef = query(colRef, orderBy('category', 'asc'));
+      }
+      onSnapshot(descRef, (snapshot) => {
+        let documents: any[] = [];
+        snapshot.docs.forEach((doc) => {
+          documents.push({ ...doc.data() });
+        });
+        setDocs(documents);
+      });
+    }, [coll, category]);
+  };
 
   const fetchFirestore = async (
     coll: string,
@@ -44,7 +46,7 @@ const useFirestore = (
     orderField?: string,
     orderDir?: OrderByDirection | undefined
   ) => {
-    let docs: any[] = [];
+    let fetchedDocs: any[] = [];
     try {
       let q;
       if (filtField && filtFieldValue && orderField && orderDir) {
@@ -69,12 +71,12 @@ const useFirestore = (
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        docs.push(data);
+        fetchedDocs.push(data);
       });
     } catch (err) {
       console.log(err);
     }
-    return docs;
+    return fetchedDocs;
   };
 
   const addCategory = (category: string, img?: string | null) => {
@@ -164,7 +166,6 @@ const useFirestore = (
   };
 
   return {
-    docs,
     fetchFirestore,
     addCategory,
     updateCategory,

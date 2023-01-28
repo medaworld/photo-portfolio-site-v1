@@ -4,6 +4,9 @@ export const LoaderWrapper = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  align-self: center;
+  justify-self: center;
 `;
 
 export const FirstSpan = styled.span`

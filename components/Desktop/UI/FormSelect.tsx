@@ -5,7 +5,8 @@ import {
   FormOptions,
   FormSelectTrigger,
   FormSelectWrapper,
-} from '../../../styles/components/Desktop/Admin/Upload';
+} from '../../../styles/components/Desktop/UI/FormSelect';
+
 import Icon from './Icon';
 
 import arrow from '/public/icons/downArrow.png';

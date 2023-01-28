@@ -1,15 +1,15 @@
 import { SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
-import useFirestore from '../../../helpers/hooks/useFirestore';
-import { Error } from '../../../helpers/organizers/types';
+import useFirestore from '../../../../helpers/hooks/useFirestore';
+import { Error } from '../../../../helpers/organizers/types';
 import {
   Divider,
   FormButton,
   FormDescription,
   FormError,
   ImageDetail,
-} from '../../../styles/components/Desktop/Admin/Upload';
-import FormDate from '../UI/FormDate';
-import FormSelect from '../UI/FormSelect';
+} from '../../../../styles/components/Desktop/Admin/Upload';
+import FormDate from '../../UI/FormDate';
+import FormSelect from '../../UI/FormSelect';
 import FormSubcategory from './FormSubcategory';
 
 function FormDetailInput({

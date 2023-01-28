@@ -1,11 +1,11 @@
-import useFirestore from '../../../helpers/hooks/useFirestore';
-import { Category, Subcategory } from '../../../helpers/organizers/types';
+import useFirestore from '../../../../helpers/hooks/useFirestore';
+import { Category, Subcategory } from '../../../../helpers/organizers/types';
 import {
   CategorySection,
   Selection,
   Title,
-} from '../../../styles/components/Desktop/Admin/Categories';
-import AddNewInput from './AddNewInput';
+} from '../../../../styles/components/Desktop/Admin/Categories';
+import AddNewInput from '../AddNewInput';
 
 function SubCategoriesSection({
   selectedCategory,

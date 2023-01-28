@@ -1,12 +1,12 @@
 import React from 'react';
 import { ChangeEvent, useState } from 'react';
 import { v4 } from 'uuid';
-import useStorage from '../../../helpers/hooks/useStorage';
-import { UploadOverlayContainer } from '../../../styles/components/Desktop/Admin/Upload';
+import useStorage from '../../../../helpers/hooks/useStorage';
+import { UploadOverlayContainer } from '../../../../styles/components/Desktop/Admin/Upload';
 
-import Modal from '../UI/Modal';
-import FormDetailInput from './FormDetailInput';
-import FormFileInput from './FormFileInput';
+import Modal from '../../UI/Modal';
+import FormDetailInput from '../Upload/FormDetailInput';
+import FormFileInput from '../Upload/FormFileInput';
 
 function UploadOverlay(props: { onClose: () => void }) {
   const { uploadFile, setError, error, progress } = useStorage();

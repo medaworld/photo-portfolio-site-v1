@@ -3,7 +3,8 @@ import { SetStateAction, useEffect, useState } from 'react';
 import {
   FormDateContainer,
   FormDateInput,
-} from '../../../styles/components/Desktop/Admin/Upload';
+} from '../../../styles/components/Desktop/UI/FormDate';
+
 import FormSelect from './FormSelect';
 
 function FormDate({

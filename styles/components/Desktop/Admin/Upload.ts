@@ -152,7 +152,7 @@ export const FormDescription = styled.textarea`
   resize: none;
   border: none;
   font-family: Inter;
-  color: ${(p) => p.theme.colors.hover};
+  color: ${(p) => p.theme.colors.primary};
   font-size: 16px;
   padding: 15px;
   padding-top: 30px;

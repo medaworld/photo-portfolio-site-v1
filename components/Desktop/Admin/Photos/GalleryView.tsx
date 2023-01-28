@@ -1,12 +1,13 @@
 import {
   GalleryContainer,
-  GalleryMain,
-  GalleryImages,
-} from '../../../styles/components/Desktop/Admin/AdminMain';
+  Gallery,
+  GallerySection,
+  SectionImages,
+} from '../../../../styles/components/Desktop/Admin/AdminMain';
 
-import Loader from '../UI/Loader';
-import SelectableImage from '../UI/SelectableImage';
-import FilterSelector from './FilterSelector';
+import Loader from '../../UI/Loader';
+import SelectableImage from '../../UI/SelectableImage';
+import FilterSelector from '../Categories/FilterSelector';
 
 export default function GalleryView({
   fetchedDocs,
@@ -30,11 +31,13 @@ export default function GalleryView({
 
   return (
     <GalleryContainer>
-      <GalleryMain>
+      <Gallery>
         <FilterSelector selectedCategory={[]} setSelectedCategory={() => {}} />
         {!categoryImages && <Loader />}
-        <GalleryImages>{categoryImages}</GalleryImages>
-      </GalleryMain>
+        <GallerySection>
+          <SectionImages>{categoryImages}</SectionImages>
+        </GallerySection>
+      </Gallery>
     </GalleryContainer>
   );
 }

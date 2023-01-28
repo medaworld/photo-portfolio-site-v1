@@ -3,13 +3,14 @@ import { DefaultTheme } from 'styled-components';
 export const DarkTheme: DefaultTheme = {
   colors: {
     id: 'dark',
-    background: '#000',
-    primary: '#FFF',
-    hover: '#232323ff',
-    color: '#638bb0',
-    accent: '#273644',
-    success: '#3f713f',
-    error: '#ad5656',
-    formBorder: '#232323ff',
+    background: '#212121',
+    primary: '#f5f5f5',
+    hover: '#464646',
+    formBorder: '#4d4d4d',
+    color: '#2f95f5',
+    selected: '#36474e',
+    accent: '#c9def2',
+    success: '#5cbb5c',
+    error: '#e39d9d',
   },
 };

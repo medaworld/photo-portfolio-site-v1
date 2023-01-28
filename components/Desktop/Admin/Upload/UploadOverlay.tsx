@@ -5,8 +5,8 @@ import useStorage from '../../../../helpers/hooks/useStorage';
 import { UploadOverlayContainer } from '../../../../styles/components/Desktop/Admin/Upload';
 
 import Modal from '../../UI/Modal';
-import FormDetailInput from '../Upload/FormDetailInput';
-import FormFileInput from '../Upload/FormFileInput';
+import FormDetailInput from './FormDetailInput';
+import FormFileInput from './FormFileInput';
 
 function UploadOverlay(props: { onClose: () => void }) {
   const { uploadFile, setError, error, progress } = useStorage();
@@ -68,7 +68,7 @@ function UploadOverlay(props: { onClose: () => void }) {
   };
 
   const submitHandler = () => {
-    if (files) {
+    if (files.length > 0) {
       try {
         for (let i = 0; i < files.length; i++) {
           uploadFile(files[i]);
@@ -94,18 +94,6 @@ function UploadOverlay(props: { onClose: () => void }) {
       });
     });
   };
-
-  // const individualChangeHandler = (newData: any) => {
-  //   setSelectedFocus(() => {
-  //     return { ...selectedFocus, data: newData };
-  //   });
-  //   setFiles(() => {
-  //     return files.map((file) => {
-  //       return file.id === newData.id ? newData : file;
-  //     });
-  //   });
-  // };
-  console.log(files);
 
   return (
     <Modal onClose={props.onClose}>

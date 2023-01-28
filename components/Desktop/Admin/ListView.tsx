@@ -4,7 +4,7 @@ import {
   ListViewItem,
 } from '../../../styles/components/Desktop/Admin/AdminMain';
 import AddNewInput from './AddNewInput';
-import FilterSelector from './FilterSelector';
+import FilterSelector from './Categories/FilterSelector';
 
 export default function ListView({
   docs,

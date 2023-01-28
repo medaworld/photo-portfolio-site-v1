@@ -2,7 +2,7 @@ import {
   Remove,
   SlideshowThumbnailContainer,
   SlideshowThumbnailFill,
-} from '../../../styles/components/Desktop/Admin/Upload';
+} from '../../../../styles/components/Desktop/Admin/Upload';
 import RemoveIcon from '/public/icons/remove.png';
 
 function SlideshowThumbnail({

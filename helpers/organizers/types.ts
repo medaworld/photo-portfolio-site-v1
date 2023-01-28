@@ -34,7 +34,7 @@ export type Category = {
   id: string;
   category: string;
   timeCreated: Date;
-  coverImg: string | null;
+  coverImg: string;
 };
 
 export type Subcategory = {

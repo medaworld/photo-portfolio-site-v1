@@ -4,10 +4,10 @@ import {
   CompleteMessage,
   FormUploadContainer,
   UploadArea,
-} from '../../../styles/components/Desktop/Admin/Upload';
-import ProgressBar from '../UI/ProgressBar';
+} from '../../../../styles/components/Desktop/Admin/Upload';
+import ProgressBar from '../../UI/ProgressBar';
 import ImageSlideshow from './ImageSlideshow';
-import { Error } from '../../../helpers/organizers/types';
+import { Error } from '../../../../helpers/organizers/types';
 
 function FormFileInput({
   fileUploadHandler,

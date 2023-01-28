@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app';
-import { AnimatePresence, motion } from 'framer-motion';
+// import { AnimatePresence, motion } from 'framer-motion';
 
 import Head from 'next/head';
 

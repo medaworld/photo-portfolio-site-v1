@@ -52,6 +52,7 @@ export const AddCategoryContainer = styled.div`
 
 export const CategoryInput = styled.input`
   border: none;
+  border-bottom: 1px solid ${(p) => p.theme.colors.background};
   padding: 10px 15px;
   font-size: 16px;
   height: 40px;

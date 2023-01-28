@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import useFirestore from '../../../../helpers/hooks/useFirestore';
-import { Category, Subcategory } from '../../../../helpers/organizers/types';
+import { Subcategory } from '../../../../helpers/organizers/types';
 import {
   CoverSelectContainer,
   Gallery,
   GalleryItem,
   ImgContainer,
-  PrevImg,
   Subtitle,
 } from '../../../../styles/components/Desktop/Admin/Categories';
 import Loader from '../../UI/Loader';
@@ -14,7 +13,6 @@ import SelectableImage from '../../UI/SelectableImage';
 
 function SelectCover({
   selectedCategory,
-  selectedSubCategory,
   onImgChange,
   enteredImg,
   type,
@@ -25,19 +23,17 @@ function SelectCover({
   enteredImg: string;
   type?: string;
 }) {
-  const [fetchedDocs, setFetchedDocs] = useState<any[]>();
-  const { fetchFirestore } = useFirestore();
-
-  useEffect(() => {
-    fetchFirestore('images', 'category', selectedCategory.category).then(
-      (docs) => setFetchedDocs(docs)
-    );
-  }, [selectedCategory]);
+  let fieldValue;
+  if (type === 'category') {
+    fieldValue = selectedCategory.category;
+  } else if (type === 'subcategory') {
+    fieldValue = selectedCategory.subcategory;
+  }
+  const { docs } = useFirestore('images', type, fieldValue);
 
   let images;
-
-  if (fetchedDocs) {
-    images = fetchedDocs.map((doc, key) => {
+  if (docs) {
+    images = docs.map((doc, key) => {
       function clickHandler() {
         onImgChange(doc.url);
       }
@@ -56,7 +52,7 @@ function SelectCover({
     <CoverSelectContainer>
       <Subtitle>Select a Cover</Subtitle>
       <Gallery>
-        {!fetchedDocs && <Loader />}
+        {!docs && <Loader />}
         {images}
       </Gallery>
       <ImgContainer>

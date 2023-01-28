@@ -10,7 +10,10 @@ import Icon from './Icon';
 
 import closeIcon from '/public/icons/closeWindow.png';
 
-function Modal(props: { children?: ReactNode; onClose: () => void }) {
+export default function Modal(props: {
+  children?: ReactNode;
+  onClose: () => void;
+}) {
   const ref = useRef<Element | null>(null);
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -38,5 +41,3 @@ function Modal(props: { children?: ReactNode; onClose: () => void }) {
     </>
   ) : null;
 }
-
-export default Modal;

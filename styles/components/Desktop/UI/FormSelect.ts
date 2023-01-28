@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const FormSelectWrapper = styled.div<{ disabled?: boolean }>`
+  position: relative;
   font-family: Inter;
   font-size: 16px;
   width: 100%;
@@ -43,7 +44,7 @@ export const FormOptions = styled.div`
   flex-direction: column;
   position: absolute;
   width: 100%;
-  max-height: 30%;
+  max-height: 500%;
   background-color: white;
   overflow-y: scroll;
   z-index: 1;

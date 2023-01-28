@@ -1,18 +1,30 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import {
   SideBar,
   SidebarItem,
 } from '../../../styles/components/Desktop/Admin/AdminMain';
 import Icon from '../UI/Icon';
+import UploadOverlay from './Upload/UploadOverlay';
 
 import AddIcon from '/public/icons/add.png';
 
 export default function AdminSideBar({}: {}) {
+  const [showUploadOverlay, setShowUploadOverlay] = useState(false);
   const router = useRouter();
+
+  function showFormHandler() {
+    setShowUploadOverlay(true);
+  }
+
+  function hideFormHandler() {
+    setShowUploadOverlay(false);
+  }
 
   return (
     <SideBar>
+      {showUploadOverlay && <UploadOverlay onClose={hideFormHandler} />}
       <ul>
         <Link href={'/admin'}>
           <SidebarItem selected={router.pathname === '/admin'}>
@@ -31,7 +43,7 @@ export default function AdminSideBar({}: {}) {
         </Link>
       </ul>
       <ul>
-        <SidebarItem onClick={() => {}} selected={false}>
+        <SidebarItem onClick={showFormHandler} selected={false}>
           <Icon img={AddIcon.src} size={25} />
           <p>Upload</p>
         </SidebarItem>

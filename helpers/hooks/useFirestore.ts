@@ -2,6 +2,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  FieldPath,
   getDocs,
   onSnapshot,
   orderBy,
@@ -14,30 +15,45 @@ import { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 import { projectFirestore } from '../firebase/config';
 
-const useFirestore = () => {
-  const quickFetch = (
-    coll: string,
-    category?: string | string[] | undefined,
-    callType?: string
-  ) => {
-    const [docs, setDocs] = useState<any[]>();
+const useFirestore = (
+  coll?: string,
+  filtField?: string | FieldPath | null,
+  filtFieldValue?: string | null,
+  orderField?: string,
+  orderDir?: OrderByDirection | undefined
+) => {
+  const [docs, setDocs] = useState<any[]>();
+  if (coll) {
     useEffect(() => {
-      const colRef = collection(projectFirestore, coll);
-      let descRef;
-      if (category && callType) {
-        descRef = query(colRef, where(callType, '==', category));
+      let q;
+      if (filtField && filtFieldValue && orderField && orderDir) {
+        q = query(
+          collection(projectFirestore, coll),
+          where(filtField, '==', filtFieldValue),
+          orderBy(orderField, orderDir)
+        );
+      } else if (orderField && orderDir) {
+        q = query(
+          collection(projectFirestore, coll),
+          orderBy(orderField, orderDir)
+        );
+      } else if (filtField && filtFieldValue) {
+        q = query(
+          collection(projectFirestore, coll),
+          where(filtField, '==', filtFieldValue)
+        );
       } else {
-        descRef = query(colRef, orderBy('category', 'asc'));
+        q = query(collection(projectFirestore, coll));
       }
-      onSnapshot(descRef, (snapshot) => {
+      onSnapshot(q, (snapshot) => {
         let documents: any[] = [];
         snapshot.docs.forEach((doc) => {
           documents.push({ ...doc.data() });
         });
         setDocs(documents);
       });
-    }, [coll, category]);
-  };
+    }, [coll, filtFieldValue]);
+  }
 
   const fetchFirestore = async (
     coll: string,
@@ -173,6 +189,7 @@ const useFirestore = () => {
     addSubCategory,
     updateSubCategory,
     deleteSubCategory,
+    docs,
   };
 };
 

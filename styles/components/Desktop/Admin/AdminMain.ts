@@ -47,14 +47,19 @@ export const SidebarItem = styled.li<{ selected: boolean }>`
 `;
 
 export const GalleryContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-export const GalleryMain = styled.div`
   height: 85vh;
   overflow: scroll;
+  display: flex;
+`;
+
+export const Gallery = styled.div`
+  display: block;
+  position: relative;
+`;
+
+export const GallerySection = styled.div`
+  display: block;
+  position: relative;
 `;
 
 export const SectionTitle = styled.div`
@@ -64,7 +69,7 @@ export const SectionTitle = styled.div`
   line-height: 48px;
 `;
 
-export const GalleryImages = styled.div`
+export const SectionImages = styled.div`
   column-count: 3;
   -webkit-column-count: 3;
   -moz-column-count: 3;
@@ -133,7 +138,7 @@ export const Buttons = styled.div`
   width: 100%;
 `;
 
-export const AddButton = styled.button`
+export const PrimaryButton = styled.button`
   border: none;
   font-family: Inter;
   font-size: 16px;

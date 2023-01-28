@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import useFirestore from '../../../helpers/hooks/useFirestore';
-import FormSelect from '../UI/FormSelect';
+import useFirestore from '../../../../helpers/hooks/useFirestore';
+import FormSelect from '../../UI/FormSelect';
+import FormSelectAddNew from '../../UI/FormSelectAddNew';
 
 export default function CategorySelector({
   categoryChangeHandler,
@@ -16,12 +17,16 @@ export default function CategorySelector({
     setCategorySelection(categories);
   }, []);
   return (
-    <FormSelect
+    <FormSelectAddNew
       options={categorySelection!}
       placeholder={'Select a category'}
       onChange={categoryChangeHandler}
       selected={selectedCategory}
       disabled={false}
+      onAddNew={function (input: string): void {
+        throw new Error('Function not implemented.');
+      }}
+      type={''}
     />
   );
 }

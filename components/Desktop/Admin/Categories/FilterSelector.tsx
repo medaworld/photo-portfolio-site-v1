@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import useFirestore from '../../../helpers/hooks/useFirestore';
+import useFirestore from '../../../../helpers/hooks/useFirestore';
 import {
   FilterSelectorContainer,
   SelectorItem,
-} from '../../../styles/components/Desktop/Admin/AdminMain';
+} from '../../../../styles/components/Desktop/Admin/AdminMain';
 
 export default function FilterSelector({
   selectedCategory,
@@ -20,9 +20,10 @@ export default function FilterSelector({
     );
   }, []);
 
-  const categories = fetchedDocs?.map((doc) => {
+  const categories = fetchedDocs?.map((doc, key) => {
     return (
       <SelectorItem
+        key={key}
         onClick={() => setSelectedCategory(doc)}
         selected={selectedCategory == doc}
       >

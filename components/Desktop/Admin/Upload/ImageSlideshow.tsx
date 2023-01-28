@@ -2,7 +2,7 @@ import {
   ImageSlideshowContainer,
   SlideshowMain,
   SlideshowScroll,
-} from '../../../styles/components/Desktop/Admin/Upload';
+} from '../../../../styles/components/Desktop/Admin/Upload';
 import SlideshowThumbnail from './SlideshowThumbnail';
 
 function ImageSlideshow({

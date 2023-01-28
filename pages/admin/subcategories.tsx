@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
-import CategoryDetailSidebar from '../../components/Desktop/Admin/CategoryDetailSidebar';
+import CategoryDetailSidebar from '../../components/Desktop/Admin/Categories/CategoryDetailSidebar';
 import ListView from '../../components/Desktop/Admin/ListView';
 import useFirestore from '../../helpers/hooks/useFirestore';
 
@@ -10,17 +10,11 @@ export default function AdminSubcategoriesPage() {
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<any>(null);
   const [showDetailSidebar, setShowDetailSidebar] = useState(false);
-  const [fetchedDocs, setFetchedDocs] = useState<any[]>();
-  const { fetchFirestore } = useFirestore();
-
-  // Fetch subcategories
-  useEffect(() => {
-    fetchFirestore(
-      'subcategories',
-      'category',
-      selectedCategory?.category
-    ).then((docs) => setFetchedDocs(docs));
-  }, [selectedCategory]);
+  const { docs } = useFirestore(
+    'subcategories',
+    'category',
+    selectedCategory?.category
+  );
 
   // Display details
   useEffect(() => {
@@ -40,7 +34,7 @@ export default function AdminSubcategoriesPage() {
     <AdminMainPage>
       <AdminSideBar />
       <ListView
-        docs={fetchedDocs}
+        docs={docs}
         type="subcategory"
         categorySelection={selectedCategory}
         setCategorySelection={setSelectedCategory}
@@ -52,6 +46,9 @@ export default function AdminSubcategoriesPage() {
           type="subcategory"
           selectedCategory={selectedSubcategory}
           detailSidebarClose={detailSidebarClose}
+          onUpdate={function (input: string): void {
+            throw new Error('Function not implemented.');
+          }}
         />
       )}
     </AdminMainPage>

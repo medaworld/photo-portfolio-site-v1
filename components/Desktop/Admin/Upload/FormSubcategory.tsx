@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import useFirestore from '../../../helpers/hooks/useFirestore';
-import FormSelect from '../UI/FormSelect';
+import useFirestore from '../../../../helpers/hooks/useFirestore';
+import FormSelectAddNew from '../../UI/FormSelectAddNew';
 
 function FormSubcategory({
   selectedCategory,
@@ -11,36 +11,33 @@ function FormSubcategory({
   selectedSubcategory: string;
   onChange: (subcategory: string) => void;
 }) {
-  const [disabled, setDisabled] = useState(false);
-  const { docs } = useFirestore('subcategories', selectedCategory, 'category');
-  let options;
+  const { addSubCategory, docs } = useFirestore(
+    'subcategories',
+    'category',
+    selectedCategory
+  );
 
-  if (selectedCategory) {
-    options = docs?.map((doc) => {
-      return doc.subcategory;
-    });
-  } else {
-    options = [];
+  let options = docs?.map((doc) => {
+    return doc.subcategory;
+  });
+
+  function addNewHandler(input: string) {
+    addSubCategory(selectedCategory, input);
+    onChange(input);
   }
-
-  useEffect(() => {
-    if (options.length > 0) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
-  }, [options]);
 
   const catChangeHandler = (subcategory: string) => {
     onChange(subcategory);
   };
+
   return (
-    <FormSelect
-      options={options!}
+    <FormSelectAddNew
+      options={options}
       placeholder={'Select a subcategory'}
       onChange={catChangeHandler}
       selected={selectedSubcategory}
-      disabled={disabled}
+      onAddNew={addNewHandler}
+      type={'Subcategory'}
     />
   );
 }

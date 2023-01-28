@@ -1,5 +1,5 @@
-import Card from '../UI/Card';
-import Icon from '../UI/Icon';
+import Card from '../../UI/Card';
+import Icon from '../../UI/Icon';
 import AddIcon from '/public/icons/add.png';
 
 function UploadButton(props: { onShowForm: () => void }) {

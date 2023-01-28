@@ -1,22 +1,14 @@
 import { useEffect, useState } from 'react';
-import GalleryView from '../../components/Desktop/Admin/GalleryView';
+import GalleryView from '../../components/Desktop/Admin/Photos/GalleryView';
 import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
-import PhotosDetailSideBar from '../../components/Desktop/Admin/PhotosDetailSideBar';
+import PhotosDetailSideBar from '../../components/Desktop/Admin/Photos/PhotosDetailSideBar';
 import useFirestore from '../../helpers/hooks/useFirestore';
 import { AdminMainPage } from '../../styles/components/Desktop/Admin/AdminMain';
 
 export default function AdminPage() {
-  const [fetchedDocs, setFetchedDocs] = useState<any[]>();
   const [selectedItems, setSelectedItems] = useState<any[]>([]);
   const [showDetailSidebar, setShowDetailSidebar] = useState(false);
-  const { fetchFirestore } = useFirestore();
-
-  useEffect(() => {
-    fetchFirestore('images', null, null, 'category', 'asc').then((docs) =>
-      setFetchedDocs(docs)
-    );
-    setSelectedItems([]);
-  }, []);
+  const { docs } = useFirestore('images', null, null, 'timeCreated', 'desc');
 
   useEffect(() => {
     if (selectedItems.length > 0) {
@@ -47,7 +39,7 @@ export default function AdminPage() {
     <AdminMainPage>
       <AdminSideBar />
       <GalleryView
-        fetchedDocs={fetchedDocs}
+        fetchedDocs={docs}
         selectedItems={selectedItems}
         onItemSelect={itemSelectHandler}
       />

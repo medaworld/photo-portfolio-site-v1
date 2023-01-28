@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
-import useFirestore from '../../../helpers/hooks/useFirestore';
+import useFirestore from '../../../../helpers/hooks/useFirestore';
 import {
-  AddButton,
+  PrimaryButton,
   BarHeader,
   CloseIcon,
   DeleteButton,
   DetailBar,
   FormDescription,
-} from '../../../styles/components/Desktop/Admin/AdminMain';
-import DeleteOverlay from '../UI/DeleteOverlay';
-import FormDate from '../UI/FormDate';
-import FormSelect from '../UI/FormSelect';
-import Icon from '../UI/Icon';
+} from '../../../../styles/components/Desktop/Admin/AdminMain';
+import DeleteOverlay from '../../UI/DeleteOverlay';
+import FormDate from '../../UI/FormDate';
+import FormSelect from '../../UI/FormSelect';
+import FormSelectAddNew from '../../UI/FormSelectAddNew';
+import Icon from '../../UI/Icon';
 import CategorySelector from './CategorySelector';
 
 import closeIcon from '/public/icons/closeWindow.png';
@@ -94,11 +95,15 @@ export default function PhotosDetailSideBar({
         selectedCategory={selectedCategory}
         categoryChangeHandler={categoryChangeHandler}
       />
-      <FormSelect
+      <FormSelectAddNew
         options={subcategorySelection!}
         placeholder={'Select a subcategory'}
         onChange={subcategoryChangeHandler}
         selected={selectedSubcategory}
+        onAddNew={function (input: string): void {
+          throw new Error('Function not implemented.');
+        }}
+        type={''}
       />
       <FormDate onChange={dateChangeHandler} selectedDate={selectedDate} />
       <FormDescription
@@ -106,7 +111,7 @@ export default function PhotosDetailSideBar({
         value={selectedDescription}
       />
       <DeleteButton onClick={showFormHandler}>Delete</DeleteButton>
-      <AddButton onClick={updateHandler}>Update</AddButton>
+      <PrimaryButton onClick={updateHandler}>Update</PrimaryButton>
     </DetailBar>
   );
 }

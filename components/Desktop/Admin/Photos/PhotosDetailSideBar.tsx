@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-import useFirestore from '../../../../helpers/hooks/useFirestore';
 import {
   PrimaryButton,
   BarHeader,
@@ -7,10 +5,11 @@ import {
   DeleteButton,
   DetailBar,
   FormDescription,
-} from '../../../../styles/components/Desktop/Admin/AdminMain';
+} from '../../../../styles/components/Desktop/Admin/Photos';
+import { useEffect, useState } from 'react';
+import useFirestore from '../../../../helpers/hooks/useFirestore';
 import DeleteOverlay from '../../UI/DeleteOverlay';
 import FormDate from '../../UI/FormDate';
-import FormSelect from '../../UI/FormSelect';
 import FormSelectAddNew from '../../UI/FormSelectAddNew';
 import Icon from '../../UI/Icon';
 import CategorySelector from './CategorySelector';

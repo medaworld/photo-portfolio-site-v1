@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import {
   ImageWrapper,
   SectionImage,
-} from '../../../styles/components/Desktop/Admin/AdminMain';
+} from '../../../styles/components/Desktop/Admin/Admin';
 import {
   Check,
   CoverTitle,

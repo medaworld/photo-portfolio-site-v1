@@ -1,21 +1,20 @@
 import { SetStateAction, useEffect, useState } from 'react';
-import { capitalizeFirstLetter } from '../../../../helpers/functions/strings';
-import useFirestore from '../../../../helpers/hooks/useFirestore';
 import {
+  CategoryInput,
+  Message,
+  Title,
   BarHeader,
   CloseIcon,
   DeleteButton,
   DetailBar,
   PrimaryButton,
-} from '../../../../styles/components/Desktop/Admin/AdminMain';
-import {
-  CategoryInput,
-  Title,
 } from '../../../../styles/components/Desktop/Admin/Categories';
 import DeleteOverlay from '../../UI/DeleteOverlay';
 import FormSelect from '../../UI/FormSelect';
 import Icon from '../../UI/Icon';
 import SelectCover from './SelectCover';
+import { capitalizeFirstLetter } from '../../../../helpers/functions/strings';
+import useFirestore from '../../../../helpers/hooks/useFirestore';
 
 import closeIcon from '/public/icons/closeWindow.png';
 
@@ -23,18 +22,17 @@ export default function CategoryDetailSidebar({
   type,
   selectedCategory,
   detailSidebarClose,
-  onUpdate,
 }: {
   type: string;
   selectedCategory: any;
   detailSidebarClose: () => void;
-  onUpdate: (input: string) => void;
 }) {
   const [enteredTitle, setEnteredTitle] = useState(selectedCategory.category);
   const [enteredImg, setEnteredImg] = useState(selectedCategory.coverImg);
   const [enteredCategory, setEnteredCategory] = useState<string>();
   const [showDeleteOverlay, setShowDeleteOverlay] = useState(false);
-  const { deleteCategory, docs } = useFirestore('categories');
+  const { deleteCategory, docs, updateCategory, updateSubCategory, msg } =
+    useFirestore('categories');
 
   const showOverlayHandler = () => {
     setShowDeleteOverlay(true);
@@ -51,7 +49,7 @@ export default function CategoryDetailSidebar({
         setEnteredTitle(selectedCategory.subcategory);
         setEnteredCategory(selectedCategory.category);
       }
-      setEnteredImg(selectedCategory.imgCover);
+      setEnteredImg(selectedCategory.coverImg);
     }
   }, [selectedCategory]);
 
@@ -75,8 +73,18 @@ export default function CategoryDetailSidebar({
     setEnteredTitle('');
     detailSidebarClose();
   }
+
   function updateHandler() {
-    onUpdate(enteredTitle);
+    if (type === 'category') {
+      updateCategory(selectedCategory.id, enteredTitle, enteredImg);
+    } else if (type === 'subcategory') {
+      updateSubCategory(
+        selectedCategory.id,
+        enteredCategory!,
+        enteredTitle,
+        enteredImg
+      );
+    }
   }
 
   const options = docs?.map((doc) => {
@@ -119,6 +127,7 @@ export default function CategoryDetailSidebar({
         enteredImg={enteredImg}
         type={type}
       />
+      <Message>{msg}</Message>
       <DeleteButton
         onClick={showOverlayHandler}
       >{`Delete ${capitalizeFirstLetter(type)}`}</DeleteButton>

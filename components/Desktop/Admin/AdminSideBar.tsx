@@ -4,7 +4,7 @@ import { useState } from 'react';
 import {
   SideBar,
   SidebarItem,
-} from '../../../styles/components/Desktop/Admin/AdminMain';
+} from '../../../styles/components/Desktop/Admin/Admin';
 import Icon from '../UI/Icon';
 import UploadOverlay from './Upload/UploadOverlay';
 

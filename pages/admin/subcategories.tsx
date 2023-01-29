@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
 import CategoryDetailSidebar from '../../components/Desktop/Admin/Categories/CategoryDetailSidebar';
-import ListView from '../../components/Desktop/Admin/ListView';
+import ListView from '../../components/Desktop/Admin/Categories/ListView';
 import useFirestore from '../../helpers/hooks/useFirestore';
 
-import { AdminMainPage } from '../../styles/components/Desktop/Admin/AdminMain';
+import { AdminMainPage } from '../../styles/components/Desktop/Admin/Admin';
 
 export default function AdminSubcategoriesPage() {
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
@@ -16,7 +16,6 @@ export default function AdminSubcategoriesPage() {
     selectedCategory?.category
   );
 
-  // Display details
   useEffect(() => {
     if (selectedSubcategory) {
       setShowDetailSidebar(true);
@@ -46,9 +45,6 @@ export default function AdminSubcategoriesPage() {
           type="subcategory"
           selectedCategory={selectedSubcategory}
           detailSidebarClose={detailSidebarClose}
-          onUpdate={function (input: string): void {
-            throw new Error('Function not implemented.');
-          }}
         />
       )}
     </AdminMainPage>

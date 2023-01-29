@@ -141,3 +141,47 @@ export const PrevImg = styled.img`
   cursor: pointer;
   transition: all 0.3s ease;
 `;
+
+export const Message = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+export const BarHeader = styled.div`
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+`;
+
+export const CloseIcon = styled.div`
+  margin: 10px;
+`;
+
+export const DetailBar = styled.div`
+  min-width: 300px;
+  max-width: 300px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  position: relative;
+`;
+
+export const PrimaryButton = styled.button`
+  border: none;
+  font-family: Inter;
+  font-size: 16px;
+  color: ${(p) => p.theme.colors.color};
+  height: 40px;
+  width: 100%;
+  transition: all 0.1s ease;
+  overflow: hidden;
+  margin-top: 10px;
+  border-radius: 10px;
+
+  &:hover {
+    filter: brightness(0.9);
+    cursor: pointer;
+  }
+`;

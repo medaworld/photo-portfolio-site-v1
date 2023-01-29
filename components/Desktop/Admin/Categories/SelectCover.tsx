@@ -41,7 +41,7 @@ function SelectCover({
         <GalleryItem
           key={key}
           img={doc.url}
-          selected={enteredImg == doc.url ? true : false}
+          selected={enteredImg === doc.url ? true : false}
           onClick={clickHandler}
         />
       );

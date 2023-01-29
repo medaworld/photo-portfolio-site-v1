@@ -46,38 +46,6 @@ export const SidebarItem = styled.li<{ selected: boolean }>`
   }
 `;
 
-export const GalleryContainer = styled.div`
-  height: 85vh;
-  overflow: scroll;
-  display: flex;
-`;
-
-export const Gallery = styled.div`
-  display: block;
-  position: relative;
-`;
-
-export const GallerySection = styled.div`
-  display: block;
-  position: relative;
-`;
-
-export const SectionTitle = styled.div`
-  display: flex;
-  height: 48px;
-  margin-left: 10px;
-  line-height: 48px;
-`;
-
-export const SectionImages = styled.div`
-  column-count: 3;
-  -webkit-column-count: 3;
-  -moz-column-count: 3;
-  column-gap: 2px;
-  -webkit-column-gap: 2px;
-  column-width: 50%;
-`;
-
 export const ImageWrapper = styled.div`
   position: relative;
   transition: opacity 0.2s ease;
@@ -92,44 +60,6 @@ export const SectionImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`;
-
-export const DetailBar = styled.div`
-  min-width: 300px;
-  max-width: 300px;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  position: relative;
-`;
-
-export const BarHeader = styled.div`
-  width: 100%;
-  height: 50px;
-  display: flex;
-  align-items: center;
-`;
-
-export const CloseIcon = styled.div`
-  margin: 10px;
-`;
-
-export const FormDescription = styled.textarea`
-  height: 20%;
-  user-select: text;
-  resize: none;
-  border: none;
-  font-family: Inter;
-  color: ${(p) => p.theme.colors.primary};
-  font-size: 16px;
-  padding: 15px;
-  /* margin-top: 50px; */
-  overflow-y: hidden;
-
-  :focus {
-    outline: none;
-  }
 `;
 
 export const Buttons = styled.div`

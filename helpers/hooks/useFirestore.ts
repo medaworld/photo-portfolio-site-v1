@@ -14,6 +14,7 @@ import {
 import { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 import { projectFirestore } from '../firebase/config';
+import { Error } from '../../helpers/organizers/types';
 
 const useFirestore = (
   coll?: string,
@@ -23,6 +24,7 @@ const useFirestore = (
   orderDir?: OrderByDirection | undefined
 ) => {
   const [docs, setDocs] = useState<any[]>();
+  const [msg, setMsg] = useState<Error>(null);
   if (coll) {
     useEffect(() => {
       let q;
@@ -45,13 +47,17 @@ const useFirestore = (
       } else {
         q = query(collection(projectFirestore, coll));
       }
-      onSnapshot(q, (snapshot) => {
-        let documents: any[] = [];
-        snapshot.docs.forEach((doc) => {
-          documents.push({ ...doc.data() });
+      try {
+        onSnapshot(q, (snapshot) => {
+          let documents: any[] = [];
+          snapshot.docs.forEach((doc) => {
+            documents.push({ ...doc.data() });
+          });
+          setDocs(documents);
         });
-        setDocs(documents);
-      });
+      } catch (err) {
+        setMsg('Error collecting data');
+      }
     }, [coll, filtFieldValue]);
   }
 
@@ -90,7 +96,7 @@ const useFirestore = (
         fetchedDocs.push(data);
       });
     } catch (err) {
-      console.log(err);
+      setMsg('Error collecting data');
     }
     return fetchedDocs;
   };
@@ -121,8 +127,9 @@ const useFirestore = (
         coverImg: img ? img : null,
         timeCreated: new Date(),
       });
+      setMsg('Successfully updated');
     } catch (err) {
-      console.log(err);
+      setMsg('Error updating category');
     }
   };
 
@@ -131,8 +138,9 @@ const useFirestore = (
     deleteDoc(docRef)
       .then(() => {
         console.log('Category deleted');
+        setMsg('Successfully deleted');
       })
-      .catch((err) => console.log(err));
+      .catch((err) => setMsg('Error deleting category'));
   };
 
   const addSubCategory = (
@@ -148,8 +156,9 @@ const useFirestore = (
         category: category,
         coverImg: img ? img : null,
       });
+      setMsg('Successfully added');
     } catch (err) {
-      console.log(err);
+      setMsg('Error adding subcategory');
     }
   };
 
@@ -167,8 +176,9 @@ const useFirestore = (
         coverImg: img ? img : null,
         timeCreated: new Date(),
       });
+      setMsg('Successfully updated');
     } catch (err) {
-      console.log(err);
+      setMsg('Error updating subcategory');
     }
   };
 
@@ -177,8 +187,9 @@ const useFirestore = (
     deleteDoc(docRef)
       .then(() => {
         console.log('Subcategory deleted');
+        setMsg('Successfully deleted');
       })
-      .catch((err) => console.log(err));
+      .catch((err) => setMsg('Error deleting subcategory'));
   };
 
   return {
@@ -190,6 +201,7 @@ const useFirestore = (
     updateSubCategory,
     deleteSubCategory,
     docs,
+    msg,
   };
 };
 

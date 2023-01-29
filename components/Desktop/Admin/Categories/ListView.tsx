@@ -2,9 +2,9 @@ import {
   ListContainer,
   ListViewMain,
   ListViewItem,
-} from '../../../styles/components/Desktop/Admin/AdminMain';
-import AddNewInput from './AddNewInput';
-import FilterSelector from './Categories/FilterSelector';
+} from '../../../../styles/components/Desktop/Admin/Admin';
+import AddNewInput from '../AddNewInput';
+import FilterSelector from './FilterSelector';
 
 export default function ListView({
   docs,

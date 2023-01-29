@@ -3,7 +3,7 @@ import useFirestore from '../../../../helpers/hooks/useFirestore';
 import {
   FilterSelectorContainer,
   SelectorItem,
-} from '../../../../styles/components/Desktop/Admin/AdminMain';
+} from '../../../../styles/components/Desktop/Admin/Admin';
 
 export default function FilterSelector({
   selectedCategory,

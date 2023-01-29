@@ -3,7 +3,7 @@ import GalleryView from '../../components/Desktop/Admin/Photos/GalleryView';
 import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
 import PhotosDetailSideBar from '../../components/Desktop/Admin/Photos/PhotosDetailSideBar';
 import useFirestore from '../../helpers/hooks/useFirestore';
-import { AdminMainPage } from '../../styles/components/Desktop/Admin/AdminMain';
+import { AdminMainPage } from '../../styles/components/Desktop/Admin/Admin';
 
 export default function AdminPage() {
   const [selectedItems, setSelectedItems] = useState<any[]>([]);

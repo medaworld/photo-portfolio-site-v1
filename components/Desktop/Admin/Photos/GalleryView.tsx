@@ -3,8 +3,7 @@ import {
   Gallery,
   GallerySection,
   SectionImages,
-} from '../../../../styles/components/Desktop/Admin/AdminMain';
-
+} from '../../../../styles/components/Desktop/Admin/Photos';
 import Loader from '../../UI/Loader';
 import SelectableImage from '../../UI/SelectableImage';
 import FilterSelector from '../Categories/FilterSelector';

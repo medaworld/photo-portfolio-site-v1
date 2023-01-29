@@ -3,9 +3,25 @@ import GalleryView from '../../components/Desktop/Admin/Photos/GalleryView';
 import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
 import PhotosDetailSideBar from '../../components/Desktop/Admin/Photos/PhotosDetailSideBar';
 import useFirestore from '../../helpers/hooks/useFirestore';
-import { AdminMainPage } from '../../styles/components/Desktop/Admin/Admin';
+import {
+  AdminMainPage,
+  CenterWrapper,
+} from '../../styles/components/Desktop/Admin/Admin';
+import { getSession } from 'next-auth/react';
+import Loader from '../../components/Desktop/UI/Loader';
 
-export default function AdminPage() {
+export default function AdminPhotosPage() {
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    getSession().then((session) => {
+      if (!session) {
+        window.location.href = '/work';
+      } else {
+        setIsLoading(false);
+      }
+    });
+  }, []);
+
   const [selectedItems, setSelectedItems] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [showDetailSidebar, setShowDetailSidebar] = useState(false);
@@ -42,6 +58,14 @@ export default function AdminPage() {
     setSelectedItems([]);
   };
 
+  if (isLoading) {
+    return (
+      <CenterWrapper>
+        <Loader />
+      </CenterWrapper>
+    );
+  }
+
   return (
     <AdminMainPage>
       <AdminSideBar />
@@ -60,4 +84,20 @@ export default function AdminPage() {
       )}
     </AdminMainPage>
   );
+}
+
+export async function getServerSideProps(context: { req: any }) {
+  const session = await getSession({ req: context.req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/work',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: { session },
+  };
 }

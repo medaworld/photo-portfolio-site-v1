@@ -15,8 +15,13 @@ export const SideBar = styled.div`
     padding: 0;
   }
 
-  ul:last-child {
+  ul:nth-child(2) {
     margin-top: 20%;
+  }
+
+  ul:last-child {
+    position: absolute;
+    bottom: 0;
   }
 `;
 
@@ -153,5 +158,17 @@ export const SelectorItem = styled.div<{ selected: boolean }>`
   :hover {
     cursor: pointer;
     filter: brightness(90%);
+  }
+`;
+
+export const CenterWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+
+  form {
+    display: flex;
+    flex-direction: column;
   }
 `;

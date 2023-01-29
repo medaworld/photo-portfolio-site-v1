@@ -1,3 +1,4 @@
+import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -22,12 +23,16 @@ export default function AdminSideBar({}: {}) {
     setShowUploadOverlay(false);
   }
 
+  function logoutHandler() {
+    signOut();
+  }
+
   return (
     <SideBar>
       {showUploadOverlay && <UploadOverlay onClose={hideFormHandler} />}
       <ul>
-        <Link href={'/admin'}>
-          <SidebarItem selected={router.pathname === '/admin'}>
+        <Link href={'/admin/photos'}>
+          <SidebarItem selected={router.pathname === '/admin/photos'}>
             Photos
           </SidebarItem>
         </Link>
@@ -46,6 +51,11 @@ export default function AdminSideBar({}: {}) {
         <SidebarItem onClick={showFormHandler} selected={false}>
           <Icon img={AddIcon.src} size={25} />
           <p>Upload</p>
+        </SidebarItem>
+      </ul>
+      <ul>
+        <SidebarItem selected={false} onClick={logoutHandler}>
+          Logout
         </SidebarItem>
       </ul>
     </SideBar>

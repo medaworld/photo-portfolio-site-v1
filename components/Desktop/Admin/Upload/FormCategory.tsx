@@ -1,42 +1,42 @@
 import useFirestore from '../../../../helpers/hooks/useFirestore';
 import FormSelectAddNew from '../../UI/FormSelectAddNew';
 
-export default function FormSubcategory({
+export default function FormCategory({
   selectedCategory,
-  selectedSubcategory,
   onChange,
 }: {
   selectedCategory: string | undefined;
-  selectedSubcategory: string | undefined;
   onChange: (subcategory: string) => void;
 }) {
-  const { addSubCategory, docs } = useFirestore(
-    'subcategories',
+  const { docs, addCategory } = useFirestore(
+    'categories',
+    null,
+    null,
     'category',
-    selectedCategory
+    'asc'
   );
 
   let options = docs?.map((doc) => {
-    return doc.subcategory;
+    return doc.category;
   });
 
   function addNewHandler(input: string) {
-    addSubCategory(selectedCategory!, input);
+    addCategory(selectedCategory!, input);
     onChange(input);
   }
 
-  const catChangeHandler = (subcategory: string) => {
-    onChange(subcategory);
+  const catChangeHandler = (category: string) => {
+    onChange(category);
   };
 
   return (
     <FormSelectAddNew
       options={options}
-      placeholder={'Select a subcategory'}
+      placeholder={'Select a category'}
       onChange={catChangeHandler}
-      selected={selectedSubcategory}
+      selected={selectedCategory}
       onAddNew={addNewHandler}
-      type={'Subcategory'}
+      type={'Category'}
     />
   );
 }

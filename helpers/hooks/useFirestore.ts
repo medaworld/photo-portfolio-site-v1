@@ -107,6 +107,7 @@ const useFirestore = (
       setDoc(doc(projectFirestore, 'categories', id), {
         id: id,
         category: category,
+        category_lower: category?.replace(/[^a-z0-9]/gi, '').toLowerCase(),
         coverImg: img ? img : null,
         timeCreated: new Date(),
       });
@@ -124,6 +125,7 @@ const useFirestore = (
       setDoc(doc(projectFirestore, 'categories', id), {
         id: id,
         category: category,
+        category_lower: category?.replace(/[^a-z0-9]/gi, '').toLowerCase(),
         coverImg: img ? img : null,
         timeCreated: new Date(),
       });
@@ -152,8 +154,12 @@ const useFirestore = (
     try {
       setDoc(doc(projectFirestore, 'subcategories', id), {
         id: id,
-        subcategory: subcategory,
         category: category,
+        subcategory: subcategory,
+        category_lower: category?.replace(/[^a-z0-9]/gi, '').toLowerCase(),
+        subcategory_lower: subcategory
+          ?.replace(/[^a-z0-9]/gi, '')
+          .toLowerCase(),
         coverImg: img ? img : null,
       });
       setMsg('Successfully added');
@@ -173,6 +179,10 @@ const useFirestore = (
         id: id,
         category: category,
         subcategory: subcategory,
+        category_lower: category?.replace(/[^a-z0-9]/gi, '').toLowerCase(),
+        subcategory_lower: subcategory
+          ?.replace(/[^a-z0-9]/gi, '')
+          .toLowerCase(),
         coverImg: img ? img : null,
         timeCreated: new Date(),
       });
@@ -192,6 +202,44 @@ const useFirestore = (
       .catch((err) => setMsg('Error deleting subcategory'));
   };
 
+  function updateImage(
+    id: string,
+    description: string | undefined,
+    category: string | undefined,
+    subcategory: string | undefined,
+    dateTaken: Date,
+    url: string,
+    timeCreated: string
+  ) {
+    if (!category) {
+      return setMsg('Enter valid category');
+    }
+    if (!subcategory) {
+      return setMsg('Enter valid subcategory');
+    }
+    if (!dateTaken) {
+      return setMsg('Enter valid date');
+    }
+    try {
+      setDoc(doc(projectFirestore, 'images', id), {
+        id: id,
+        url: url,
+        dateTaken: dateTaken,
+        description: description,
+        category: category,
+        subcategory: subcategory,
+        category_lower: category?.replace(/[^a-z0-9]/gi, '').toLowerCase(),
+        subcategory_lower: subcategory
+          ?.replace(/[^a-z0-9]/gi, '')
+          .toLowerCase(),
+        timeCreated: timeCreated,
+      });
+      setMsg('Successfully updated');
+    } catch (err) {
+      setMsg('Error updating subcategory');
+    }
+  }
+
   return {
     fetchFirestore,
     addCategory,
@@ -200,6 +248,7 @@ const useFirestore = (
     addSubCategory,
     updateSubCategory,
     deleteSubCategory,
+    updateImage,
     docs,
     msg,
   };

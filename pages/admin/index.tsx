@@ -7,8 +7,15 @@ import { AdminMainPage } from '../../styles/components/Desktop/Admin/Admin';
 
 export default function AdminPage() {
   const [selectedItems, setSelectedItems] = useState<any[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [showDetailSidebar, setShowDetailSidebar] = useState(false);
-  const { docs } = useFirestore('images', null, null, 'timeCreated', 'desc');
+  const { docs } = useFirestore(
+    'images',
+    'category',
+    selectedCategory?.category,
+    'timeCreated',
+    'desc'
+  );
 
   useEffect(() => {
     if (selectedItems.length > 0) {
@@ -42,6 +49,8 @@ export default function AdminPage() {
         fetchedDocs={docs}
         selectedItems={selectedItems}
         onItemSelect={itemSelectHandler}
+        categorySelection={selectedCategory}
+        setCategorySelection={setSelectedCategory}
       />
       {showDetailSidebar && (
         <PhotosDetailSideBar

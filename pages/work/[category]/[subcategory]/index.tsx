@@ -1,13 +1,13 @@
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
-import { useRouter } from 'next/router';
+import BackArrow from '../../../../components/Desktop/UI/BackArrow';
 import Loader from '../../../../components/Desktop/UI/Loader';
 import CategoryCover from '../../../../components/Desktop/Work/CategoryCover';
+import SlideshowImage from '../../../../components/Desktop/Work/SlideshowImage';
 import { projectFirestore } from '../../../../helpers/firebase/config';
-import { capitalizeFirstLetter } from '../../../../helpers/functions/strings';
-import useFirestore from '../../../../helpers/hooks/useFirestore';
 import {
   Container,
   Gallery,
+  Slideshow,
 } from '../../../../styles/components/Desktop/Work/Work';
 
 export default function SubCategoryPage({
@@ -35,8 +35,11 @@ export default function SubCategoryPage({
   });
   return (
     <Container>
+      <BackArrow />
+      <Slideshow>
+        <SlideshowImage src={images[0].url} alt={''} />
+      </Slideshow>
       {!imagesDisplay && <Loader />}
-      <Gallery>{imagesDisplay}</Gallery>
     </Container>
   );
 }
@@ -51,12 +54,13 @@ export async function getStaticPaths() {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-      const category = data.category.toString();
-      const subcategory = data.subcategory.toString();
+      console.log(data);
+      const category = data.category_lower.toString();
+      const subcategory = data.subcategory_lower.toString();
       paths.push({
         params: {
-          category: category.toLowerCase(),
-          subcategory: subcategory.toLowerCase(),
+          category: category,
+          subcategory: subcategory,
         },
       });
     });
@@ -72,13 +76,13 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context: { params: any }) {
   const { params } = context;
-  const subcategory = capitalizeFirstLetter(params.subcategory);
+  const subcategory = params.subcategory;
   let images: any = [];
 
   try {
     const q = query(
       collection(projectFirestore, 'images'),
-      where('subcategory', '==', subcategory)
+      where('subcategory_lower', '==', subcategory)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {

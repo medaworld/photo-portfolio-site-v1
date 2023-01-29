@@ -12,7 +12,7 @@ export const Header = styled.header`
   opacity: 99%;
   position: fixed;
   box-sizing: border-box;
-  z-index: 1;
+  z-index: 10;
 
   @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
     background-color: ${(p) => hexToRGBA(p.theme.colors.background, 0.7)};

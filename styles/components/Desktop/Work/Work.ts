@@ -42,3 +42,16 @@ export const CoverTitle = styled.div`
     font-size: 40px;
   }
 `;
+
+export const Slideshow = styled.div`
+  width: 100%;
+  height: 80vh;
+  background-color: #1b1b1b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const SlideshowImageContainer = styled.div`
+  height: 80%;
+`;

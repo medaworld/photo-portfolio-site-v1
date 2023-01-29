@@ -24,6 +24,15 @@ const useStorage = () => {
     dateTaken: Date;
   }) => {
     const storageRef = ref(projectStorage, `images/${file.id}`);
+    if (!file.category) {
+      return setError('Please enter a category');
+    }
+    if (!file.subcategory) {
+      return setError('Please enter a subcategory');
+    }
+    if (!file.dateTaken) {
+      return setError('Please enter a valid date');
+    }
     uploadBytes(storageRef, file.file)
       .then(async (snapshot) => {
         const url = await getDownloadURL(storageRef);
@@ -36,6 +45,12 @@ const useStorage = () => {
             description: file.description,
             category: file.category,
             subcategory: file.subcategory,
+            category_lower: file.category
+              ?.replace(/[^a-z0-9]/gi, '')
+              .toLowerCase(),
+            subcategory_lower: file.subcategory
+              ?.replace(/[^a-z0-9]/gi, '')
+              .toLowerCase(),
             timeCreated: snapshot.metadata.timeCreated,
           });
         } catch (err) {

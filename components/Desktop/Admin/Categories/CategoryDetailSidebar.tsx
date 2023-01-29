@@ -31,8 +31,14 @@ export default function CategoryDetailSidebar({
   const [enteredImg, setEnteredImg] = useState(selectedCategory.coverImg);
   const [enteredCategory, setEnteredCategory] = useState<string>();
   const [showDeleteOverlay, setShowDeleteOverlay] = useState(false);
-  const { deleteCategory, docs, updateCategory, updateSubCategory, msg } =
-    useFirestore('categories');
+  const {
+    deleteCategory,
+    deleteSubCategory,
+    docs,
+    updateCategory,
+    updateSubCategory,
+    msg,
+  } = useFirestore('categories');
 
   const showOverlayHandler = () => {
     setShowDeleteOverlay(true);
@@ -68,7 +74,11 @@ export default function CategoryDetailSidebar({
   }
 
   function deleteHandler() {
-    deleteCategory(selectedCategory.id);
+    if (type === 'category') {
+      deleteCategory(selectedCategory.id);
+    } else {
+      deleteSubCategory(selectedCategory.id);
+    }
     setShowDeleteOverlay(false);
     setEnteredTitle('');
     detailSidebarClose();
@@ -106,7 +116,11 @@ export default function CategoryDetailSidebar({
         <DeleteOverlay
           onClose={hideOverlayHandler}
           onDelete={deleteHandler}
-          name={selectedCategory.category}
+          name={
+            type === 'category'
+              ? selectedCategory.category
+              : selectedCategory.subcategory
+          }
         />
       )}
       <BarHeader>

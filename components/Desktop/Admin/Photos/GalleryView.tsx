@@ -12,10 +12,14 @@ export default function GalleryView({
   fetchedDocs,
   onItemSelect,
   selectedItems,
+  categorySelection,
+  setCategorySelection,
 }: {
   fetchedDocs: any[] | undefined;
   onItemSelect: (doc: any) => void;
   selectedItems: any[];
+  categorySelection?: any;
+  setCategorySelection?: any;
 }) {
   const categoryImages = fetchedDocs?.map((doc, key) => {
     return (
@@ -31,7 +35,10 @@ export default function GalleryView({
   return (
     <GalleryContainer>
       <Gallery>
-        <FilterSelector selectedCategory={[]} setSelectedCategory={() => {}} />
+        <FilterSelector
+          selectedCategory={categorySelection}
+          setSelectedCategory={setCategorySelection}
+        />
         {!categoryImages && <Loader />}
         <GallerySection>
           <SectionImages>{categoryImages}</SectionImages>

@@ -1,5 +1,6 @@
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { Key } from 'react';
+import BackArrow from '../../../components/Desktop/UI/BackArrow';
 import Loader from '../../../components/Desktop/UI/Loader';
 import CategoryCover from '../../../components/Desktop/Work/CategoryCover';
 import { projectFirestore } from '../../../helpers/firebase/config';
@@ -17,6 +18,8 @@ export default function CategoryPage({
     coverImg: string;
     id: string;
     subcategory: string;
+    category_lower: string;
+    subcategory_lower: string;
   }[];
 }) {
   const subcategoriesImages = subcategories.map(
@@ -25,6 +28,8 @@ export default function CategoryPage({
         category: string;
         coverImg: string;
         subcategory: string;
+        category_lower: string;
+        subcategory_lower: string;
       },
       key: Key | null | undefined
     ) => {
@@ -34,7 +39,7 @@ export default function CategoryPage({
           src={subcategory.coverImg}
           alt={subcategory.subcategory}
           category={subcategory.subcategory}
-          url={`/work/${subcategory.category.toLowerCase()}/${subcategory.subcategory.toLowerCase()}`}
+          url={`/work/${subcategory.category_lower}/${subcategory.subcategory_lower}`}
         />
       );
     }
@@ -42,6 +47,7 @@ export default function CategoryPage({
 
   return (
     <Container>
+      <BackArrow />
       {!subcategoriesImages && <Loader />}
       <Gallery>{subcategoriesImages}</Gallery>
     </Container>
@@ -59,9 +65,9 @@ export async function getStaticPaths() {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-      const category = data.category.toString();
+      const category = data.category_lower.toString();
       paths.push({
-        params: { category: category.toLowerCase() },
+        params: { category: category },
       });
     });
   } catch (err) {
@@ -76,13 +82,13 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context: { params: any }) {
   const { params } = context;
-  const category = capitalizeFirstLetter(params.category);
+  const category = params.category;
   let subcategories: any = [];
 
   try {
     const q = query(
       collection(projectFirestore, 'subcategories'),
-      where('category', '==', category)
+      where('category_lower', '==', category)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -92,6 +98,8 @@ export async function getStaticProps(context: { params: any }) {
         subcategory: data.subcategory,
         id: data.id,
         coverImg: data.coverImg,
+        category_lower: data.category_lower,
+        subcategory_lower: data.subcategory_lower,
       });
     });
   } catch (err) {

@@ -6,15 +6,16 @@ import {
   DetailBar,
   FormDescription,
 } from '../../../../styles/components/Desktop/Admin/Photos';
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import useFirestore from '../../../../helpers/hooks/useFirestore';
 import DeleteOverlay from '../../UI/DeleteOverlay';
 import FormDate from '../../UI/FormDate';
-import FormSelectAddNew from '../../UI/FormSelectAddNew';
 import Icon from '../../UI/Icon';
-import CategorySelector from './CategorySelector';
 
 import closeIcon from '/public/icons/closeWindow.png';
+import useStorage from '../../../../helpers/hooks/useStorage';
+import FormSubcategory from '../Upload/FormSubcategory';
+import FormCategory from '../Upload/FormCategory';
 
 export default function PhotosDetailSideBar({
   detailSidebarClose,
@@ -23,13 +24,15 @@ export default function PhotosDetailSideBar({
   detailSidebarClose: () => void;
   selectedItems: any[];
 }) {
-  const { fetchFirestore } = useFirestore();
-  const [selectedCategory, setSelectedCategory] = useState<string>();
-  const [selectedSubcategory, setSelectedSubcategory] = useState<string>();
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedSubcategory, setSelectedSubcategory] = useState<
+    string | undefined
+  >();
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedDescription, setSelectedDescription] = useState<string>();
-  const [subcategorySelection, setSubcategorySelection] = useState<any[]>();
   const [showUploadOverlay, setShowUploadOverlay] = useState(false);
+  const { updateImage } = useFirestore();
+  const { deleteFile } = useStorage();
 
   useEffect(() => {
     if (selectedItems[0]) {
@@ -40,16 +43,7 @@ export default function PhotosDetailSideBar({
     }
   }, [selectedItems]);
 
-  useEffect(() => {
-    let subcategories: any[] = [];
-    fetchFirestore('subcategories', 'category', selectedCategory).then(
-      (docs) => {
-        docs.map((doc) => subcategories.push(doc.subcategory));
-      }
-    );
-    setSubcategorySelection(subcategories);
-  }, [selectedCategory]);
-
+  // Form Handlers
   function categoryChangeHandler(selected: string) {
     setSelectedCategory(selected);
     setSelectedSubcategory(undefined);
@@ -63,6 +57,13 @@ export default function PhotosDetailSideBar({
     setSelectedDate(selected);
   }
 
+  function descriptionChangeHandler(event: {
+    target: { value: SetStateAction<string | undefined> };
+  }) {
+    setSelectedDescription(event.target.value);
+  }
+
+  // Set show
   const showFormHandler = () => {
     setShowUploadOverlay(true);
   };
@@ -70,11 +71,44 @@ export default function PhotosDetailSideBar({
   const hideFormHandler = () => {
     setShowUploadOverlay(false);
   };
-  function updateHandler() {}
+
+  function updateHandler() {
+    try {
+      for (let i = 0; i < selectedItems.length; i++) {
+        updateImage(
+          selectedItems[i].id,
+          selectedDescription,
+          selectedCategory,
+          selectedSubcategory,
+          selectedDate!,
+          selectedItems[i].url,
+          selectedItems[i].timeCreated
+        );
+      }
+      detailSidebarClose();
+    } catch {
+      console.log('Error updating');
+    }
+  }
 
   function deleteHandler() {
     setShowUploadOverlay(false);
+    try {
+      for (let i = 0; i < selectedItems.length; i++) {
+        deleteFile(selectedItems[i].url, selectedItems[i].id);
+      }
+    } catch {
+      console.log('Error deleting');
+    }
   }
+
+  const formSubcategory = (
+    <FormSubcategory
+      selectedCategory={selectedCategory}
+      selectedSubcategory={selectedSubcategory}
+      onChange={subcategoryChangeHandler}
+    />
+  );
 
   return (
     <DetailBar>
@@ -90,24 +124,16 @@ export default function PhotosDetailSideBar({
           <Icon img={closeIcon.src} size={30} />
         </CloseIcon>
       </BarHeader>
-      <CategorySelector
+      <FormCategory
         selectedCategory={selectedCategory}
-        categoryChangeHandler={categoryChangeHandler}
+        onChange={categoryChangeHandler}
       />
-      <FormSelectAddNew
-        options={subcategorySelection!}
-        placeholder={'Select a subcategory'}
-        onChange={subcategoryChangeHandler}
-        selected={selectedSubcategory}
-        onAddNew={function (input: string): void {
-          throw new Error('Function not implemented.');
-        }}
-        type={''}
-      />
+      {selectedCategory && formSubcategory}
       <FormDate onChange={dateChangeHandler} selectedDate={selectedDate} />
       <FormDescription
         placeholder="Write a description"
         value={selectedDescription}
+        onChange={descriptionChangeHandler}
       />
       <DeleteButton onClick={showFormHandler}>Delete</DeleteButton>
       <PrimaryButton onClick={updateHandler}>Update</PrimaryButton>

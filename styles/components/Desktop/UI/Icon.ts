@@ -13,7 +13,7 @@ export const IconImg = styled.div<{ img: string; color?: string }>`
   transition: 0.5s;
 
   &:hover {
-    opacity: 60%;
+    opacity: 80%;
     cursor: pointer;
   }
 `;

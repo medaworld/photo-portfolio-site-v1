@@ -38,7 +38,6 @@ export async function getStaticPaths() {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-      console.log(data);
       const category = data.category_lower.toString();
       const subcategory = data.subcategory_lower.toString();
       paths.push({

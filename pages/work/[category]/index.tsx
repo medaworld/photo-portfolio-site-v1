@@ -100,6 +100,7 @@ export async function getStaticProps(context: { params: any }) {
         coverImg: data.coverImg,
         category_lower: data.category_lower,
         subcategory_lower: data.subcategory_lower,
+        key: data.id,
       });
     });
   } catch (err) {

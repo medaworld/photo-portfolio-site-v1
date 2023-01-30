@@ -6,12 +6,23 @@ import { ThemeProvider } from 'styled-components';
 import { LightTheme } from '../styles/themes/LightTheme';
 import { GlobalStyle } from '../styles/GlobalStyles';
 import Layout from '../components/Desktop/Layout/Layout';
-import { useRouter } from 'next/router';
 import { SessionProvider } from 'next-auth/react';
 import { NotificationContextProvider } from '../context/notificationContext';
+import { useEffect, useState } from 'react';
+import Splash from '../components/Desktop/Splash/Splash';
 
 export default function App({ Component, pageProps }: AppProps) {
-  const router = useRouter();
+  const [splash, setSplash] = useState(true);
+  const [showPage, setShowPage] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSplash(false);
+    }, 1500);
+    setTimeout(() => {
+      setShowPage(true);
+    }, 800);
+  }, []);
 
   return (
     <>
@@ -25,9 +36,12 @@ export default function App({ Component, pageProps }: AppProps) {
         <SessionProvider session={pageProps.session}>
           <GlobalStyle />
           <NotificationContextProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            {splash && <Splash />}
+            {showPage && (
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            )}
           </NotificationContextProvider>
         </SessionProvider>
       </ThemeProvider>

@@ -1,16 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react';
 import {
   AdminMainPage,
   CenterWrapper,
 } from '../../styles/components/Desktop/Admin/Admin';
 import { Category, Images } from '../../helpers/organizers/types';
-import useFirestore from '../../helpers/hooks/useFirestore';
 
 import GalleryView from '../../components/Desktop/Admin/GalleryView';
 import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
 import GalleryViewDetailSideBar from '../../components/Desktop/Admin/GalleryViewDetailSideBar';
 import Loader from '../../components/Desktop/UI/Loader';
+import NotificationContext from '../../context/notificationContext';
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from 'firebase/firestore';
+import { projectFirestore } from '../../helpers/firebase/config';
 
 export default function AdminPhotosPage() {
   const [selectedImages, setSelectedImages] = useState<Images>([]);
@@ -28,13 +36,37 @@ export default function AdminPhotosPage() {
     });
   }, []);
 
-  const { docs: fetchedImages } = useFirestore(
-    'images',
-    'category',
-    selectedCategory?.category,
-    'timeCreated',
-    'desc'
-  );
+  const [docs, setDocs] = useState<any[]>();
+  const notificationCtx = useContext(NotificationContext);
+
+  useEffect(() => {
+    try {
+      let q = query(
+        collection(projectFirestore, 'images'),
+        orderBy('timeCreated', 'desc')
+      );
+      if (selectedCategory) {
+        q = query(
+          collection(projectFirestore, 'images'),
+          where('category', '==', selectedCategory.category),
+          orderBy('timeCreated', 'desc')
+        );
+      }
+      onSnapshot(q, (snapshot) => {
+        let documents: any[] = [];
+        snapshot.docs.forEach((doc) => {
+          documents.push({ ...doc.data() });
+        });
+        setDocs(documents);
+      });
+    } catch (err) {
+      notificationCtx.showNotification({
+        title: 'Error',
+        message: 'Error fetching data',
+        status: 'error',
+      });
+    }
+  }, [selectedCategory]);
 
   useEffect(() => {
     if (selectedImages.length > 0) {
@@ -73,7 +105,7 @@ export default function AdminPhotosPage() {
     <AdminMainPage>
       <AdminSideBar />
       <GalleryView
-        fetchedImages={fetchedImages}
+        fetchedImages={docs}
         selectedImages={selectedImages}
         onItemSelect={itemSelectHandler}
         selectedCategory={selectedCategory}

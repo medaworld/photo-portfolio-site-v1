@@ -5,6 +5,7 @@ import { connectToDatabase } from '../../../helpers/mongodb/db';
 
 export default NextAuth({
   session: {},
+  secret: process.env.SECRET,
   providers: [
     CredentialsProvider({
       async authorize(credentials) {

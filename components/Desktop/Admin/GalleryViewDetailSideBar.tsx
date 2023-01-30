@@ -1,48 +1,46 @@
+import { SetStateAction, useEffect, useState } from 'react';
+import { useTheme } from 'styled-components';
 import {
-  BarHeader,
-  CloseIcon,
   DetailBar,
   FormDescription,
-} from '../../../styles/components/Desktop/Admin/Photos';
-import { SetStateAction, useEffect, useState } from 'react';
+} from '../../../styles/components/Desktop/Admin/GalleryView';
+import { Images } from '../../../helpers/organizers/types';
+import useStorage from '../../../helpers/hooks/useStorage';
 import useFirestore from '../../../helpers/hooks/useFirestore';
+
 import DeleteOverlay from '../UI/DeleteOverlay';
 import FormDate from '../UI/FormDate';
-import Icon from '../UI/Icon';
+import Button from '../UI/Button';
 
-import closeIcon from '/public/icons/closeWindow.png';
-import useStorage from '../../../helpers/hooks/useStorage';
 import FormSubcategory from './Upload/FormSubcategory';
 import FormCategory from './Upload/FormCategory';
-import Button from '../UI/Button';
-import { useTheme } from 'styled-components';
+import DetailSideBarHeader from './DetailSideBarHeader';
 
-export default function PhotosDetailSideBar({
+export default function GalleryViewDetailSideBar({
   detailSidebarClose,
-  selectedItems,
+  selectedImages,
 }: {
   detailSidebarClose: () => void;
-  selectedItems: any[];
+  selectedImages: Images;
 }) {
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [selectedSubcategory, setSelectedSubcategory] = useState<
-    string | undefined
-  >();
-  const [selectedDate, setSelectedDate] = useState<Date>();
-  const [selectedDescription, setSelectedDescription] = useState<string>();
-  const [showUploadOverlay, setShowUploadOverlay] = useState(false);
   const { updateImage } = useFirestore();
   const { deleteFile } = useStorage();
   const { colors } = useTheme();
 
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
+  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [selectedDescription, setSelectedDescription] = useState<string>();
+  const [showUploadOverlay, setShowUploadOverlay] = useState(false);
+
   useEffect(() => {
-    if (selectedItems[0]) {
-      setSelectedCategory(selectedItems[0].category);
-      setSelectedSubcategory(selectedItems[0].subcategory);
-      setSelectedDate(selectedItems[0].dateTaken.toDate());
-      setSelectedDescription(selectedItems[0].description);
+    if (selectedImages[0]) {
+      setSelectedCategory(selectedImages[0].category);
+      setSelectedSubcategory(selectedImages[0].subcategory);
+      setSelectedDate(selectedImages[0].dateTaken.toDate());
+      setSelectedDescription(selectedImages[0].description);
     }
-  }, [selectedItems]);
+  }, [selectedImages]);
 
   // Form Handlers
   function categoryChangeHandler(selected: string) {
@@ -64,7 +62,7 @@ export default function PhotosDetailSideBar({
     setSelectedDescription(event.target.value);
   }
 
-  // Set show
+  // Set Show
   const showFormHandler = () => {
     setShowUploadOverlay(true);
   };
@@ -73,33 +71,27 @@ export default function PhotosDetailSideBar({
     setShowUploadOverlay(false);
   };
 
+  // Update
   function updateHandler() {
-    try {
-      for (let i = 0; i < selectedItems.length; i++) {
-        updateImage(
-          selectedItems[i].id,
-          selectedDescription,
-          selectedCategory,
-          selectedSubcategory,
-          selectedDate!,
-          selectedItems[i].url,
-          selectedItems[i].timeCreated
-        );
-      }
-      detailSidebarClose();
-    } catch {
-      console.log('Error updating');
+    for (let i = 0; i < selectedImages.length; i++) {
+      updateImage(
+        selectedImages[i].id,
+        selectedDescription,
+        selectedCategory,
+        selectedSubcategory,
+        selectedDate!,
+        selectedImages[i].url,
+        selectedImages[i].timeCreated
+      );
     }
+    detailSidebarClose();
   }
 
+  // Delete
   function deleteHandler() {
     setShowUploadOverlay(false);
-    try {
-      for (let i = 0; i < selectedItems.length; i++) {
-        deleteFile(selectedItems[i].url, selectedItems[i].id);
-      }
-    } catch {
-      console.log('Error deleting');
+    for (let i = 0; i < selectedImages.length; i++) {
+      deleteFile(selectedImages[i].url, selectedImages[i].id);
     }
   }
 
@@ -117,14 +109,10 @@ export default function PhotosDetailSideBar({
         <DeleteOverlay
           onClose={hideFormHandler}
           onDelete={deleteHandler}
-          name={selectedItems[0].category}
+          name={selectedImages[0].category}
         />
       )}
-      <BarHeader>
-        <CloseIcon onClick={detailSidebarClose}>
-          <Icon img={closeIcon.src} size={30} />
-        </CloseIcon>
-      </BarHeader>
+      <DetailSideBarHeader detailSidebarClose={detailSidebarClose} />
       <FormCategory
         selectedCategory={selectedCategory}
         onChange={categoryChangeHandler}

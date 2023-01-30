@@ -1,16 +1,22 @@
 import { useEffect, useState } from 'react';
-import GalleryView from '../../components/Desktop/Admin/GalleryView';
-import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
-import PhotosDetailSideBar from '../../components/Desktop/Admin/PhotosDetailSideBar';
-import useFirestore from '../../helpers/hooks/useFirestore';
+import { getSession } from 'next-auth/react';
 import {
   AdminMainPage,
   CenterWrapper,
 } from '../../styles/components/Desktop/Admin/Admin';
-import { getSession } from 'next-auth/react';
+import { Category, Images } from '../../helpers/organizers/types';
+import useFirestore from '../../helpers/hooks/useFirestore';
+
+import GalleryView from '../../components/Desktop/Admin/GalleryView';
+import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
+import GalleryViewDetailSideBar from '../../components/Desktop/Admin/GalleryViewDetailSideBar';
 import Loader from '../../components/Desktop/UI/Loader';
 
 export default function AdminPhotosPage() {
+  const [selectedImages, setSelectedImages] = useState<Images>([]);
+  const [selectedCategory, setSelectedCategory] = useState<Category>(null);
+  const [showDetailSidebar, setShowDetailSidebar] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     getSession().then((session) => {
@@ -22,10 +28,7 @@ export default function AdminPhotosPage() {
     });
   }, []);
 
-  const [selectedItems, setSelectedItems] = useState<any[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<any>(null);
-  const [showDetailSidebar, setShowDetailSidebar] = useState(false);
-  const { docs } = useFirestore(
+  const { docs: fetchedImages } = useFirestore(
     'images',
     'category',
     selectedCategory?.category,
@@ -34,29 +37,29 @@ export default function AdminPhotosPage() {
   );
 
   useEffect(() => {
-    if (selectedItems.length > 0) {
+    if (selectedImages.length > 0) {
       setShowDetailSidebar(true);
     } else {
       setShowDetailSidebar(false);
     }
-  }, [selectedItems]);
+  }, [selectedImages]);
 
-  const itemSelectHandler = (doc: any) => {
-    if (selectedItems.includes(doc)) {
-      setSelectedItems(() => {
-        return selectedItems.filter((item) => item !== doc);
+  function itemSelectHandler(doc: any) {
+    if (selectedImages.includes(doc)) {
+      setSelectedImages(() => {
+        return selectedImages.filter((item) => item !== doc);
       });
     } else {
-      setSelectedItems(() => {
-        return [...selectedItems, doc];
+      setSelectedImages(() => {
+        return [...selectedImages, doc];
       });
     }
-  };
+  }
 
-  const detailSidebarClose = () => {
+  function detailSidebarClose() {
     setShowDetailSidebar(false);
-    setSelectedItems([]);
-  };
+    setSelectedImages([]);
+  }
 
   if (isLoading) {
     return (
@@ -70,16 +73,16 @@ export default function AdminPhotosPage() {
     <AdminMainPage>
       <AdminSideBar />
       <GalleryView
-        fetchedDocs={docs}
-        selectedItems={selectedItems}
+        fetchedImages={fetchedImages}
+        selectedImages={selectedImages}
         onItemSelect={itemSelectHandler}
-        categorySelection={selectedCategory}
-        setCategorySelection={setSelectedCategory}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
       />
       {showDetailSidebar && (
-        <PhotosDetailSideBar
+        <GalleryViewDetailSideBar
           detailSidebarClose={detailSidebarClose}
-          selectedItems={selectedItems}
+          selectedImages={selectedImages}
         />
       )}
     </AdminMainPage>

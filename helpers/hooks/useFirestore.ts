@@ -292,7 +292,7 @@ const useFirestore = (
     subcategory: string | undefined,
     dateTaken: Date,
     url: string,
-    timeCreated: string
+    timeCreated: Date
   ) {
     try {
       if (

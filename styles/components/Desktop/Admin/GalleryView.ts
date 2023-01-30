@@ -35,17 +35,6 @@ export const DetailBar = styled.div`
   position: relative;
 `;
 
-export const BarHeader = styled.div`
-  width: 100%;
-  height: 50px;
-  display: flex;
-  align-items: center;
-`;
-
-export const CloseIcon = styled.div`
-  margin: 10px;
-`;
-
 export const FormDescription = styled.textarea`
   height: 20%;
   user-select: text;
@@ -59,39 +48,5 @@ export const FormDescription = styled.textarea`
 
   :focus {
     outline: none;
-  }
-`;
-
-export const PrimaryButton = styled.button`
-  border: none;
-  font-family: Inter;
-  font-size: 16px;
-  color: ${(p) => p.theme.colors.color};
-  height: 40px;
-  width: 100%;
-  transition: all 0.1s ease;
-  overflow: hidden;
-  margin-top: 10px;
-  border-radius: 10px;
-
-  &:hover {
-    filter: brightness(0.9);
-    cursor: pointer;
-  }
-`;
-
-export const DeleteButton = styled.button`
-  border: none;
-  font-family: Inter;
-  font-size: 16px;
-  color: #e72b2b;
-  height: 40px;
-  width: 100%;
-  transition: all 0.1s ease;
-  overflow: hidden;
-  border-radius: 10px;
-  &:hover {
-    filter: brightness(0.9);
-    cursor: pointer;
   }
 `;

@@ -51,90 +51,6 @@ export const SidebarItem = styled.li<{ selected: boolean }>`
   }
 `;
 
-export const ImageWrapper = styled.div`
-  position: relative;
-  transition: opacity 0.2s ease;
-
-  :hover {
-    opacity: 90%;
-    cursor: pointer;
-  }
-`;
-
-export const SectionImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
-
-export const Buttons = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-`;
-
-export const PrimaryButton = styled.button`
-  border: none;
-  font-family: Inter;
-  font-size: 16px;
-  color: ${(p) => p.theme.colors.color};
-  height: 40px;
-  width: 100%;
-  transition: all 0.1s ease;
-  overflow: hidden;
-  margin-top: 10px;
-  border-radius: 10px;
-
-  &:hover {
-    filter: brightness(0.9);
-    cursor: pointer;
-  }
-`;
-
-export const DeleteButton = styled.button`
-  border: none;
-  font-family: Inter;
-  font-size: 16px;
-  color: #e72b2b;
-  height: 40px;
-  width: 100%;
-  transition: all 0.1s ease;
-  overflow: hidden;
-  border-radius: 10px;
-  &:hover {
-    filter: brightness(0.9);
-    cursor: pointer;
-  }
-`;
-
-export const ListContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-export const CategoryViewHeader = styled.div`
-  height: 35px;
-`;
-
-export const ListViewMain = styled.div`
-  height: 100%;
-  overflow: scroll;
-`;
-
-export const ListViewItem = styled.div<{ selected: boolean }>`
-  padding: 15px;
-  font-size: 1.1rem;
-  background-color: ${(p) => (p.selected ? p.theme.colors.selected : '')};
-
-  :hover {
-    cursor: pointer;
-    background-color: ${(p) =>
-      p.selected ? p.theme.colors.selected : p.theme.colors.hover};
-    filter: brightness(0.95);
-  }
-`;
-
 export const FilterSelectorContainer = styled.div`
   height: 45px;
   display: flex;
@@ -161,6 +77,27 @@ export const SelectorItem = styled.div<{ selected: boolean }>`
   }
 `;
 
+export const AddCategoryContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const CloseIcon = styled.div`
+  margin: 10px;
+`;
+
+export const Title = styled.div`
+  font-size: 20px;
+  height: 25px;
+  text-align: center;
+`;
+
+export const BarHeader = styled.div`
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+`;
 export const CenterWrapper = styled.div`
   display: flex;
   justify-content: center;

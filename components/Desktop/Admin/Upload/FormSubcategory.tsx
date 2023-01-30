@@ -6,8 +6,8 @@ export default function FormSubcategory({
   selectedSubcategory,
   onChange,
 }: {
-  selectedCategory: string | undefined;
-  selectedSubcategory: string | undefined;
+  selectedCategory: string;
+  selectedSubcategory: string;
   onChange: (subcategory: string) => void;
 }) {
   const { addSubCategory, docs } = useFirestore(

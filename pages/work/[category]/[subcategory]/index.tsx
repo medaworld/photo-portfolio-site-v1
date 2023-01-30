@@ -2,26 +2,12 @@ import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import BackArrow from '../../../../components/Desktop/UI/BackArrow';
 import Loader from '../../../../components/Desktop/UI/Loader';
 import CategoryCover from '../../../../components/Desktop/Work/CategoryCover';
-import SlideshowImage from '../../../../components/Desktop/Work/SlideshowImage';
+import Slideshow from '../../../../components/Desktop/Work/Slideshow';
 import { projectFirestore } from '../../../../helpers/firebase/config';
-import {
-  Container,
-  Gallery,
-  Slideshow,
-} from '../../../../styles/components/Desktop/Work/Work';
+import { Images } from '../../../../helpers/organizers/types';
+import { Container } from '../../../../styles/components/Desktop/Work/Work';
 
-export default function SubCategoryPage({
-  images,
-}: {
-  images: {
-    category: string;
-    subcategory: string;
-    id: string;
-    url: string;
-    dateTaken: string;
-    description: string;
-  }[];
-}) {
+export default function SubCategoryPage({ images }: { images: Images }) {
   const imagesDisplay = images?.map((image, key) => {
     return (
       <CategoryCover
@@ -36,9 +22,7 @@ export default function SubCategoryPage({
   return (
     <Container>
       <BackArrow />
-      <Slideshow>
-        <SlideshowImage src={images[0].url} alt={''} />
-      </Slideshow>
+      <Slideshow images={images} />
       {!imagesDisplay && <Loader />}
     </Container>
   );

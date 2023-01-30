@@ -8,7 +8,7 @@ import {
   FormInput,
   FormLabel,
   FormMessage,
-} from '../../../styles/components/Desktop/Contact/ContactForm';
+} from '../../../styles/components/Desktop/Contact/ContactPage';
 import Button from '../UI/Button';
 
 export default function Contact() {

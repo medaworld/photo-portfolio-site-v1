@@ -33,16 +33,33 @@ export type ProbedImages = {
 export type Category = {
   id: string;
   category: string;
+  category_lower: string;
   timeCreated: Date;
   coverImg: string;
 };
 
 export type Subcategory = {
-  id: string;
   category: string;
-  subcategory: string;
-  timeCreated: Date;
+  category_lower: string;
   coverImg: string | null;
+  id: string;
+  subcategory: string;
+  subcategory_lower: string;
+  timeCreated: Date;
 };
 
 export type Error = null | string;
+
+export type Image = {
+  category: string;
+  category_lower: string;
+  dateTaken: any;
+  description: string;
+  id: string;
+  subcategory: string;
+  subcategory_lower: string;
+  timeCreated: Date;
+  url: string;
+};
+
+export type Images = Image[];

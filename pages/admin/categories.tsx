@@ -1,15 +1,16 @@
-import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
-import CategoryDetailSidebar from '../../components/Desktop/Admin/ListViewDetailSidebar';
-import ListView from '../../components/Desktop/Admin/ListView';
-import Loader from '../../components/Desktop/UI/Loader';
-import useFirestore from '../../helpers/hooks/useFirestore';
-
+import { getSession } from 'next-auth/react';
 import {
   AdminMainPage,
   CenterWrapper,
 } from '../../styles/components/Desktop/Admin/Admin';
+import { Category } from '../../helpers/organizers/types';
+import useFirestore from '../../helpers/hooks/useFirestore';
+
+import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
+import CategoryDetailSidebar from '../../components/Desktop/Admin/ListViewDetailSidebar';
+import ListView from '../../components/Desktop/Admin/ListView';
+import Loader from '../../components/Desktop/UI/Loader';
 
 export default function AdminCategoriesPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +24,7 @@ export default function AdminCategoriesPage() {
     });
   }, []);
 
-  const [selectedCategory, setSelectedCategory] = useState<any>(null);
+  const [selectedCategory, setSelectedCategory] = useState<Category>(null);
   const [showDetailSidebar, setShowDetailSidebar] = useState(false);
   const { docs } = useFirestore('categories', null, null, 'category', 'asc');
 
@@ -54,8 +55,8 @@ export default function AdminCategoriesPage() {
       <ListView
         docs={docs}
         type={'category'}
-        listSelection={selectedCategory}
-        setListSelection={setSelectedCategory}
+        selectedItem={selectedCategory}
+        setSelectedItem={setSelectedCategory}
       />
       {showDetailSidebar && (
         <CategoryDetailSidebar

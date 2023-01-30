@@ -1,22 +1,15 @@
 import { SetStateAction, useEffect, useState } from 'react';
-import {
-  Message,
-  Title,
-  BarHeader,
-  CloseIcon,
-  DetailBar,
-} from '../../../styles/components/Desktop/Admin/Categories';
-import DeleteOverlay from '../UI/DeleteOverlay';
-import FormSelect from '../UI/FormSelect';
-import Icon from '../UI/Icon';
-import SelectCover from './SelectCover';
+import { DetailBar } from '../../../styles/components/Desktop/Admin/ListView';
+import { useTheme } from 'styled-components';
 import { capitalizeFirstLetter } from '../../../helpers/functions/strings';
 import useFirestore from '../../../helpers/hooks/useFirestore';
 
-import closeIcon from '/public/icons/closeWindow.png';
+import DeleteOverlay from '../UI/DeleteOverlay';
+import FormSelect from '../UI/FormSelect';
+import SelectCover from './SelectCover';
 import Button from '../UI/Button';
-import { useTheme } from 'styled-components';
 import FormInput from '../UI/FormInput';
+import DetailSideBarHeader from './DetailSideBarHeader';
 
 export default function ListViewDetailSidebar({
   type,
@@ -123,12 +116,10 @@ export default function ListViewDetailSidebar({
           }
         />
       )}
-      <BarHeader>
-        <CloseIcon onClick={detailSidebarClose}>
-          <Icon img={closeIcon.src} size={30} />
-        </CloseIcon>
-        <Title>{capitalizeFirstLetter(type)} Detail</Title>
-      </BarHeader>
+      <DetailSideBarHeader
+        detailSidebarClose={detailSidebarClose}
+        title={`${capitalizeFirstLetter(type)} Detail`}
+      />
       <FormInput
         placeholder={`Enter ${type} name`}
         value={enteredTitle}

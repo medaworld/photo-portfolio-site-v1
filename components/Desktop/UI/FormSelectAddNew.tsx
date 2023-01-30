@@ -21,7 +21,7 @@ export default function FormSelectAddNew({
   onAddNew,
   type,
 }: {
-  options: string[] | undefined;
+  options: string[];
   placeholder: string;
   onChange: (option: any) => void;
   selected?: string;

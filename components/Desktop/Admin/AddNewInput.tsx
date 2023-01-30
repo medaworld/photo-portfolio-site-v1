@@ -1,6 +1,6 @@
 import { SetStateAction, useState } from 'react';
 import useFirestore from '../../../helpers/hooks/useFirestore';
-import { AddCategoryContainer } from '../../../styles/components/Desktop/Admin/Categories';
+import { AddCategoryContainer } from '../../../styles/components/Desktop/Admin/Admin';
 import Button from '../UI/Button';
 import FormInput from '../UI/FormInput';
 import FormCategory from './Upload/FormCategory';

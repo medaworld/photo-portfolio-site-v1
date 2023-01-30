@@ -1,7 +1,6 @@
 import { Container, Gallery } from '../../styles/components/Desktop/Work/Work';
 
 import CategoryCover from '../../components/Desktop/Work/CategoryCover';
-import useFirestore from '../../helpers/hooks/useFirestore';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { projectFirestore } from '../../helpers/firebase/config';
 import Loader from '../../components/Desktop/UI/Loader';

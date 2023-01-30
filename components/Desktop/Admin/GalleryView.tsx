@@ -1,32 +1,34 @@
+import { Dispatch, SetStateAction } from 'react';
+import { Category, Images } from '../../../helpers/organizers/types';
 import {
   GalleryContainer,
   Gallery,
   GallerySection,
   SectionImages,
-} from '../../../styles/components/Desktop/Admin/Photos';
+} from '../../../styles/components/Desktop/Admin/GalleryView';
 import Loader from '../UI/Loader';
 import SelectableImage from '../UI/SelectableImage';
 import FilterSelector from './FilterSelector';
 
 export default function GalleryView({
-  fetchedDocs,
+  fetchedImages,
   onItemSelect,
-  selectedItems,
-  categorySelection,
-  setCategorySelection,
+  selectedImages,
+  selectedCategory,
+  setSelectedCategory,
 }: {
-  fetchedDocs: any[] | undefined;
+  fetchedImages: Images;
   onItemSelect: (doc: any) => void;
-  selectedItems: any[];
-  categorySelection?: any;
-  setCategorySelection?: any;
+  selectedImages: any[];
+  selectedCategory?: Category;
+  setSelectedCategory?: Dispatch<SetStateAction<Category>>;
 }) {
-  const categoryImages = fetchedDocs?.map((doc, key) => {
+  const categoryImages = fetchedImages?.map((doc, key) => {
     return (
       <SelectableImage
         key={key}
         url={doc.url}
-        selected={selectedItems.includes(doc)}
+        selected={selectedImages.includes(doc)}
         onClick={() => onItemSelect(doc)}
       />
     );
@@ -36,8 +38,8 @@ export default function GalleryView({
     <GalleryContainer>
       <Gallery>
         <FilterSelector
-          selectedCategory={categorySelection}
-          setSelectedCategory={setCategorySelection}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
         />
         {!categoryImages && <Loader />}
         <GallerySection>

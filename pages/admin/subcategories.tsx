@@ -1,15 +1,16 @@
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
-import CategoryDetailSidebar from '../../components/Desktop/Admin/ListViewDetailSidebar';
-import ListView from '../../components/Desktop/Admin/ListView';
-import Loader from '../../components/Desktop/UI/Loader';
-import useFirestore from '../../helpers/hooks/useFirestore';
-
 import {
   AdminMainPage,
   CenterWrapper,
 } from '../../styles/components/Desktop/Admin/Admin';
+import useFirestore from '../../helpers/hooks/useFirestore';
+import { Category, Subcategory } from '../../helpers/organizers/types';
+
+import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
+import ListViewDetailSidebar from '../../components/Desktop/Admin/ListViewDetailSidebar';
+import ListView from '../../components/Desktop/Admin/ListView';
+import Loader from '../../components/Desktop/UI/Loader';
 
 export default function AdminSubcategoriesPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -23,8 +24,9 @@ export default function AdminSubcategoriesPage() {
     });
   }, []);
 
-  const [selectedCategory, setSelectedCategory] = useState<any>(null);
-  const [selectedSubcategory, setSelectedSubcategory] = useState<any>(null);
+  const [selectedCategory, setSelectedCategory] = useState<Category>(null);
+  const [selectedSubcategory, setSelectedSubcategory] =
+    useState<Subcategory>(null);
   const [showDetailSidebar, setShowDetailSidebar] = useState(false);
   const { docs } = useFirestore(
     'subcategories',
@@ -59,13 +61,13 @@ export default function AdminSubcategoriesPage() {
       <ListView
         docs={docs}
         type="subcategory"
-        categorySelection={selectedCategory}
-        setCategorySelection={setSelectedCategory}
-        listSelection={selectedSubcategory}
-        setListSelection={setSelectedSubcategory}
+        selectedItem={selectedSubcategory}
+        setSelectedItem={setSelectedSubcategory}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
       />
       {showDetailSidebar && (
-        <CategoryDetailSidebar
+        <ListViewDetailSidebar
           type="subcategory"
           selectedCategory={selectedSubcategory}
           detailSidebarClose={detailSidebarClose}

@@ -1,11 +1,8 @@
-import { useEffect } from 'react';
-import {
-  ImageWrapper,
-  SectionImage,
-} from '../../../styles/components/Desktop/Admin/Admin';
 import {
   Check,
   CoverTitle,
+  ImageWrapper,
+  SectionImage,
 } from '../../../styles/components/Desktop/UI/SelectableImage';
 
 import CheckIcon from '/public/icons/check.png';

@@ -1,27 +1,30 @@
+import { SetStateAction } from 'react';
+import { Dispatch } from 'react';
+import { Category, Subcategory } from '../../../helpers/organizers/types';
 import {
   ListContainer,
   ListViewMain,
   ListViewItem,
-} from '../../../styles/components/Desktop/Admin/Admin';
+} from '../../../styles/components/Desktop/Admin/ListView';
 import FilterSelector from './FilterSelector';
 
 export default function ListView({
   docs,
   type,
-  categorySelection,
-  setCategorySelection,
-  listSelection,
-  setListSelection,
+  selectedItem,
+  setSelectedItem,
+  selectedCategory,
+  setSelectedCategory,
 }: {
-  docs: any;
+  docs: Category[] | Subcategory[];
   type: string;
-  listSelection: any;
-  setListSelection: any;
-  categorySelection?: any;
-  setCategorySelection?: any;
+  selectedItem: Category | Subcategory;
+  setSelectedItem: Dispatch<any>;
+  selectedCategory?: Category;
+  setSelectedCategory?: Dispatch<SetStateAction<Category>>;
 }) {
   const itemSelectHandler = (doc: any) => {
-    setListSelection(doc);
+    setSelectedItem(doc);
   };
 
   const listItems = docs?.map((doc: any, key: number) => {
@@ -30,7 +33,7 @@ export default function ListView({
         <ListViewItem
           key={key}
           onClick={() => itemSelectHandler(doc)}
-          selected={listSelection == doc}
+          selected={selectedItem == doc}
         >
           {doc.category}
         </ListViewItem>
@@ -40,7 +43,7 @@ export default function ListView({
         <ListViewItem
           key={key}
           onClick={() => itemSelectHandler(doc)}
-          selected={listSelection == doc}
+          selected={selectedItem == doc}
         >
           {doc.subcategory}
         </ListViewItem>
@@ -50,8 +53,8 @@ export default function ListView({
 
   const filterSelector = (
     <FilterSelector
-      selectedCategory={categorySelection}
-      setSelectedCategory={setCategorySelection}
+      selectedCategory={selectedCategory}
+      setSelectedCategory={setSelectedCategory}
     />
   );
 

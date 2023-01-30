@@ -6,7 +6,7 @@ import {
   GalleryItem,
   ImgContainer,
   Subtitle,
-} from '../../../styles/components/Desktop/Admin/Categories';
+} from '../../../styles/components/Desktop/Admin/ListView';
 import Loader from '../UI/Loader';
 import SelectableImage from '../UI/SelectableImage';
 
@@ -22,7 +22,7 @@ export default function SelectCover({
   enteredImg: string;
   type?: string;
 }) {
-  let fieldValue;
+  let fieldValue: string;
   if (type === 'category') {
     fieldValue = selectedCategory.category;
   } else if (type === 'subcategory') {
@@ -59,7 +59,7 @@ export default function SelectCover({
           url={enteredImg}
           selected={false}
           text={
-            type == 'subcategory'
+            type === 'subcategory'
               ? selectedCategory.subcategory
               : selectedCategory.category
           }

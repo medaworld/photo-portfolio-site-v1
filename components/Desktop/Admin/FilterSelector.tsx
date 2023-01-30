@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import useFirestore from '../../../helpers/hooks/useFirestore';
 import {
   FilterSelectorContainer,
@@ -12,15 +11,9 @@ export default function FilterSelector({
   selectedCategory: any;
   setSelectedCategory: any;
 }) {
-  const [fetchedDocs, setFetchedDocs] = useState<any[]>();
-  const { fetchFirestore } = useFirestore();
-  useEffect(() => {
-    fetchFirestore('categories', null, null, 'category', 'asc').then((docs) =>
-      setFetchedDocs(docs)
-    );
-  }, []);
+  const { docs } = useFirestore('categories', null, null, 'category', 'asc');
 
-  const categories = fetchedDocs?.map((doc, key) => {
+  const categories = docs?.map((doc, key) => {
     return (
       <SelectorItem
         key={key}

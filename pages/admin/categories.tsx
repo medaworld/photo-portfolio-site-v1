@@ -11,8 +11,10 @@ import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
 import CategoryDetailSidebar from '../../components/Desktop/Admin/ListViewDetailSidebar';
 import ListView from '../../components/Desktop/Admin/ListView';
 import Loader from '../../components/Desktop/UI/Loader';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { projectFirestore } from '../../helpers/firebase/config';
 
-export default function AdminCategoriesPage() {
+export default function AdminCategoriesPage({ categories }) {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     getSession().then((session) => {
@@ -53,7 +55,7 @@ export default function AdminCategoriesPage() {
     <AdminMainPage>
       <AdminSideBar />
       <ListView
-        docs={docs}
+        docs={categories}
         type={'category'}
         selectedItem={selectedCategory}
         setSelectedItem={setSelectedCategory}
@@ -70,6 +72,26 @@ export default function AdminCategoriesPage() {
 }
 
 export async function getServerSideProps(context: { req: any }) {
+  let categories: any = [];
+
+  try {
+    const q = query(
+      collection(projectFirestore, 'categories'),
+      orderBy('category', 'asc')
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      categories.push({
+        category: data.category,
+        id: data.id,
+        coverImg: data.coverImg,
+      });
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
   const session = await getSession({ req: context.req });
   if (!session) {
     return {
@@ -80,6 +102,6 @@ export async function getServerSideProps(context: { req: any }) {
     };
   }
   return {
-    props: { session },
+    props: { session, categories },
   };
 }

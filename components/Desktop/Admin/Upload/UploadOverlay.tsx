@@ -69,12 +69,8 @@ function UploadOverlay(props: { onClose: () => void }) {
 
   const submitHandler = () => {
     if (files.length > 0) {
-      try {
-        for (let i = 0; i < files.length; i++) {
-          uploadFile(files[i]);
-        }
-      } catch {
-        setError('Error uploading');
+      for (let i = 0; i < files.length; i++) {
+        uploadFile(files[i]);
       }
     } else {
       setError('No file selected');

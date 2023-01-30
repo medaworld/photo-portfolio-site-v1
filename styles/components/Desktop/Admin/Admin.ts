@@ -16,7 +16,7 @@ export const SideBar = styled.div`
   }
 
   ul:nth-child(2) {
-    margin-top: 20%;
+    margin: 20% 0;
   }
 
   ul:last-child {

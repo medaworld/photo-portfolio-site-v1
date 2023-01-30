@@ -11,10 +11,10 @@ import {
   setDoc,
   where,
 } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 import { projectFirestore } from '../firebase/config';
-import { Error } from '../../helpers/organizers/types';
+import NotificationContext from '../../context/notificationContext';
 
 const useFirestore = (
   coll?: string,
@@ -24,7 +24,8 @@ const useFirestore = (
   orderDir?: OrderByDirection | undefined
 ) => {
   const [docs, setDocs] = useState<any[]>();
-  const [msg, setMsg] = useState<Error>(null);
+
+  const notificationCtx = useContext(NotificationContext);
   if (coll) {
     useEffect(() => {
       let q;
@@ -56,7 +57,11 @@ const useFirestore = (
           setDocs(documents);
         });
       } catch (err) {
-        setMsg('Error collecting data');
+        notificationCtx.showNotification({
+          title: 'Error',
+          message: 'Error fetching data',
+          status: 'error',
+        });
       }
     }, [coll, filtFieldValue]);
   }
@@ -96,7 +101,11 @@ const useFirestore = (
         fetchedDocs.push(data);
       });
     } catch (err) {
-      setMsg('Error collecting data');
+      notificationCtx.showNotification({
+        title: 'Error',
+        message: 'Error fetching data',
+        status: 'error',
+      });
     }
     return fetchedDocs;
   };
@@ -104,6 +113,13 @@ const useFirestore = (
   const addCategory = (category: string, img?: string | null) => {
     const id = v4();
     try {
+      if (!category || category.trim().length < 1) {
+        return notificationCtx.showNotification({
+          title: 'Error',
+          message: 'Please enter valid input',
+          status: 'error',
+        });
+      }
       setDoc(doc(projectFirestore, 'categories', id), {
         id: id,
         category: category,
@@ -129,9 +145,17 @@ const useFirestore = (
         coverImg: img ? img : null,
         timeCreated: new Date(),
       });
-      setMsg('Successfully updated');
+      notificationCtx.showNotification({
+        title: 'Success',
+        message: 'Successfully updated',
+        status: 'success',
+      });
     } catch (err) {
-      setMsg('Error updating category');
+      notificationCtx.showNotification({
+        title: 'Error',
+        message: 'Error updating',
+        status: 'error',
+      });
     }
   };
 
@@ -139,10 +163,19 @@ const useFirestore = (
     const docRef = doc(projectFirestore, 'categories', id);
     deleteDoc(docRef)
       .then(() => {
-        console.log('Category deleted');
-        setMsg('Successfully deleted');
+        notificationCtx.showNotification({
+          title: 'Success',
+          message: 'Successfully deleted',
+          status: 'success',
+        });
       })
-      .catch((err) => setMsg('Error deleting category'));
+      .catch((err) =>
+        notificationCtx.showNotification({
+          title: 'Error',
+          message: 'Error deleting',
+          status: 'error',
+        })
+      );
   };
 
   const addSubCategory = (
@@ -152,6 +185,18 @@ const useFirestore = (
   ) => {
     const id = v4();
     try {
+      if (
+        !category ||
+        !subcategory ||
+        category.trim().length < 1 ||
+        subcategory.trim().length < 1
+      ) {
+        return notificationCtx.showNotification({
+          title: 'Error',
+          message: 'Please enter valid input',
+          status: 'error',
+        });
+      }
       setDoc(doc(projectFirestore, 'subcategories', id), {
         id: id,
         category: category,
@@ -162,9 +207,17 @@ const useFirestore = (
           .toLowerCase(),
         coverImg: img ? img : null,
       });
-      setMsg('Successfully added');
+      notificationCtx.showNotification({
+        title: 'Success',
+        message: 'Successfully added',
+        status: 'success',
+      });
     } catch (err) {
-      setMsg('Error adding subcategory');
+      notificationCtx.showNotification({
+        title: 'Error',
+        message: 'Error adding',
+        status: 'error',
+      });
     }
   };
 
@@ -175,6 +228,19 @@ const useFirestore = (
     img?: string | null
   ) => {
     try {
+      if (
+        !category ||
+        !subcategory ||
+        !img ||
+        category.trim().length < 1 ||
+        subcategory.trim().length < 1
+      ) {
+        return notificationCtx.showNotification({
+          title: 'Error',
+          message: 'Please enter valid input',
+          status: 'error',
+        });
+      }
       setDoc(doc(projectFirestore, 'subcategories', id), {
         id: id,
         category: category,
@@ -186,9 +252,17 @@ const useFirestore = (
         coverImg: img ? img : null,
         timeCreated: new Date(),
       });
-      setMsg('Successfully updated');
+      notificationCtx.showNotification({
+        title: 'Success',
+        message: 'Successfully updated subcategory',
+        status: 'success',
+      });
     } catch (err) {
-      setMsg('Error updating subcategory');
+      notificationCtx.showNotification({
+        title: 'Error',
+        message: 'Error updating subcategory',
+        status: 'error',
+      });
     }
   };
 
@@ -196,10 +270,19 @@ const useFirestore = (
     const docRef = doc(projectFirestore, 'subcategories', id);
     deleteDoc(docRef)
       .then(() => {
-        console.log('Subcategory deleted');
-        setMsg('Successfully deleted');
+        notificationCtx.showNotification({
+          title: 'Success',
+          message: 'Successfully deleted',
+          status: 'success',
+        });
       })
-      .catch((err) => setMsg('Error deleting subcategory'));
+      .catch((err) =>
+        notificationCtx.showNotification({
+          title: 'Error',
+          message: 'Error deleting subcategory',
+          status: 'error',
+        })
+      );
   };
 
   function updateImage(
@@ -211,16 +294,20 @@ const useFirestore = (
     url: string,
     timeCreated: string
   ) {
-    if (!category) {
-      return setMsg('Enter valid category');
-    }
-    if (!subcategory) {
-      return setMsg('Enter valid subcategory');
-    }
-    if (!dateTaken) {
-      return setMsg('Enter valid date');
-    }
     try {
+      if (
+        !category ||
+        !subcategory ||
+        !dateTaken ||
+        category.trim().length < 1 ||
+        subcategory.trim().length < 1
+      ) {
+        return notificationCtx.showNotification({
+          title: 'Error',
+          message: 'Please enter valid input',
+          status: 'error',
+        });
+      }
       setDoc(doc(projectFirestore, 'images', id), {
         id: id,
         url: url,
@@ -234,9 +321,17 @@ const useFirestore = (
           .toLowerCase(),
         timeCreated: timeCreated,
       });
-      setMsg('Successfully updated');
+      notificationCtx.showNotification({
+        title: 'Success',
+        message: 'Successfully updated image',
+        status: 'success',
+      });
     } catch (err) {
-      setMsg('Error updating subcategory');
+      notificationCtx.showNotification({
+        title: 'Error',
+        message: 'Error updating image',
+        status: 'error',
+      });
     }
   }
 
@@ -250,7 +345,6 @@ const useFirestore = (
     deleteSubCategory,
     updateImage,
     docs,
-    msg,
   };
 };
 

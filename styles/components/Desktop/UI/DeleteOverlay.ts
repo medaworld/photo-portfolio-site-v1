@@ -3,14 +3,13 @@ import styled from 'styled-components';
 export const DeleteOverlayContainer = styled.div`
   display: flex;
   flex-direction: column;
-
-  height: 150px;
   width: 300px;
   padding: 15px;
   justify-content: space-evenly;
 
   p {
     font-size: 20px;
+    margin: 5px 0;
   }
 `;
 
@@ -34,7 +33,7 @@ export const Buttons = styled.div`
   }
 
   button:first-child {
-    background-color: #ed1818;
+    background-color: ${(p) => p.theme.colors.error};
     color: white;
   }
 `;

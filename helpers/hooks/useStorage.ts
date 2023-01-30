@@ -5,15 +5,17 @@ import {
   uploadBytes,
   uploadBytesResumable,
 } from 'firebase/storage';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { projectFirestore, projectStorage } from '../firebase/config';
 
 import { Error } from '../../helpers/organizers/types';
 import { deleteDoc, doc, setDoc } from 'firebase/firestore';
+import NotificationContext from '../../context/notificationContext';
 
 const useStorage = () => {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<Error>(null);
+  const notificationCtx = useContext(NotificationContext);
 
   const uploadFile = (file: {
     file: File;
@@ -33,6 +35,7 @@ const useStorage = () => {
     if (!file.dateTaken) {
       return setError('Please enter a valid date');
     }
+
     uploadBytes(storageRef, file.file)
       .then(async (snapshot) => {
         const url = await getDownloadURL(storageRef);
@@ -72,19 +75,22 @@ const useStorage = () => {
     const fileRef = ref(projectStorage, url);
     deleteObject(fileRef)
       .then(() => {
-        console.log('Deleted');
+        const docRef = doc(projectFirestore, 'images', id);
+        deleteDoc(docRef).then(() => {
+          notificationCtx.showNotification({
+            title: 'Success',
+            message: 'Successfully deleted',
+            status: 'success',
+          });
+        });
       })
       .catch((err) => {
-        setError(err.message);
+        notificationCtx.showNotification({
+          title: 'Error',
+          message: err.message,
+          status: 'error',
+        });
       });
-
-    const docRef = doc(projectFirestore, 'images', id);
-    deleteDoc(docRef)
-      .then(() => {
-        console.log(id);
-        console.log('Doc deleted');
-      })
-      .catch((err) => console.log(err));
   };
 
   return { progress, error, setError, uploadFile, deleteFile };

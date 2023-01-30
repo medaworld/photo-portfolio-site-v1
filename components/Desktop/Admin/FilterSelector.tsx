@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import useFirestore from '../../../../helpers/hooks/useFirestore';
+import useFirestore from '../../../helpers/hooks/useFirestore';
 import {
   FilterSelectorContainer,
   SelectorItem,
-} from '../../../../styles/components/Desktop/Admin/Admin';
+} from '../../../styles/components/Desktop/Admin/Admin';
 
 export default function FilterSelector({
   selectedCategory,

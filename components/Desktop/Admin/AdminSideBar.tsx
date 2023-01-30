@@ -1,18 +1,20 @@
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   SideBar,
   SidebarItem,
 } from '../../../styles/components/Desktop/Admin/Admin';
 import Icon from '../UI/Icon';
+import AddNewInput from './AddNewInput';
 import UploadOverlay from './Upload/UploadOverlay';
 
 import AddIcon from '/public/icons/add.png';
 
 export default function AdminSideBar({}: {}) {
   const [showUploadOverlay, setShowUploadOverlay] = useState(false);
+  const [listView, setListView] = useState(true);
   const router = useRouter();
 
   function showFormHandler() {
@@ -26,6 +28,25 @@ export default function AdminSideBar({}: {}) {
   function logoutHandler() {
     signOut();
   }
+
+  let type: string;
+  if (router.pathname === '/admin/categories') {
+    type = 'category';
+  } else {
+    type = 'subcategory';
+  }
+
+  useEffect(() => {
+    if (router.pathname === '/admin/photos') {
+      setListView(false);
+    }
+  });
+
+  const addNew = (
+    <ul>
+      <AddNewInput type={type} handler={() => {}} />
+    </ul>
+  );
 
   return (
     <SideBar>
@@ -53,6 +74,7 @@ export default function AdminSideBar({}: {}) {
           <p>Upload</p>
         </SidebarItem>
       </ul>
+      {listView && addNew}
       <ul>
         <SidebarItem selected={false} onClick={logoutHandler}>
           Logout

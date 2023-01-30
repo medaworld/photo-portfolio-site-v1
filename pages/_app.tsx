@@ -1,6 +1,4 @@
 import type { AppProps } from 'next/app';
-// import { AnimatePresence, motion } from 'framer-motion';
-
 import Head from 'next/head';
 
 import MyLogo from '/public/favicon.svg';
@@ -10,7 +8,7 @@ import { GlobalStyle } from '../styles/GlobalStyles';
 import Layout from '../components/Desktop/Layout/Layout';
 import { useRouter } from 'next/router';
 import { SessionProvider } from 'next-auth/react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { NotificationContextProvider } from '../context/notificationContext';
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -26,24 +24,11 @@ export default function App({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={LightTheme}>
         <SessionProvider session={pageProps.session}>
           <GlobalStyle />
-          <Layout>
-            {/* <AnimatePresence mode="wait">
-              <motion.div
-                key={router.route}
-                initial="initialState"
-                animate="animateState"
-                exit="exitState"
-                transition={{ duration: 1 }}
-                variants={{
-                  initialState: { opacity: 0 },
-                  animateState: { opacity: 1 },
-                  exitState: { opacity: 0 },
-                }}
-              > */}
-            <Component {...pageProps} />
-            {/* </motion.div>
-            </AnimatePresence> */}
-          </Layout>
+          <NotificationContextProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </NotificationContextProvider>
         </SessionProvider>
       </ThemeProvider>
     </>

@@ -1,4 +1,3 @@
-import { Image } from '../../../styles/components/Desktop/UI';
 import { SlideshowImageContainer } from '../../../styles/components/Desktop/Work/Work';
 
 export default function SlideshowImage({
@@ -10,7 +9,7 @@ export default function SlideshowImage({
 }) {
   return (
     <SlideshowImageContainer>
-      <Image src={src} alt={alt} />
+      <img src={src} alt={alt} />
     </SlideshowImageContainer>
   );
 }

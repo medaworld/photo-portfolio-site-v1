@@ -3,10 +3,10 @@ import {
   Gallery,
   GallerySection,
   SectionImages,
-} from '../../../../styles/components/Desktop/Admin/Photos';
-import Loader from '../../UI/Loader';
-import SelectableImage from '../../UI/SelectableImage';
-import FilterSelector from '../Categories/FilterSelector';
+} from '../../../styles/components/Desktop/Admin/Photos';
+import Loader from '../UI/Loader';
+import SelectableImage from '../UI/SelectableImage';
+import FilterSelector from './FilterSelector';
 
 export default function GalleryView({
   fetchedDocs,

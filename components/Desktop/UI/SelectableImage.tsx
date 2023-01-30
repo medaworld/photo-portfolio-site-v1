@@ -18,7 +18,7 @@ export default function SelectableImage({
 }: {
   url: string;
   selected: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   text?: string;
 }) {
   return (

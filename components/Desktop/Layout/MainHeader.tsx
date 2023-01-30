@@ -24,9 +24,6 @@ function MainHeader() {
                 WORK
               </Link>
             </li>
-            {/* <li>
-              <Link href="/journal">JOURNAL</Link>
-            </li> */}
             <li>
               <Link href="/contact" scroll={false}>
                 CONTACT

@@ -3,8 +3,8 @@ import {
   Buttons,
   DeleteOverlayContainer,
 } from '../../../styles/components/Desktop/UI/AddNewOverlay';
-
 import Modal from '../UI/Modal';
+import Button from './Button';
 
 function AddNewOverlay({
   onClose,
@@ -38,8 +38,8 @@ function AddNewOverlay({
           onChange={inputChangeHandler}
         />
         <Buttons>
-          <button onClick={submitHandler}>Submit</button>
-          <button onClick={onClose}>Cancel</button>
+          <Button text={'Submit'} onClick={submitHandler} />
+          <Button text={'Cancel'} onClick={onClose} />
         </Buttons>
       </DeleteOverlayContainer>
     </Modal>

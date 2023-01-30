@@ -55,3 +55,8 @@ export const Slideshow = styled.div`
 export const SlideshowImageContainer = styled.div`
   height: 80%;
 `;
+
+export const Image = styled.img`
+  width: 100%;
+  height: 100%;
+`;

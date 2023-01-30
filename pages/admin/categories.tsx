@@ -1,8 +1,8 @@
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
-import CategoryDetailSidebar from '../../components/Desktop/Admin/Categories/CategoryDetailSidebar';
-import ListView from '../../components/Desktop/Admin/Categories/ListView';
+import CategoryDetailSidebar from '../../components/Desktop/Admin/ListViewDetailSidebar';
+import ListView from '../../components/Desktop/Admin/ListView';
 import Loader from '../../components/Desktop/UI/Loader';
 import useFirestore from '../../helpers/hooks/useFirestore';
 
@@ -70,7 +70,6 @@ export default function AdminCategoriesPage() {
 
 export async function getServerSideProps(context: { req: any }) {
   const session = await getSession({ req: context.req });
-
   if (!session) {
     return {
       redirect: {

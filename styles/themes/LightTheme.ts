@@ -11,6 +11,6 @@ export const LightTheme: DefaultTheme = {
     selected: '#d2edf7',
     accent: '#c9def2',
     success: '#5cbb5c',
-    error: '#e39d9d',
+    error: '#e72b2b',
   },
 };

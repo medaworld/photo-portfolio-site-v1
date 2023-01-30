@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { Image } from '../../../styles/components/Desktop/UI';
 import {
   CoverContainer,
   CoverTitle,
+  Image,
 } from '../../../styles/components/Desktop/Work/Work';
 
 function CategoryCover({

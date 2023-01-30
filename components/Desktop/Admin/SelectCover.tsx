@@ -1,17 +1,16 @@
-import { useEffect, useState } from 'react';
-import useFirestore from '../../../../helpers/hooks/useFirestore';
-import { Subcategory } from '../../../../helpers/organizers/types';
+import useFirestore from '../../../helpers/hooks/useFirestore';
+import { Subcategory } from '../../../helpers/organizers/types';
 import {
   CoverSelectContainer,
   Gallery,
   GalleryItem,
   ImgContainer,
   Subtitle,
-} from '../../../../styles/components/Desktop/Admin/Categories';
-import Loader from '../../UI/Loader';
-import SelectableImage from '../../UI/SelectableImage';
+} from '../../../styles/components/Desktop/Admin/Categories';
+import Loader from '../UI/Loader';
+import SelectableImage from '../UI/SelectableImage';
 
-function SelectCover({
+export default function SelectCover({
   selectedCategory,
   onImgChange,
   enteredImg,
@@ -64,13 +63,8 @@ function SelectCover({
               ? selectedCategory.subcategory
               : selectedCategory.category
           }
-          onClick={function (): void {
-            throw new Error('Function not implemented.');
-          }}
         />
       </ImgContainer>
     </CoverSelectContainer>
   );
 }
-
-export default SelectCover;

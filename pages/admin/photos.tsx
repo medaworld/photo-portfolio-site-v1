@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import GalleryView from '../../components/Desktop/Admin/Photos/GalleryView';
+import GalleryView from '../../components/Desktop/Admin/GalleryView';
 import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
-import PhotosDetailSideBar from '../../components/Desktop/Admin/Photos/PhotosDetailSideBar';
+import PhotosDetailSideBar from '../../components/Desktop/Admin/PhotosDetailSideBar';
 import useFirestore from '../../helpers/hooks/useFirestore';
 import {
   AdminMainPage,

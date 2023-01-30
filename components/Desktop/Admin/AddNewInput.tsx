@@ -1,19 +1,20 @@
 import { SetStateAction, useState } from 'react';
-import {
-  AddButton,
-  AddCategoryContainer,
-  CategoryInput,
-} from '../../../styles/components/Desktop/Admin/Categories';
+import useFirestore from '../../../helpers/hooks/useFirestore';
+import { AddCategoryContainer } from '../../../styles/components/Desktop/Admin/Categories';
+import Button from '../UI/Button';
+import FormInput from '../UI/FormInput';
+import FormCategory from './Upload/FormCategory';
 
 function AddNewInput({
   type,
-  handler,
 }: {
   type: string;
   handler: (input: string) => void;
 }) {
   const [input, setInput] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const placeholder = `New ${type.toLocaleLowerCase()}...`;
+  const { addCategory, addSubCategory } = useFirestore();
 
   const changeHandler = (event: {
     target: { value: SetStateAction<string> };
@@ -22,18 +23,32 @@ function AddNewInput({
   };
 
   const clickHandler = () => {
-    handler(input);
+    if (type === 'category') {
+      addCategory(input);
+    } else {
+      addSubCategory(selectedCategory, input);
+    }
     setInput('');
   };
 
+  function categoryHandler(category: string) {
+    setSelectedCategory(category);
+  }
+
   return (
     <AddCategoryContainer>
-      <CategoryInput
+      {type === 'subcategory' && (
+        <FormCategory
+          selectedCategory={selectedCategory}
+          onChange={categoryHandler}
+        />
+      )}
+      <FormInput
         placeholder={placeholder}
         onChange={changeHandler}
         value={input}
       />
-      <AddButton onClick={clickHandler}>Add {type}</AddButton>
+      <Button text={`Add ${type}`} onClick={clickHandler} />
     </AddCategoryContainer>
   );
 }

@@ -1,24 +1,24 @@
 import { SetStateAction, useEffect, useState } from 'react';
 import {
-  CategoryInput,
   Message,
   Title,
   BarHeader,
   CloseIcon,
-  DeleteButton,
   DetailBar,
-  PrimaryButton,
-} from '../../../../styles/components/Desktop/Admin/Categories';
-import DeleteOverlay from '../../UI/DeleteOverlay';
-import FormSelect from '../../UI/FormSelect';
-import Icon from '../../UI/Icon';
+} from '../../../styles/components/Desktop/Admin/Categories';
+import DeleteOverlay from '../UI/DeleteOverlay';
+import FormSelect from '../UI/FormSelect';
+import Icon from '../UI/Icon';
 import SelectCover from './SelectCover';
-import { capitalizeFirstLetter } from '../../../../helpers/functions/strings';
-import useFirestore from '../../../../helpers/hooks/useFirestore';
+import { capitalizeFirstLetter } from '../../../helpers/functions/strings';
+import useFirestore from '../../../helpers/hooks/useFirestore';
 
 import closeIcon from '/public/icons/closeWindow.png';
+import Button from '../UI/Button';
+import { useTheme } from 'styled-components';
+import FormInput from '../UI/FormInput';
 
-export default function CategoryDetailSidebar({
+export default function ListViewDetailSidebar({
   type,
   selectedCategory,
   detailSidebarClose,
@@ -31,13 +31,13 @@ export default function CategoryDetailSidebar({
   const [enteredImg, setEnteredImg] = useState(selectedCategory.coverImg);
   const [enteredCategory, setEnteredCategory] = useState<string>();
   const [showDeleteOverlay, setShowDeleteOverlay] = useState(false);
+  const { colors } = useTheme();
   const {
     deleteCategory,
     deleteSubCategory,
     docs,
     updateCategory,
     updateSubCategory,
-    msg,
   } = useFirestore('categories');
 
   const showOverlayHandler = () => {
@@ -129,7 +129,7 @@ export default function CategoryDetailSidebar({
         </CloseIcon>
         <Title>{capitalizeFirstLetter(type)} Detail</Title>
       </BarHeader>
-      <CategoryInput
+      <FormInput
         placeholder={`Enter ${type} name`}
         value={enteredTitle}
         onChange={titleInputChangeHandler}
@@ -141,13 +141,15 @@ export default function CategoryDetailSidebar({
         enteredImg={enteredImg}
         type={type}
       />
-      <Message>{msg}</Message>
-      <DeleteButton
+      <Button
+        text={`Delete ${capitalizeFirstLetter(type)}`}
         onClick={showOverlayHandler}
-      >{`Delete ${capitalizeFirstLetter(type)}`}</DeleteButton>
-      <PrimaryButton onClick={updateHandler}>{`Update ${capitalizeFirstLetter(
-        type
-      )}`}</PrimaryButton>
+        textColor={colors.error}
+      />
+      <Button
+        text={`Update ${capitalizeFirstLetter(type)}`}
+        onClick={updateHandler}
+      />
     </DetailBar>
   );
 }

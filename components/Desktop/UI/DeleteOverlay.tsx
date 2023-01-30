@@ -5,19 +5,24 @@ import {
 } from '../../../styles/components/Desktop/UI/DeleteOverlay';
 
 import Modal from '../UI/Modal';
+import Button from './Button';
 
-function DeleteOverlay(props: {
+function DeleteOverlay({
+  onClose,
+  onDelete,
+  name,
+}: {
   onClose: () => void;
   onDelete: () => void;
   name: string;
 }) {
   return (
-    <Modal onClose={props.onClose}>
+    <Modal onClose={onClose}>
       <DeleteOverlayContainer>
-        <p>Delete {props.name}?</p>
+        <p>Delete {name}?</p>
         <Buttons>
-          <button onClick={props.onDelete}>Delete</button>
-          <button onClick={props.onClose}>Cancel</button>
+          <Button text={'Delete'} onClick={onDelete} />
+          <Button text={'Cancel'} onClick={onClose} />
         </Buttons>
       </DeleteOverlayContainer>
     </Modal>

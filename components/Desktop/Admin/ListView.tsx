@@ -2,8 +2,7 @@ import {
   ListContainer,
   ListViewMain,
   ListViewItem,
-} from '../../../../styles/components/Desktop/Admin/Admin';
-import AddNewInput from '../AddNewInput';
+} from '../../../styles/components/Desktop/Admin/Admin';
 import FilterSelector from './FilterSelector';
 
 export default function ListView({
@@ -60,12 +59,6 @@ export default function ListView({
     <ListContainer>
       {type === 'subcategory' && filterSelector}
       <ListViewMain>{listItems}</ListViewMain>
-      <AddNewInput
-        type={type}
-        handler={function (input: string): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
     </ListContainer>
   );
 }

@@ -1,10 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import { getSession, signIn, useSession } from 'next-auth/react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { getSession, signIn } from 'next-auth/react';
 import { CenterWrapper } from '../../styles/components/Desktop/Admin/Admin';
 import { useRouter } from 'next/router';
 import Loader from '../../components/Desktop/UI/Loader';
+import Button from '../../components/Desktop/UI/Button';
+import NotificationContext from '../../context/notificationContext';
 
 export default function SignInPage() {
+  const notificationCtx = useContext(NotificationContext);
   const [isLoading, setIsLoading] = useState(true);
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -22,7 +25,6 @@ export default function SignInPage() {
 
   async function submitHandler(event: { preventDefault: () => void }) {
     event.preventDefault();
-
     const enteredEmail = emailInputRef.current?.value;
     const enteredPassword = passwordInputRef.current?.value;
 
@@ -34,9 +36,18 @@ export default function SignInPage() {
       });
 
       if (!result?.error) {
+        notificationCtx.showNotification({
+          title: 'Success',
+          message: 'Successfully logged in!',
+          status: 'success',
+        });
         router.replace('/admin/photos');
       } else {
-        alert('UNAUTHORIZED');
+        notificationCtx.showNotification({
+          title: 'Error',
+          message: 'Unauthorized access',
+          status: 'error',
+        });
         router.replace('/');
       }
     } catch (error) {
@@ -59,7 +70,7 @@ export default function SignInPage() {
         <input type="email" id="email" ref={emailInputRef}></input>
         <label htmlFor="password">Password</label>
         <input type="password" id="password" ref={passwordInputRef}></input>
-        <button>Submit</button>
+        <Button text={'Submit'} onClick={() => {}} />
       </form>
     </CenterWrapper>
   );

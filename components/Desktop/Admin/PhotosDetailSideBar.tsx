@@ -1,21 +1,21 @@
 import {
-  PrimaryButton,
   BarHeader,
   CloseIcon,
-  DeleteButton,
   DetailBar,
   FormDescription,
-} from '../../../../styles/components/Desktop/Admin/Photos';
+} from '../../../styles/components/Desktop/Admin/Photos';
 import { SetStateAction, useEffect, useState } from 'react';
-import useFirestore from '../../../../helpers/hooks/useFirestore';
-import DeleteOverlay from '../../UI/DeleteOverlay';
-import FormDate from '../../UI/FormDate';
-import Icon from '../../UI/Icon';
+import useFirestore from '../../../helpers/hooks/useFirestore';
+import DeleteOverlay from '../UI/DeleteOverlay';
+import FormDate from '../UI/FormDate';
+import Icon from '../UI/Icon';
 
 import closeIcon from '/public/icons/closeWindow.png';
-import useStorage from '../../../../helpers/hooks/useStorage';
-import FormSubcategory from '../Upload/FormSubcategory';
-import FormCategory from '../Upload/FormCategory';
+import useStorage from '../../../helpers/hooks/useStorage';
+import FormSubcategory from './Upload/FormSubcategory';
+import FormCategory from './Upload/FormCategory';
+import Button from '../UI/Button';
+import { useTheme } from 'styled-components';
 
 export default function PhotosDetailSideBar({
   detailSidebarClose,
@@ -33,6 +33,7 @@ export default function PhotosDetailSideBar({
   const [showUploadOverlay, setShowUploadOverlay] = useState(false);
   const { updateImage } = useFirestore();
   const { deleteFile } = useStorage();
+  const { colors } = useTheme();
 
   useEffect(() => {
     if (selectedItems[0]) {
@@ -135,8 +136,12 @@ export default function PhotosDetailSideBar({
         value={selectedDescription}
         onChange={descriptionChangeHandler}
       />
-      <DeleteButton onClick={showFormHandler}>Delete</DeleteButton>
-      <PrimaryButton onClick={updateHandler}>Update</PrimaryButton>
+      <Button
+        text={'Delete'}
+        onClick={showFormHandler}
+        textColor={colors.error}
+      />
+      <Button text={'Update'} onClick={updateHandler} />
     </DetailBar>
   );
 }

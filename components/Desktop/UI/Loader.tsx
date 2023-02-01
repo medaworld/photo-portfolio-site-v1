@@ -1,4 +1,5 @@
 import {
+  CenterWrapper,
   FirstSpan,
   LoaderWrapper,
   SecondSpan,
@@ -7,10 +8,12 @@ import {
 
 export default function Loader() {
   return (
-    <LoaderWrapper>
-      <FirstSpan />
-      <SecondSpan />
-      <ThirdSpan />
-    </LoaderWrapper>
+    <CenterWrapper>
+      <LoaderWrapper>
+        <FirstSpan />
+        <SecondSpan />
+        <ThirdSpan />
+      </LoaderWrapper>
+    </CenterWrapper>
   );
 }

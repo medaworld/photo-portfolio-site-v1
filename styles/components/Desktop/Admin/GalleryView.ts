@@ -4,19 +4,16 @@ export const GalleryContainer = styled.div`
   height: 85vh;
   overflow: scroll;
   display: flex;
+  width: 100%;
 `;
 
 export const Gallery = styled.div`
   display: block;
   position: relative;
+  width: 100%;
 `;
 
-export const GallerySection = styled.div`
-  display: block;
-  position: relative;
-`;
-
-export const SectionImages = styled.div`
+export const GalleryImages = styled.div`
   column-count: 3;
   -webkit-column-count: 3;
   -moz-column-count: 3;

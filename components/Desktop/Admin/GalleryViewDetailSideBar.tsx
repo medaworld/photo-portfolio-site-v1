@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
 import {
   DetailBar,
@@ -26,49 +26,63 @@ export default function GalleryViewDetailSideBar({
   const { updateImage } = useFirestore();
   const { deleteFile } = useStorage();
   const { colors } = useTheme();
+  const [formData, setFormData] = useState({
+    category: '',
+    subcategory: '',
+    date: undefined,
+    description: '',
+  });
 
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
-  const [selectedDate, setSelectedDate] = useState<Date>();
-  const [selectedDescription, setSelectedDescription] = useState<string>();
-  const [showUploadOverlay, setShowUploadOverlay] = useState(false);
+  const [showDeleteOverlay, setShowDeleteOverlay] = useState(false);
 
   useEffect(() => {
     if (selectedImages[0]) {
-      setSelectedCategory(selectedImages[0].category);
-      setSelectedSubcategory(selectedImages[0].subcategory);
-      setSelectedDate(selectedImages[0].dateTaken.toDate());
-      setSelectedDescription(selectedImages[0].description);
+      setFormData({
+        category: selectedImages[0].category,
+        subcategory: selectedImages[0].subcategory,
+        date: selectedImages[0].dateTaken.toDate(),
+        description: selectedImages[0].description,
+      });
     }
   }, [selectedImages]);
 
   // Form Handlers
   function categoryChangeHandler(selected: string) {
-    setSelectedCategory(selected);
-    setSelectedSubcategory(undefined);
+    setFormData({
+      ...formData,
+      category: selected,
+      subcategory: undefined,
+    });
   }
 
   function subcategoryChangeHandler(selected: string) {
-    setSelectedSubcategory(selected);
+    setFormData({
+      ...formData,
+      subcategory: selected,
+    });
   }
 
   function dateChangeHandler(selected: Date) {
-    setSelectedDate(selected);
+    setFormData({
+      ...formData,
+      date: selected,
+    });
   }
 
-  function descriptionChangeHandler(event: {
-    target: { value: SetStateAction<string | undefined> };
-  }) {
-    setSelectedDescription(event.target.value);
+  function descriptionChangeHandler(event: { target: { value: string } }) {
+    setFormData({
+      ...formData,
+      description: event.target.value,
+    });
   }
 
   // Set Show
   const showFormHandler = () => {
-    setShowUploadOverlay(true);
+    setShowDeleteOverlay(true);
   };
 
   const hideFormHandler = () => {
-    setShowUploadOverlay(false);
+    setShowDeleteOverlay(false);
   };
 
   // Update
@@ -76,10 +90,10 @@ export default function GalleryViewDetailSideBar({
     for (let i = 0; i < selectedImages.length; i++) {
       updateImage(
         selectedImages[i].id,
-        selectedDescription,
-        selectedCategory,
-        selectedSubcategory,
-        selectedDate!,
+        formData.description,
+        formData.category,
+        formData.subcategory,
+        formData.date,
         selectedImages[i].url,
         selectedImages[i].timeCreated
       );
@@ -89,7 +103,7 @@ export default function GalleryViewDetailSideBar({
 
   // Delete
   function deleteHandler() {
-    setShowUploadOverlay(false);
+    setShowDeleteOverlay(false);
     for (let i = 0; i < selectedImages.length; i++) {
       deleteFile(selectedImages[i].url, selectedImages[i].id);
     }
@@ -97,15 +111,15 @@ export default function GalleryViewDetailSideBar({
 
   const formSubcategory = (
     <FormSubcategory
-      selectedCategory={selectedCategory}
-      selectedSubcategory={selectedSubcategory}
+      selectedCategory={formData.category}
+      selectedSubcategory={formData.subcategory}
       onChange={subcategoryChangeHandler}
     />
   );
 
   return (
     <DetailBar>
-      {showUploadOverlay && (
+      {showDeleteOverlay && (
         <DeleteOverlay
           onClose={hideFormHandler}
           onDelete={deleteHandler}
@@ -114,14 +128,14 @@ export default function GalleryViewDetailSideBar({
       )}
       <DetailSideBarHeader detailSidebarClose={detailSidebarClose} />
       <FormCategory
-        selectedCategory={selectedCategory}
+        selectedCategory={formData.category}
         onChange={categoryChangeHandler}
       />
-      {selectedCategory && formSubcategory}
-      <FormDate onChange={dateChangeHandler} selectedDate={selectedDate} />
+      {formData.category && formSubcategory}
+      <FormDate onChange={dateChangeHandler} selectedDate={formData.date} />
       <FormDescription
         placeholder="Write a description"
-        value={selectedDescription}
+        value={formData.description}
         onChange={descriptionChangeHandler}
       />
       <Button

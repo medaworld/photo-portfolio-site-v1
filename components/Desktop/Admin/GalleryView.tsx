@@ -1,29 +1,67 @@
-import { Dispatch, SetStateAction } from 'react';
-import { Category, Images } from '../../../helpers/organizers/types';
+import { useEffect, useState } from 'react';
+import { Category } from '../../../helpers/organizers/types';
+import { useCollection } from 'react-firebase-hooks/firestore';
+
+import { collection, orderBy, Query, query, where } from '@firebase/firestore';
+import { projectFirestore } from '../../../helpers/firebase/config';
+
 import {
   GalleryContainer,
   Gallery,
-  GallerySection,
-  SectionImages,
+  GalleryImages,
 } from '../../../styles/components/Desktop/Admin/GalleryView';
+
 import Loader from '../UI/Loader';
 import SelectableImage from '../UI/SelectableImage';
 import FilterSelector from './FilterSelector';
 
 export default function GalleryView({
-  fetchedImages,
   onItemSelect,
   selectedImages,
-  selectedCategory,
-  setSelectedCategory,
 }: {
-  fetchedImages: Images;
   onItemSelect: (doc: any) => void;
   selectedImages: any[];
-  selectedCategory?: Category;
-  setSelectedCategory?: Dispatch<SetStateAction<Category>>;
 }) {
-  const categoryImages = fetchedImages?.map((doc, key) => {
+  const [selectedCategory, setSelectedCategory] = useState<Category>(undefined);
+  const [ref, setRef] = useState<Query>();
+
+  useEffect(() => {
+    if (selectedCategory) {
+      setRef(
+        query(
+          collection(projectFirestore, 'images'),
+          where('category', '==', selectedCategory),
+          orderBy('subcategory', 'asc')
+        )
+      );
+    } else {
+      setRef(
+        query(
+          collection(projectFirestore, 'images'),
+          orderBy('timeCreated', 'desc')
+        )
+      );
+    }
+  }, [selectedCategory]);
+
+  const [docs, setDocs] = useState<any[]>([]);
+  const [images, loading, error] = useCollection(ref, {});
+
+  useEffect(() => {
+    if (images) {
+      setDocs(
+        images.docs.map((doc) => {
+          return doc.data();
+        })
+      );
+    }
+  }, [images]);
+
+  console.log(images);
+
+  const loader = <Loader />;
+
+  const categoryImages = docs?.map((doc, key) => {
     return (
       <SelectableImage
         key={key}
@@ -41,10 +79,9 @@ export default function GalleryView({
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
-        {!categoryImages && <Loader />}
-        <GallerySection>
-          <SectionImages>{categoryImages}</SectionImages>
-        </GallerySection>
+        {loading && loader}
+        {!loading && <GalleryImages>{categoryImages}</GalleryImages>}
+        {error && <p>Error Loading</p>}
       </Gallery>
     </GalleryContainer>
   );

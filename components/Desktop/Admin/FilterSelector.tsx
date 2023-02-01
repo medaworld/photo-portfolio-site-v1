@@ -17,7 +17,7 @@ export default function FilterSelector({
     return (
       <SelectorItem
         key={key}
-        onClick={() => setSelectedCategory(doc)}
+        onClick={() => setSelectedCategory(doc.category)}
         selected={selectedCategory == doc}
       >
         {doc.category}

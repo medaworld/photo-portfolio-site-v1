@@ -1,15 +1,16 @@
-import useFirestore from '../../../helpers/hooks/useFirestore';
+import { Dispatch, SetStateAction } from 'react';
+import useFirestore from '../../../../helpers/hooks/useFirestore';
 import {
   FilterSelectorContainer,
   SelectorItem,
-} from '../../../styles/components/Desktop/Admin/Admin';
+} from '../../../../styles/components/Desktop/Admin/Admin';
 
 export default function FilterSelector({
   selectedCategory,
   setSelectedCategory,
 }: {
-  selectedCategory: any;
-  setSelectedCategory: any;
+  selectedCategory: string;
+  setSelectedCategory: Dispatch<SetStateAction<string>>;
 }) {
   const { docs } = useFirestore('categories', null, null, 'category', 'asc');
 
@@ -18,7 +19,7 @@ export default function FilterSelector({
       <SelectorItem
         key={key}
         onClick={() => setSelectedCategory(doc.category)}
-        selected={selectedCategory == doc}
+        selected={selectedCategory == doc || selectedCategory == doc.category}
       >
         {doc.category}
       </SelectorItem>

@@ -5,10 +5,10 @@ import { useEffect, useState } from 'react';
 import {
   SideBar,
   SidebarItem,
-} from '../../../styles/components/Desktop/Admin/Admin';
-import Icon from '../UI/Icon';
+} from '../../../../styles/components/Desktop/Admin/Admin';
+import Icon from '../../UI/Icon';
 import AddNewInput from './AddNewInput';
-import UploadOverlay from './Upload/UploadOverlay';
+import UploadOverlay from '../Upload/UploadOverlay';
 
 import AddIcon from '/public/icons/add.png';
 
@@ -44,7 +44,7 @@ export default function AdminSideBar({}: {}) {
 
   const addNew = (
     <ul>
-      <AddNewInput type={type} handler={() => {}} />
+      <AddNewInput type={type} />
     </ul>
   );
 

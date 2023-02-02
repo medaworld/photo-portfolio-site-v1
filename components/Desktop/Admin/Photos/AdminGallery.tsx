@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Images } from '../../../helpers/organizers/types';
+import { Images } from '../../../../helpers/organizers/types';
 import GalleryView from './GalleryView';
 import GalleryViewDetailSideBar from './GalleryViewDetailSideBar';
 
 export default function AdminGallery() {
   const [selectedImages, setSelectedImages] = useState<Images>([]);
-
   const [showDetailSidebar, setShowDetailSidebar] = useState(false);
 
   useEffect(() => {

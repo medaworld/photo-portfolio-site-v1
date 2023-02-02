@@ -3,8 +3,8 @@ import { getSession } from 'next-auth/react';
 
 import { AdminMainPage } from '../../styles/components/Desktop/Admin/Admin';
 
-import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
-import AdminGallery from '../../components/Desktop/Admin/AdminGallery';
+import AdminSideBar from '../../components/Desktop/Admin/Shared/AdminSideBar';
+import AdminGallery from '../../components/Desktop/Admin/Photos/AdminGallery';
 import Loader from '../../components/Desktop/UI/Loader';
 
 export default function AdminPhotosPage() {

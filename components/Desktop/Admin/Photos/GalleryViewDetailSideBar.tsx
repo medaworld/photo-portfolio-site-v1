@@ -3,18 +3,19 @@ import { useTheme } from 'styled-components';
 import {
   DetailBar,
   FormDescription,
-} from '../../../styles/components/Desktop/Admin/GalleryView';
-import { Images } from '../../../helpers/organizers/types';
-import useStorage from '../../../helpers/hooks/useStorage';
-import useFirestore from '../../../helpers/hooks/useFirestore';
+} from '../../../../styles/components/Desktop/Admin/GalleryView';
+import { Images } from '../../../../helpers/organizers/types';
+import useStorage from '../../../../helpers/hooks/useStorage';
 
-import DeleteOverlay from '../UI/DeleteOverlay';
-import FormDate from '../UI/FormDate';
-import Button from '../UI/Button';
+import DeleteOverlay from '../../UI/DeleteOverlay';
+import FormDate from '../../UI/FormDate';
+import Button from '../../UI/Button';
 
-import FormSubcategory from './Upload/FormSubcategory';
-import FormCategory from './Upload/FormCategory';
-import DetailSideBarHeader from './DetailSideBarHeader';
+import FormSubcategory from '../Upload/FormSubcategory';
+import FormCategory from '../Upload/FormCategory';
+import DetailSideBarHeader from '../Shared/DetailSideBarHeader';
+import firestoreOperations from '../../../../helpers/functions/firestore';
+import notificationOperations from '../../../../helpers/functions/notification';
 
 export default function GalleryViewDetailSideBar({
   detailSidebarClose,
@@ -23,7 +24,8 @@ export default function GalleryViewDetailSideBar({
   detailSidebarClose: () => void;
   selectedImages: Images;
 }) {
-  const { updateImage } = useFirestore();
+  const { errorInvalid } = notificationOperations();
+  const { updateImage } = firestoreOperations();
   const { deleteFile } = useStorage();
   const { colors } = useTheme();
   const [formData, setFormData] = useState({
@@ -87,18 +89,27 @@ export default function GalleryViewDetailSideBar({
 
   // Update
   function updateHandler() {
-    for (let i = 0; i < selectedImages.length; i++) {
-      updateImage(
-        selectedImages[i].id,
-        formData.description,
-        formData.category,
-        formData.subcategory,
-        formData.date,
-        selectedImages[i].url,
-        selectedImages[i].timeCreated
-      );
+    if (
+      formData.description &&
+      formData.category &&
+      formData.subcategory &&
+      formData.date
+    ) {
+      for (let i = 0; i < selectedImages.length; i++) {
+        updateImage(
+          selectedImages[i].id,
+          formData.description,
+          formData.category,
+          formData.subcategory,
+          formData.date,
+          selectedImages[i].url,
+          selectedImages[i].timeCreated
+        );
+      }
+      detailSidebarClose();
+    } else {
+      errorInvalid('Please enter valid data');
     }
-    detailSidebarClose();
   }
 
   // Delete

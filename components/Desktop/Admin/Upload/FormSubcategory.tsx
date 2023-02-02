@@ -1,9 +1,6 @@
-import { collection, orderBy, query, where } from '@firebase/firestore';
-import { useEffect, useState } from 'react';
-import { useCollection } from 'react-firebase-hooks/firestore';
-import { projectFirestore } from '../../../../helpers/firebase/config';
-import { addSubCategory } from '../../../../helpers/functions/firestore';
 import FormSelectAddNew from '../../UI/FormSelectAddNew';
+import firestoreOperations from '../../../../helpers/functions/firestore';
+import useFirestore from '../../../../helpers/hooks/useFirestore';
 
 export default function FormSubcategory({
   selectedCategory,
@@ -14,26 +11,16 @@ export default function FormSubcategory({
   selectedSubcategory: string;
   onChange: (subcategory: string) => void;
 }) {
-  const [docs, setDocs] = useState<any[]>([]);
-
-  let ref = query(
-    collection(projectFirestore, 'subcategories'),
-    where('category', '==', selectedCategory)
+  const { addSubCategory } = firestoreOperations();
+  const { docs: subcategories } = useFirestore(
+    'subcategories',
+    'category',
+    selectedCategory,
+    'subcategory',
+    'asc'
   );
 
-  const [subcategories, loading, error] = useCollection(ref, {});
-
-  useEffect(() => {
-    if (subcategories) {
-      setDocs(
-        subcategories.docs.map((doc) => {
-          return doc.data();
-        })
-      );
-    }
-  }, [subcategories]);
-
-  let options = docs?.map((doc) => {
+  let options = subcategories?.map((doc) => {
     return doc.subcategory;
   });
 

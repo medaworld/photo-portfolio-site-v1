@@ -1,20 +1,12 @@
 import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react';
-import {
-  AdminMainPage,
-  CenterWrapper,
-} from '../../styles/components/Desktop/Admin/Admin';
-import { Category } from '../../helpers/organizers/types';
-import useFirestore from '../../helpers/hooks/useFirestore';
+import { AdminMainPage } from '../../styles/components/Desktop/Admin/Admin';
 
-import AdminSideBar from '../../components/Desktop/Admin/AdminSideBar';
-import CategoryDetailSidebar from '../../components/Desktop/Admin/ListViewDetailSidebar';
-import ListView from '../../components/Desktop/Admin/ListView';
+import AdminSideBar from '../../components/Desktop/Admin/Shared/AdminSideBar';
 import Loader from '../../components/Desktop/UI/Loader';
-import { collection, getDocs, orderBy, query } from 'firebase/firestore';
-import { projectFirestore } from '../../helpers/firebase/config';
+import AdminCategoryList from '../../components/Desktop/Admin/Categories/AdminCategoryList';
 
-export default function AdminCategoriesPage({ categories }) {
+export default function AdminCategoriesPage() {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     getSession().then((session) => {
@@ -25,73 +17,19 @@ export default function AdminCategoriesPage({ categories }) {
       }
     });
   }, []);
-
-  const [selectedCategory, setSelectedCategory] = useState<Category>(null);
-  const [showDetailSidebar, setShowDetailSidebar] = useState(false);
-  const { docs } = useFirestore('categories', null, null, 'category', 'asc');
-
-  const detailSidebarClose = () => {
-    setShowDetailSidebar(false);
-    setSelectedCategory(null);
-  };
-
-  useEffect(() => {
-    if (selectedCategory) {
-      setShowDetailSidebar(true);
-    } else {
-      setShowDetailSidebar(false);
-    }
-  }, [selectedCategory]);
-
   if (isLoading) {
-    return (
-      <CenterWrapper>
-        <Loader />
-      </CenterWrapper>
-    );
+    return <Loader />;
   }
 
   return (
     <AdminMainPage>
       <AdminSideBar />
-      <ListView
-        docs={categories}
-        type={'category'}
-        selectedItem={selectedCategory}
-        setSelectedItem={setSelectedCategory}
-      />
-      {showDetailSidebar && (
-        <CategoryDetailSidebar
-          type={'category'}
-          selectedCategory={selectedCategory}
-          detailSidebarClose={detailSidebarClose}
-        />
-      )}
+      <AdminCategoryList />
     </AdminMainPage>
   );
 }
 
 export async function getServerSideProps(context: { req: any }) {
-  let categories: any = [];
-
-  try {
-    const q = query(
-      collection(projectFirestore, 'categories'),
-      orderBy('category', 'asc')
-    );
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      categories.push({
-        category: data.category,
-        id: data.id,
-        coverImg: data.coverImg,
-      });
-    });
-  } catch (err) {
-    console.log(err);
-  }
-
   const session = await getSession({ req: context.req });
   if (!session) {
     return {
@@ -102,6 +40,6 @@ export async function getServerSideProps(context: { req: any }) {
     };
   }
   return {
-    props: { session, categories },
+    props: { session },
   };
 }

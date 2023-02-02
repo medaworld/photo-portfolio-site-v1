@@ -65,8 +65,8 @@ export default function Contact() {
 
     emailjs
       .sendForm(
-        `${process.env.emailjs_serviceId}`,
-        `${process.env.emailjs_templateId}`,
+        `${process.env.NEXT_PUBLIC_EMAILJS_SERVICEID}`,
+        `${process.env.NEXT_PUBLIC_EMAILJS_TEMPLATEID}`,
         form.current,
         `${process.env.NEXT_PUBLIC_EMAILJS_PUBLICKEY}`
       )

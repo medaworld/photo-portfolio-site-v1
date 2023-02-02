@@ -85,18 +85,17 @@ export const ArrowButton = styled.div<{ appear: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  top: 40%;
   width: 50px;
   height: 50px;
   color: white;
   font-size: 50px;
-  border: 1px solid white;
   border-radius: 50%;
   user-select: none;
   transition: opacity 0.3s ease;
+  opacity: 30%;
 
   :hover {
-    opacity: 80%;
+    opacity: 60%;
     cursor: pointer;
   }
 `;

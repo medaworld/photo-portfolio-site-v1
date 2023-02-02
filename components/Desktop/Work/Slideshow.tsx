@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Images } from '../../../helpers/organizers/types';
 import {
   ArrowButton,
@@ -10,10 +10,14 @@ import {
   SlideshowThumbnail,
   SlideshowThumbnailContainer,
 } from '../../../styles/components/Desktop/Work/Work';
+import Icon from '../UI/Icon';
+
+import leftArrow from '/public/icons/leftArrow.png';
+import rightArrow from '/public/icons/rightArrow.png';
 
 export default function Slideshow({ images }: { images: Images }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [focusedImage, setFocusedImage] = useState(images[0].url);
+  const [mainImage, setMainImage] = useState(images[0].url);
 
   function leftClickHandler() {
     if (selectedIndex > 0) {
@@ -27,21 +31,25 @@ export default function Slideshow({ images }: { images: Images }) {
     }
   }
 
+  useEffect(() => {
+    setMainImage(images[selectedIndex].url);
+  }, [selectedIndex]);
+
   return (
     <SlideshowContainer>
       <MainWrapper>
         <Buttons>
           <ArrowButton onClick={leftClickHandler} appear={selectedIndex === 0}>
-            {'<'}
+            <Icon img={leftArrow.src} size={50} color={'light'} />
           </ArrowButton>
           <ArrowButton
             onClick={rightClickHandler}
             appear={selectedIndex === images.length - 1}
           >
-            {'>'}
+            <Icon img={rightArrow.src} size={50} color={'light'} />
           </ArrowButton>
         </Buttons>
-        <MainImage img={images[selectedIndex].url} />
+        <MainImage img={mainImage} />
       </MainWrapper>
       <SlideshowScroll>
         {images.map((image, key) => {

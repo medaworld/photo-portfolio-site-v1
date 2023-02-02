@@ -35,6 +35,7 @@ export default function AdminGallery() {
       <GalleryView
         selectedImages={selectedImages}
         onItemSelect={itemSelectHandler}
+        detailSidebarClose={detailSidebarClose}
       />
       {showDetailSidebar && (
         <GalleryViewDetailSideBar

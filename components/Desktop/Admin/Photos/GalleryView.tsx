@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   GalleryContainer,
@@ -13,14 +13,16 @@ import InfiniteFetch from '../../../../helpers/functions/infiniteFetch';
 export default function GalleryView({
   onItemSelect,
   selectedImages,
+  detailSidebarClose,
 }: {
   onItemSelect: (doc: any) => void;
   selectedImages: any[];
+  detailSidebarClose: () => void;
 }) {
+  const galleryInnerRef = useRef<HTMLDivElement>();
   const [selectedCategory, setSelectedCategory] = useState<string>(undefined);
   const { docs, lastKey, loading, postNextBatch } =
     InfiniteFetch(selectedCategory);
-  const galleryInnerRef = useRef<HTMLDivElement>();
 
   function scrollHandler() {
     const { scrollTop, scrollHeight, clientHeight } = galleryInnerRef.current;
@@ -34,6 +36,10 @@ export default function GalleryView({
       postNextBatch(lastKey);
     }
   }
+
+  useEffect(() => {
+    detailSidebarClose();
+  }, [selectedCategory]);
 
   const categoryImages = docs?.map((doc, key) => {
     return (

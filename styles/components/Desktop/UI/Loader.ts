@@ -1,5 +1,12 @@
 import styled from 'styled-components';
 
+export const CenterWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+`;
+
 export const LoaderWrapper = styled.span`
   display: flex;
   align-items: center;

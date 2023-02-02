@@ -68,7 +68,7 @@ export default function Contact() {
         `${process.env.emailjs_serviceId}`,
         `${process.env.emailjs_templateId}`,
         form.current,
-        `${process.env.emailjs_publicKey}`
+        `${process.env.NEXT_PUBLIC_EMAILJS_PUBLICKEY}`
       )
       .then((result) => {
         notificationCtx.showNotification({

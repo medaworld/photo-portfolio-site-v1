@@ -13,7 +13,6 @@ export const SplashWrapper = styled.div`
   animation: splash 1.3s;
   transition: 0.2s;
   visibility: hidden;
-  outline: 1px solid red;
 
   @keyframes splash {
     0% {

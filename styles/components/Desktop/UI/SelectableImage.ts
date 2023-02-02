@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 import { hexToRGBA } from '../../../../helpers/functions/colors';
 
-export const ImageWrapper = styled.div`
+export const ImageWrapper = styled.div<{ onlyOne: boolean }>`
   position: relative;
   transition: opacity 0.2s ease;
+  flex-grow: 1;
+  height: ${(p) => (p.onlyOne ? '' : '25vh')};
 
   :hover {
     opacity: 90%;
@@ -12,9 +14,10 @@ export const ImageWrapper = styled.div`
 `;
 
 export const Image = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  vertical-align: bottom;
 `;
 
 export const Check = styled.div<{ selected: boolean }>`

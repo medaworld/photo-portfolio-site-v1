@@ -57,3 +57,9 @@ export const Modal = styled.div`
   position: absolute;
   top: 0;
 `;
+
+export const ErrorMsg = styled.div`
+  color: ${(p) => p.theme.colors.error};
+  height: 20px;
+  padding-bottom: 20px;
+`;

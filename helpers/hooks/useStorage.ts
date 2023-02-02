@@ -5,17 +5,24 @@ import {
   uploadBytes,
   uploadBytesResumable,
 } from 'firebase/storage';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { projectFirestore, projectStorage } from '../firebase/config';
 
 import { Error } from '../../helpers/organizers/types';
 import { deleteDoc, doc, setDoc } from 'firebase/firestore';
-import NotificationContext from '../../context/notificationContext';
+import notificationOperations from '../functions/notification';
 
 const useStorage = () => {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<Error>(null);
-  const notificationCtx = useContext(NotificationContext);
+  const {
+    successAdd,
+    successDelete,
+    errorAdd,
+    errorDelete,
+    successStorageUpload,
+    successStorageDelete,
+  } = notificationOperations();
 
   const uploadFile = (file: {
     file: File;
@@ -38,27 +45,29 @@ const useStorage = () => {
 
     uploadBytes(storageRef, file.file)
       .then(async (snapshot) => {
+        successStorageUpload();
         const url = await getDownloadURL(storageRef);
-        try {
-          // Store in database
-          setDoc(doc(projectFirestore, 'images', file.id), {
-            id: file.id,
-            url: url,
-            dateTaken: file.dateTaken,
-            description: file.description,
-            category: file.category,
-            subcategory: file.subcategory,
-            category_lower: file.category
-              ?.replace(/[^a-z0-9]/gi, '')
-              .toLowerCase(),
-            subcategory_lower: file.subcategory
-              ?.replace(/[^a-z0-9]/gi, '')
-              .toLowerCase(),
-            timeCreated: snapshot.metadata.timeCreated,
+        setDoc(doc(projectFirestore, 'images', file.id), {
+          id: file.id,
+          url: url,
+          dateTaken: file.dateTaken,
+          description: file.description,
+          category: file.category,
+          subcategory: file.subcategory,
+          category_lower: file.category
+            ?.replace(/[^a-z0-9]/gi, '')
+            .toLowerCase(),
+          subcategory_lower: file.subcategory
+            ?.replace(/[^a-z0-9]/gi, '')
+            .toLowerCase(),
+          timeCreated: snapshot.metadata.timeCreated,
+        })
+          .then(() => {
+            successAdd();
+          })
+          .catch(() => {
+            errorAdd();
           });
-        } catch (err) {
-          setError('Error adding document');
-        }
       })
       .catch((err) => {
         setError(err.message);
@@ -75,21 +84,16 @@ const useStorage = () => {
     const fileRef = ref(projectStorage, url);
     deleteObject(fileRef)
       .then(() => {
+        successStorageDelete();
         const docRef = doc(projectFirestore, 'images', id);
-        deleteDoc(docRef).then(() => {
-          notificationCtx.showNotification({
-            title: 'Success',
-            message: 'Successfully deleted',
-            status: 'success',
-          });
-        });
+        deleteDoc(docRef)
+          .then(() => {
+            successDelete();
+          })
+          .catch(() => errorDelete());
       })
-      .catch((err) => {
-        notificationCtx.showNotification({
-          title: 'Error',
-          message: err.message,
-          status: 'error',
-        });
+      .catch(() => {
+        errorDelete();
       });
   };
 

@@ -1,5 +1,6 @@
-import useFirestore from '../../../../helpers/hooks/useFirestore';
 import FormSelectAddNew from '../../UI/FormSelectAddNew';
+import firestoreOperations from '../../../../helpers/functions/firestore';
+import useFirestore from '../../../../helpers/hooks/useFirestore';
 
 export default function FormSubcategory({
   selectedCategory,
@@ -10,13 +11,16 @@ export default function FormSubcategory({
   selectedSubcategory: string;
   onChange: (subcategory: string) => void;
 }) {
-  const { addSubCategory, docs } = useFirestore(
+  const { addSubCategory } = firestoreOperations();
+  const { docs: subcategories } = useFirestore(
     'subcategories',
     'category',
-    selectedCategory
+    selectedCategory,
+    'subcategory',
+    'asc'
   );
 
-  let options = docs?.map((doc) => {
+  let options = subcategories?.map((doc) => {
     return doc.subcategory;
   });
 

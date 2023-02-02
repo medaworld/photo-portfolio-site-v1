@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Buttons,
   DeleteOverlayContainer,
+  ErrorMsg,
 } from '../../../styles/components/Desktop/UI/AddNewOverlay';
 import Modal from '../UI/Modal';
 import Button from './Button';
@@ -16,6 +17,7 @@ function AddNewOverlay({
   type: string;
 }) {
   const [input, setInput] = useState('');
+  const [error, setError] = useState<string>();
   function inputChangeHandler(event: {
     target: { value: React.SetStateAction<string> };
   }) {
@@ -23,7 +25,12 @@ function AddNewOverlay({
   }
 
   function submitHandler() {
-    onSubmit(input);
+    if (input.split(' ').join('').length > 0) {
+      onSubmit(input);
+    } else {
+      setError('Please enter valid data');
+      setInput('');
+    }
   }
 
   const placeholder = `New ${type}...`;
@@ -31,6 +38,7 @@ function AddNewOverlay({
     <Modal onClose={onClose}>
       <DeleteOverlayContainer>
         <p>New {type}</p>
+        <ErrorMsg>{error}</ErrorMsg>
         <input
           type="text"
           placeholder={placeholder}

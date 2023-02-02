@@ -3,26 +3,15 @@ import styled from 'styled-components';
 export const GalleryContainer = styled.div`
   height: 85vh;
   overflow: scroll;
+  width: 100%;
+  display: block;
+`;
+
+export const GalleryImages = styled.ul`
   display: flex;
-`;
-
-export const Gallery = styled.div`
-  display: block;
-  position: relative;
-`;
-
-export const GallerySection = styled.div`
-  display: block;
-  position: relative;
-`;
-
-export const SectionImages = styled.div`
-  column-count: 3;
-  -webkit-column-count: 3;
-  -moz-column-count: 3;
-  column-gap: 2px;
-  -webkit-column-gap: 2px;
-  column-width: 50%;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
 `;
 
 export const DetailBar = styled.div`
@@ -48,5 +37,16 @@ export const FormDescription = styled.textarea`
 
   :focus {
     outline: none;
+  }
+`;
+
+export const LoadMore = styled.div`
+  width: 100%;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+
+  button {
+    width: 20%;
   }
 `;

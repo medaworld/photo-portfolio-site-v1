@@ -2,8 +2,8 @@ import {
   BarHeader,
   CloseIcon,
   Title,
-} from '../../../styles/components/Desktop/Admin/Admin';
-import Icon from '../UI/Icon';
+} from '../../../../styles/components/Desktop/Admin/Admin';
+import Icon from '../../UI/Icon';
 
 import closeIcon from '/public/icons/closeWindow.png';
 

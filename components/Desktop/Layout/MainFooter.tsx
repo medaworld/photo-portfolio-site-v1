@@ -17,7 +17,13 @@ function MainFooter() {
       <ToTop onClick={scrollToTop}>Back To Top ↑</ToTop>
       <Copyright>
         <div>All Photos © MEDA, 2023</div>
-        <div>Web Designed & Built by Brian Suruki, 2023</div>
+        <div>
+          Web Designed & Built by{' '}
+          <a href="https://www.briansuruki.com/" target="_blank">
+            Brian Suruki
+          </a>
+          , 2023
+        </div>
       </Copyright>
     </Footer>
   );

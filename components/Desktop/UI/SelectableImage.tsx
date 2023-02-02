@@ -12,14 +12,16 @@ export default function SelectableImage({
   selected,
   onClick,
   text,
+  onlyOne,
 }: {
   url: string;
   selected: boolean;
   onClick?: () => void;
   text?: string;
+  onlyOne?: boolean;
 }) {
   return (
-    <ImageWrapper onClick={onClick}>
+    <ImageWrapper onClick={onClick} onlyOne={onlyOne}>
       <Check selected={selected}>
         <img id="preview" src={CheckIcon.src} alt="" />
       </Check>

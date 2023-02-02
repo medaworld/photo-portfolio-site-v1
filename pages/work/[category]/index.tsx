@@ -4,7 +4,6 @@ import BackArrow from '../../../components/Desktop/UI/BackArrow';
 import Loader from '../../../components/Desktop/UI/Loader';
 import CategoryCover from '../../../components/Desktop/Work/CategoryCover';
 import { projectFirestore } from '../../../helpers/firebase/config';
-import { capitalizeFirstLetter } from '../../../helpers/functions/strings';
 import {
   Container,
   Gallery,
@@ -88,7 +87,8 @@ export async function getStaticProps(context: { params: any }) {
   try {
     const q = query(
       collection(projectFirestore, 'subcategories'),
-      where('category_lower', '==', category)
+      where('category_lower', '==', category),
+      orderBy('subcategory', 'asc')
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {

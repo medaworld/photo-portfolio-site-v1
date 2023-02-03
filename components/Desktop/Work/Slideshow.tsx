@@ -1,71 +1,33 @@
 import { useEffect, useState } from 'react';
-import { Images } from '../../../helpers/organizers/types';
-import {
-  ArrowButton,
-  Buttons,
-  MainImage,
-  MainWrapper,
-  SlideshowContainer,
-  SlideshowScroll,
-  SlideshowThumbnail,
-  SlideshowThumbnailContainer,
-} from '../../../styles/components/Desktop/Work/Work';
-import Icon from '../UI/Icon';
+import { Image, Images } from '../../../helpers/organizers/types';
+import { SlideshowContainer } from '../../../styles/components/Desktop/Work/Work';
 
-import leftArrow from '/public/icons/leftArrow.png';
-import rightArrow from '/public/icons/rightArrow.png';
+import SlideshowMainImage from './SlideshowMainImage';
+import SlideshowScroll from './SlideshowScroll';
 
 export default function Slideshow({ images }: { images: Images }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [mainImage, setMainImage] = useState(images[0].url);
-
-  function leftClickHandler() {
-    if (selectedIndex > 0) {
-      setSelectedIndex(selectedIndex - 1);
-    }
-  }
-
-  function rightClickHandler() {
-    if (selectedIndex < images.length - 1) {
-      setSelectedIndex(selectedIndex + 1);
-    }
-  }
+  const [selectedImage, setSelectedImage] = useState<Image>();
 
   useEffect(() => {
-    setMainImage(images[selectedIndex].url);
+    if (images) {
+      setSelectedImage(images[selectedIndex]);
+    }
   }, [selectedIndex]);
 
   return (
     <SlideshowContainer>
-      <MainWrapper>
-        <Buttons>
-          <ArrowButton onClick={leftClickHandler} appear={selectedIndex === 0}>
-            <Icon img={leftArrow.src} size={50} color={'light'} />
-          </ArrowButton>
-          <ArrowButton
-            onClick={rightClickHandler}
-            appear={selectedIndex === images.length - 1}
-          >
-            <Icon img={rightArrow.src} size={50} color={'light'} />
-          </ArrowButton>
-        </Buttons>
-        <MainImage img={mainImage} />
-      </MainWrapper>
-      <SlideshowScroll>
-        {images.map((image, key) => {
-          function clickHandler() {
-            setSelectedIndex(key);
-          }
-          return (
-            <SlideshowThumbnailContainer
-              selected={selectedIndex == key}
-              onClick={clickHandler}
-            >
-              <SlideshowThumbnail key={key} img={image.url} />
-            </SlideshowThumbnailContainer>
-          );
-        })}
-      </SlideshowScroll>
+      <SlideshowMainImage
+        images={images}
+        selectedImage={selectedImage}
+        selectedIndex={selectedIndex}
+        setSelectedIndex={setSelectedIndex}
+      />
+      <SlideshowScroll
+        images={images}
+        selectedIndex={selectedIndex}
+        setSelectedIndex={setSelectedIndex}
+      />
     </SlideshowContainer>
   );
 }

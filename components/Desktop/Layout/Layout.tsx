@@ -1,5 +1,6 @@
 import { Fragment, ReactNode, useContext } from 'react';
 import NotificationContext from '../../../context/notificationContext';
+import { SplashWrapper } from '../../../styles/components/Desktop/Splash/Splash';
 import Notification from '../UI/Notification';
 import MainFooter from './MainFooter';
 import MainHeader from './MainHeader';

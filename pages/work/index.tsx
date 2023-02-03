@@ -1,32 +1,42 @@
-import { Container, Gallery } from '../../styles/components/Desktop/Work/Work';
+import { Gallery } from '../../styles/components/Desktop/Work/Work';
 
 import CategoryCover from '../../components/Desktop/Work/CategoryCover';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { projectFirestore } from '../../helpers/firebase/config';
 import Loader from '../../components/Desktop/UI/Loader';
+import { ReactFragment, useState } from 'react';
+import { motion } from 'framer-motion';
 
 export default function WorkPage({
   categories,
 }: {
   categories: { category: string; id: string; coverImg: string }[];
 }) {
-  const categoryImages = categories?.map((doc, key) => {
-    return (
-      <CategoryCover
-        key={key}
-        src={doc.coverImg}
-        alt={doc.category}
-        category={doc.category}
-        url={`/work/${doc.category.toLowerCase()}`}
-      />
-    );
-  });
+  const [loaded, setLoaded] = useState(false);
+  let categoryImages: ReactFragment | JSX.Element[];
+  Promise.all(
+    (categoryImages = categories?.map((doc, key) => {
+      return (
+        <CategoryCover
+          key={key}
+          src={doc.coverImg}
+          alt={doc.category}
+          category={doc.category}
+          url={`/work/${doc.category.toLowerCase()}`}
+        />
+      );
+    }))
+  ).then(() => setLoaded(true));
 
   return (
-    <Container>
-      {!categoryImages && <Loader />}
-      <Gallery>{categoryImages}</Gallery>
-    </Container>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, transition: { duration: 0.1 } }}
+      exit={{ opacity: 0, transition: { duration: 0.1 } }}
+    >
+      {!loaded && <Loader />}
+      {loaded && <Gallery>{categoryImages}</Gallery>}
+    </motion.div>
   );
 }
 

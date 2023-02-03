@@ -1,30 +1,20 @@
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { motion } from 'framer-motion';
 import BackArrow from '../../../../components/Desktop/UI/BackArrow';
-import Loader from '../../../../components/Desktop/UI/Loader';
-import CategoryCover from '../../../../components/Desktop/Work/CategoryCover';
 import Slideshow from '../../../../components/Desktop/Work/Slideshow';
 import { projectFirestore } from '../../../../helpers/firebase/config';
 import { Images } from '../../../../helpers/organizers/types';
-import { Container } from '../../../../styles/components/Desktop/Work/Work';
 
 export default function SubCategoryPage({ images }: { images: Images }) {
-  const imagesDisplay = images?.map((image, key) => {
-    return (
-      <CategoryCover
-        key={key}
-        src={image.url}
-        alt={image.description}
-        category={image.category}
-        url={''}
-      />
-    );
-  });
   return (
-    <Container>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, transition: { duration: 0.1 } }}
+      exit={{ opacity: 0, transition: { duration: 0.1 } }}
+    >
       <BackArrow />
       <Slideshow images={images} />
-      {!imagesDisplay && <Loader />}
-    </Container>
+    </motion.div>
   );
 }
 

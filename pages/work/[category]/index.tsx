@@ -1,55 +1,46 @@
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
-import { Key } from 'react';
+import { motion } from 'framer-motion';
+import { Key, ReactFragment, useState } from 'react';
 import BackArrow from '../../../components/Desktop/UI/BackArrow';
 import Loader from '../../../components/Desktop/UI/Loader';
 import CategoryCover from '../../../components/Desktop/Work/CategoryCover';
 import { projectFirestore } from '../../../helpers/firebase/config';
-import {
-  Container,
-  Gallery,
-} from '../../../styles/components/Desktop/Work/Work';
+import { Subcategory } from '../../../helpers/organizers/types';
+import { Gallery } from '../../../styles/components/Desktop/Work/Work';
 
 export default function CategoryPage({
   subcategories,
 }: {
-  subcategories: {
-    category: string;
-    coverImg: string;
-    id: string;
-    subcategory: string;
-    category_lower: string;
-    subcategory_lower: string;
-  }[];
+  subcategories: Subcategory[];
 }) {
-  const subcategoriesImages = subcategories.map(
-    (
-      subcategory: {
-        category: string;
-        coverImg: string;
-        subcategory: string;
-        category_lower: string;
-        subcategory_lower: string;
-      },
-      key: Key | null | undefined
-    ) => {
-      return (
-        <CategoryCover
-          key={key}
-          src={subcategory.coverImg}
-          alt={subcategory.subcategory}
-          category={subcategory.subcategory}
-          url={`/work/${subcategory.category_lower}/${subcategory.subcategory_lower}`}
-        />
-      );
-    }
-  );
+  const [loaded, setLoaded] = useState(false);
+  let subcategoriesImages: ReactFragment | JSX.Element[];
+  Promise.all(
+    (subcategoriesImages = subcategories.map(
+      (subcategory: Subcategory, key: Key | null | undefined) => {
+        return (
+          <CategoryCover
+            key={key}
+            src={subcategory.coverImg}
+            alt={subcategory.subcategory}
+            category={subcategory.subcategory}
+            url={`/work/${subcategory.category_lower}/${subcategory.subcategory_lower}`}
+          />
+        );
+      }
+    ))
+  ).then(() => setLoaded(true));
 
   return (
-    <Container>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, transition: { duration: 0.1 } }}
+      exit={{ opacity: 0, transition: { duration: 0.1 } }}
+    >
       <BackArrow />
-      {!subcategoriesImages && <Loader />}
-      <Gallery>{subcategoriesImages}</Gallery>
-    </Container>
+      {!loaded && <Loader />}
+      {loaded && <Gallery>{subcategoriesImages}</Gallery>}
+    </motion.div>
   );
 }
 

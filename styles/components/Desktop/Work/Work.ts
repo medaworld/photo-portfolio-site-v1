@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import device from '../../../../helpers/organizers/breakpoints';
 
-export const Container = styled.div``;
-
 export const Gallery = styled.div`
   column-count: 2;
   -webkit-column-count: 2;
@@ -55,7 +53,7 @@ export const SlideshowContainer = styled.div`
 
 export const MainWrapper = styled.div`
   width: 100%;
-  height: 100%;
+  height: 85%;
 
   display: flex;
   align-items: center;
@@ -78,21 +76,32 @@ export const Buttons = styled.div`
   justify-content: space-between;
   align-self: center;
   padding: 0 40px;
-`;
-export const ArrowButton = styled.div<{ appear: boolean }>`
-  visibility: ${(p) => (p.appear ? 'hidden' : 'visible')};
-  opacity: ${(p) => (p.appear ? '0' : '100%')};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50px;
   height: 50px;
-  color: white;
-  font-size: 50px;
-  border-radius: 50%;
-  user-select: none;
+`;
+
+export const LeftArrowButton = styled.div`
   transition: opacity 0.3s ease;
   opacity: 30%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 40px;
+
+  :hover {
+    opacity: 60%;
+    cursor: pointer;
+  }
+`;
+
+export const RightArrowButton = styled.div`
+  transition: opacity 0.3s ease;
+  opacity: 30%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 40px;
 
   :hover {
     opacity: 60%;
@@ -105,8 +114,8 @@ export const Image = styled.img`
   height: 100%;
 `;
 
-export const SlideshowScroll = styled.div`
-  height: 20%;
+export const SlideshowScrollContainer = styled.div`
+  height: 15%;
   padding: 1% 2%;
   display: grid;
   grid-auto-flow: column;

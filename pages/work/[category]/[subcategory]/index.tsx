@@ -1,5 +1,4 @@
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
-import { motion } from 'framer-motion';
 import BackArrow from '../../../../components/Desktop/UI/BackArrow';
 import Slideshow from '../../../../components/Desktop/Work/Slideshow';
 import { projectFirestore } from '../../../../helpers/firebase/config';
@@ -7,14 +6,10 @@ import { Images } from '../../../../helpers/organizers/types';
 
 export default function SubCategoryPage({ images }: { images: Images }) {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1, transition: { duration: 0.1 } }}
-      exit={{ opacity: 0, transition: { duration: 0.1 } }}
-    >
+    <>
       <BackArrow />
       <Slideshow images={images} />
-    </motion.div>
+    </>
   );
 }
 

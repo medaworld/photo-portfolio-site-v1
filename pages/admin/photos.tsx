@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
-import { getSession } from 'next-auth/react';
-
 import { AdminMainPage } from '../../styles/components/Desktop/Admin/Admin';
 
 import AdminSideBar from '../../components/Desktop/Admin/Shared/AdminSideBar';
 import AdminGallery from '../../components/Desktop/Admin/Photos/AdminGallery';
 import Loader from '../../components/Desktop/UI/Loader';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../api/auth/[...nextauth]';
+import { GetServerSidePropsContext } from 'next';
+import { getSession } from 'next-auth/react';
 
 export default function AdminPhotosPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -18,10 +20,10 @@ export default function AdminPhotosPage() {
       }
     });
   }, []);
-
   if (isLoading) {
     return <Loader />;
   }
+
   return (
     <AdminMainPage>
       <AdminSideBar />
@@ -30,8 +32,8 @@ export default function AdminPhotosPage() {
   );
 }
 
-export async function getServerSideProps(context: { req: any }) {
-  const session = await getSession({ req: context.req });
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerSession(context.req, context.res, authOptions);
 
   if (!session) {
     return {
@@ -42,6 +44,6 @@ export async function getServerSideProps(context: { req: any }) {
     };
   }
   return {
-    props: { session },
+    props: { session: JSON.stringify(session) },
   };
 }

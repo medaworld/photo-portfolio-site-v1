@@ -1,9 +1,9 @@
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { verifyPassword } from '../../../helpers/mongodb/auth';
 import { connectToDatabase } from '../../../helpers/mongodb/db';
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   session: {},
   secret: process.env.SECRET,
   providers: [
@@ -36,4 +36,6 @@ export default NextAuth({
       },
     }),
   ],
-});
+};
+
+export default NextAuth(authOptions);

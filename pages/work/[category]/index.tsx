@@ -1,6 +1,6 @@
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
-import { motion } from 'framer-motion';
-import { Key, ReactFragment, useState } from 'react';
+
+import { Key } from 'react';
 import BackArrow from '../../../components/Desktop/UI/BackArrow';
 import Loader from '../../../components/Desktop/UI/Loader';
 import CategoryCover from '../../../components/Desktop/Work/CategoryCover';
@@ -13,34 +13,26 @@ export default function CategoryPage({
 }: {
   subcategories: Subcategory[];
 }) {
-  const [loaded, setLoaded] = useState(false);
-  let subcategoriesImages: ReactFragment | JSX.Element[];
-  Promise.all(
-    (subcategoriesImages = subcategories.map(
-      (subcategory: Subcategory, key: Key | null | undefined) => {
-        return (
-          <CategoryCover
-            key={key}
-            src={subcategory.coverImg}
-            alt={subcategory.subcategory}
-            category={subcategory.subcategory}
-            url={`/work/${subcategory.category_lower}/${subcategory.subcategory_lower}`}
-          />
-        );
-      }
-    ))
-  ).then(() => setLoaded(true));
+  const subcategoriesImages = subcategories.map(
+    (subcategory: Subcategory, key: Key | null | undefined) => {
+      return (
+        <CategoryCover
+          key={key}
+          src={subcategory.coverImg}
+          alt={subcategory.subcategory}
+          category={subcategory.subcategory}
+          url={`/work/${subcategory.category_lower}/${subcategory.subcategory_lower}`}
+        />
+      );
+    }
+  );
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1, transition: { duration: 0.1 } }}
-      exit={{ opacity: 0, transition: { duration: 0.1 } }}
-    >
+    <>
       <BackArrow />
-      {!loaded && <Loader />}
-      {loaded && <Gallery>{subcategoriesImages}</Gallery>}
-    </motion.div>
+      {!subcategories && <Loader />}
+      {subcategories && <Gallery>{subcategoriesImages}</Gallery>}
+    </>
   );
 }
 

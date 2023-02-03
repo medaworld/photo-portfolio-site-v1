@@ -5,6 +5,9 @@ import { AdminMainPage } from '../../styles/components/Desktop/Admin/Admin';
 import AdminSideBar from '../../components/Desktop/Admin/Shared/AdminSideBar';
 import Loader from '../../components/Desktop/UI/Loader';
 import AdminSubCategoryList from '../../components/Desktop/Admin/Subcategories/AdminSubcategoryList';
+import { GetServerSidePropsContext } from 'next';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../api/auth/[...nextauth]';
 
 export default function AdminSubcategoriesPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,8 +32,8 @@ export default function AdminSubcategoriesPage() {
   );
 }
 
-export async function getServerSideProps(context: { req: any }) {
-  const session = await getSession({ req: context.req });
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerSession(context.req, context.res, authOptions);
 
   if (!session) {
     return {
@@ -41,6 +44,6 @@ export async function getServerSideProps(context: { req: any }) {
     };
   }
   return {
-    props: { session },
+    props: { session: JSON.stringify(session) },
   };
 }
